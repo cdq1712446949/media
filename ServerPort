@@ -1,0 +1,14 @@
+eureka4002:4002
+eureka4003:4003
+eureka4004:4004
+user:6002
+user1:6001
+article:5000
+article1:5001
+view:5010
+view1:5011
+video:5020
+video1:5021
+zuul:7000
+zuul1:7001
+zuul2:7002
