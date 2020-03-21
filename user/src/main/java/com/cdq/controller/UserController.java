@@ -3,7 +3,8 @@ package com.cdq.controller;
 import com.alibaba.fastjson.JSON;
 import com.cdq.util.JwtUtil;
 import com.cdq.util.R;
-import com.cdq.util.RedisUtil;
+import com.cdq.util.RedisMasterUtil;
+import com.cdq.util.UserIdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private RedisUtil redisUtil;
+    private RedisMasterUtil redisMasterUtil;
 
     /**
      * 用户登录方法
@@ -62,8 +63,8 @@ public class UserController {
 //            tempMap.put("privateKey", privateKey);
 //            tempMap.put("publicKey", publicKey);
             //jwt存储到缓存中
-//            String tokenId = UserIdUtil.createKey();
-//            redisUtil.set(tokenId, tempMap);
+            String tokenId = UserIdUtil.createKey();
+            redisMasterUtil.set(tokenId, userMap);
             //设置返回信息set("tokenId", tokenId)set("token", sKey).set("publicKey", publicKey)
             return R.success().set("jwt", jwt);
         } catch (Exception e) {

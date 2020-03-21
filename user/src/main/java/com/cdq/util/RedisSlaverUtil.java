@@ -7,22 +7,18 @@ import org.springframework.stereotype.Component;
 /**
  * @author ：ヅてＤＱ
  * @date ：Created in 2020/3/18 15:10
- * @description：Redis工具类
+ * @description：从redis服务器工具类，只能进行读操作
  * @modified By：
  * @version: 1.0.1
  */
 @Component
-public class RedisUtil {
+public class RedisSlaverUtil {
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    public void set(String key , Object value){
-        redisTemplate.opsForValue().set(key,value);
-    };
+    private RedisTemplate slaveRedisTemplate;
 
     public Object get (String key){
-        return redisTemplate.opsForValue().get(key);
+        return slaveRedisTemplate.opsForValue().get(key);
     }
 
 }
