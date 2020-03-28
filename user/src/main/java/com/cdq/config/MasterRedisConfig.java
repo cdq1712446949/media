@@ -21,7 +21,7 @@ import java.time.Duration;
 /**
  * @author ：ヅてＤＱ
  * @date ：Created in 2020/3/18 9:28
- * @description：整合Redis配置类
+ * @description：redis主服务器，只负责写操作
  * @modified By：
  * @version: 1.0.1
  */

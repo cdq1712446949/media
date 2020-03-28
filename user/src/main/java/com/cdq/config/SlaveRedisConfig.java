@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,7 @@ import java.time.Duration;
 /**
  * @author ：ヅてＤＱ
  * @date ：Created in 2020/3/18 9:28
- * @description：整合Redis配置类
+ * @description：redis从服务器，负责读操作
  * @modified By：
  * @version: 1.0.1
  */
