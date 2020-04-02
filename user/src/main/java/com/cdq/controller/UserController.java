@@ -80,7 +80,7 @@ public class UserController {
             //添加cookie
 
             //设置返回信息set("tokenId", tokenId)set("token", sKey).set("publicKey", publicKey)
-            return R.success().set("token", jwt);
+            return R.success().set("token", redisUtil.get("first"));
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());

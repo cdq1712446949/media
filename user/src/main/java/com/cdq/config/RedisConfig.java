@@ -69,7 +69,7 @@ public class RedisConfig {
         JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder().usePooling().poolConfig(jedisPoolConfig).and().readTimeout(Duration.ofMillis(2000)).build();
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setDatabase(1);
-        redisStandaloneConfiguration.setPort(6381);
+        redisStandaloneConfiguration.setPort(6379);
         redisStandaloneConfiguration.setHostName("localhost");
         return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
     }
