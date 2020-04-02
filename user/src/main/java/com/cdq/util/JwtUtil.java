@@ -16,9 +16,13 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 需要咨询java高级VIP课程的同学可以加安其拉老师的QQ：3164703201
- * 需要往期视频的同学可以加木兰老师的QQ：2746251334
- * author：鲁班学院-商鞅老师
+ * @author ：ヅてＤＱ
+ * @date ：Created in 2020/3/18 9:28
+ * @description：JWT工具类，局域网下jwt容易被拦截
+ * 问题原因：http采用明文传输
+ * 解决办法：采用https或者代码方面添加验证，验证ip地址或者mac地址
+ * @modified By：
+ * @version: 1.0.1
  */
 @Component
 public class JwtUtil {

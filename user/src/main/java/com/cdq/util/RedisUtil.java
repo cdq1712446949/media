@@ -12,13 +12,15 @@ import org.springframework.stereotype.Component;
  * @version: 1.0.1
  */
 @Component
-public class RedisSlaverUtil {
+public class RedisUtil {
 
     @Autowired
-    private RedisTemplate slaveRedisTemplate;
+    private RedisTemplate redisTemplate;
 
     public Object get (String key){
-        return slaveRedisTemplate.opsForValue().get(key);
+        return redisTemplate.opsForValue().get(key);
     }
-
+    public void set (String key,Object value){
+         redisTemplate.opsForValue().set(key,value);
+    }
 }

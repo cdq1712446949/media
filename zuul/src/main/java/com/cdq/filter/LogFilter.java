@@ -42,7 +42,7 @@ public class LogFilter extends ZuulFilter {
      */
     @Override
     public boolean shouldFilter() {
-        return false;
+        return true;
     }
 
     /**
@@ -52,6 +52,7 @@ public class LogFilter extends ZuulFilter {
      */
     @Override
     public Object run() throws ZuulException {
+        System.out.println("LogFilter.run()");
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
         return null;

@@ -3,11 +3,15 @@ package com.cdq.controller;
 import com.alibaba.fastjson.JSON;
 import com.cdq.util.JwtUtil;
 import com.cdq.util.R;
-import com.cdq.util.RedisMasterUtil;
+import com.cdq.util.RedisUtil;
 import com.cdq.util.UserIdUtil;
+import com.netflix.discovery.converters.Auto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,8 +30,16 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private RedisMasterUtil redisMasterUtil;
+    private RedisUtil redisUtil;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+
+    @RequestMapping(value = "/getUser.do")
+    public R getUser() {
+        return R.success("UserController.getUser()");
+    }
     /**
      * 用户登录方法
      * 业务逻辑：
@@ -64,14 +76,37 @@ public class UserController {
 //            tempMap.put("publicKey", publicKey);
             //jwt存储到缓存中
             String tokenId = UserIdUtil.createKey();
-            redisMasterUtil.set(tokenId, userMap);
+            redisUtil.set(tokenId, userMap);
+            //添加cookie
+
             //设置返回信息set("tokenId", tokenId)set("token", sKey).set("publicKey", publicKey)
-            return R.success().set("jwt", jwt);
+            return R.success().set("token", jwt);
         } catch (Exception e) {
             e.printStackTrace();
             return R.error(e.getMessage());
         }
     }
 
+    @RequestMapping("/register")
+    @HystrixCommand(
+            commandKey = "register",
+            fallbackMethod = "registerErro",
+            commandProperties = {
+                    @HystrixProperty(name = "execution.timeout.enabled" , value = "true"),
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds" , value = "3000")
+            }
+    )
+    public Object register (String user) {
+        Map<String,Object> tempMap = (Map)restTemplate.getForObject("http://CLIENT-ARTICLE/getArticle.do",Object.class);
+        return R.success(tempMap.toString());
+    }
 
+    /**
+     * 降级方法访问控制修饰类型，返回类型，参数都要和原方法一致
+     * @param user
+     * @return
+     */
+    public Object registerErro (String user)   {
+        return R.error("服务异常，请重试！");
+    }
 }

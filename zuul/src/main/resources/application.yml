@@ -27,4 +27,15 @@ zuul:
     article:
       ServiceId: client-article
       path: /article/**
-  ignored-services: client-article
+    user:
+      ServiceId: server-user
+      path: /user/**
+    view:
+      ServiceId: server-view
+      path: /media/**
+    video:
+      ServiceId: server-video
+      path: /video/**
+  ignored-services: "*"
+
+
