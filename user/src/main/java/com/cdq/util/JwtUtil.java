@@ -49,7 +49,8 @@ public class JwtUtil {
         String stringKey = JWT_KEY;
         //本地的密码解码[B@152f6e2
         byte[] encodedKey = Base64.decodeBase64(stringKey);
-        SecretKeySpec key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");// 根据给定的字节数组使用AES加密算法构造一个密钥，使用 encodedKey中的始于且包含 0 到前 leng 个字节这是当然是所有。
+        // 根据给定的字节数组使用AES加密算法构造一个密钥，使用 encodedKey中的始于且包含 0 到前 leng 个字节这是当然是所有。
+        SecretKeySpec key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         Map<String, Object> map = new HashMap();
         map.put("arg1", encodedKey);
         map.put("arg2", encodedKey.length);
@@ -96,13 +97,10 @@ public class JwtUtil {
         user.put("password", "321");
         //把数据转换为JWT token,设置过期时间为二十四小时
         String jwt = createJWT(UUID.randomUUID().toString(), JSON.toJSONString(user), 3600 * 24);
-
         System.out.println("加密后的" + jwt);
         //解密
         Claims claims = parseJWT(jwt);
-
         System.out.println("解密后的" + claims.toString());
-
     }
 
 

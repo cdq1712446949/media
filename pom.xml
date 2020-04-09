@@ -18,6 +18,7 @@
         <module>zuul3</module>
         <module>video</module>
         <module>video1</module>
+        <module>other</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -1,9 +1,4 @@
 
-#  datasource:
-#    driver-class-name: "com.mysql.jdbc.Driver"
-#    url: "jdbc:mysql://localhost:3306/media?useUnicode=true&characterEncoding=utf8"
-#    data-username: "root"
-#    data-password: "980814"
 spring:
   application:
     name: zuul #此实例注册到eureka服务端的name

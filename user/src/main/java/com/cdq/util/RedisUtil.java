@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author ：ヅてＤＱ
  * @date ：Created in 2020/3/18 15:10
@@ -21,7 +24,14 @@ public class RedisUtil {
         return redisTemplate.opsForValue().get(key);
     }
     public void set (String key,Object value){
-
         redisTemplate.opsForValue().set(key,value);
     }
+    public void set (String key, Object value, long time , TimeUnit timeUnit){
+        redisTemplate.opsForValue().set(key,value,time,timeUnit);
+    }
+    public void del (String key){
+        redisTemplate.delete(key);
+    }
+
+
 }

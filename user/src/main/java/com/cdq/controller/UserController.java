@@ -1,11 +1,10 @@
 package com.cdq.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.cdq.util.JwtUtil;
-import com.cdq.util.R;
-import com.cdq.util.RedisUtil;
-import com.cdq.util.UserIdUtil;
-import com.netflix.discovery.converters.Auto;
+import com.cdq.execution.UserExecution;
+import com.cdq.model.User;
+import com.cdq.service.UserService;
+import com.cdq.util.*;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ：ヅてＤＱ
@@ -29,11 +29,15 @@ import java.util.UUID;
 @RestController
 public class UserController {
 
+    public static final String HEAD_KEY = "media_header";
+
     @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private UserService userService;
 
 
     @RequestMapping(value = "/getUser.do")
@@ -46,45 +50,42 @@ public class UserController {
      * 1.查询用户名是否存在，如果存在检查密码是否正确，如果不存在返回提示信息，如果密码错误返回提示信息
      * 2.密码正确后根据用户信息生成token加密后返回给用户，并提示登陆成功
      *
-     * @param request
-     * @param response
      * @return
      */
     @RequestMapping(value = "/login")
-    public R login(HttpServletRequest request, HttpServletResponse response) {
+    public Map<String,Object> login(HttpServletResponse response,String username,String password) {
+        //定义返回给前端的map
+        Map<String,Object> modelMap = new HashMap<>();
         //接收前端参数
-
-        //调用service层查验参数
-
-        //返回结果
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("userName", "root");
-        userMap.put("role", 1);
-        userMap.put("level", 100);
-        userMap.put("userId", 10001);
-        //生成JWT
-        try {
-            String jwt = JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(userMap), 3600 * 24);
-            //RSA算法加密jwt
-//            Map<String, String> map = RSAUtils.generateKeyPair();
-//            String publicKey = map.get("publicKey");
-//            String privateKey = map.get("privateKey");
-//            String sKey = RSAUtils.encrypt(publicKey, jwt);
-//            Map<String, Object> tempMap = new HashMap<>();
-//            tempMap.put("token", sKey);
-//            tempMap.put("privateKey", privateKey);
-//            tempMap.put("publicKey", publicKey);
-            //jwt存储到缓存中
-            String tokenId = UserIdUtil.createKey();
-            redisUtil.set(tokenId, userMap);
-            //添加cookie
-
-            //设置返回信息set("tokenId", tokenId)set("token", sKey).set("publicKey", publicKey)
-            return R.success().set("token", redisUtil.get("first"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return R.error(e.getMessage());
+        User user = new User();
+        user.setUserName(username);
+        user.setPassWord(password);
+        //调用service层查验参数，连接数据库验证账号密码
+        UserExecution result = userService.login(user);
+        //根据service返回结果生成返回给前端的数据
+        if(result.getState()==0){
+            //状态码如果是0，表示账号密码正确
+            //账号密码正确生成jwt返回给前端
+            try {
+                //生成JWT
+                String id = UUID.randomUUID().toString();
+                String payLoad = JSON.toJSONString(JsonUtil.getJson(result.getUser()));
+                String jwt = JwtUtil.createJWT(id, payLoad, 3600 * 1);
+                //把生成的jwt放入到redis缓存中
+                redisUtil.set("token:"+result.getUser().getUserId(),jwt,3600*1,TimeUnit.SECONDS);
+                //返回提示信息
+                modelMap.put("success",true);
+                modelMap.put("userInfo",JsonUtil.getJson(result.getUser()));
+                modelMap.put("token",jwt);
+            } catch (Exception e) {
+                modelMap.put("success",false);
+                modelMap.put("errMsg",e.getMessage());
+            }
+        }else{
+            modelMap.put("success",false);
+            modelMap.put("errMsg","用户名或者密码错误");
         }
+      return modelMap;
     }
 
     @RequestMapping("/register")

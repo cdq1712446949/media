@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdq.dao.ArticleTypeDao">
+    <resultMap id="articleTypeMap" type="com.cdq.model.ArticleType">
+        <id column="article_type_id" property="articleTypeId"></id>
+        <result column="article_type_name" property="articleTypeName"></result>
+        <result column="priority" property="priority"></result>
+        <result column="article_type_create_time" property="articleTypeCreateTime"></result>
+        <result column="article_type_last_edit_time" property="articleTypeLastEditTime"></result>
+        <association property="parentArticleType" javaType="com.cdq.model.ArticleType">
+            <id column="b_article_type_id" property="articleTypeId"></id>
+            <result column="b_article_type_name" property="articleTypeName"></result>
+            <result column="b_priority" property="priority"></result>
+            <result column="b_article_type_create_time" property="articleTypeCreateTime"></result>
+            <result column="b_article_type_last_edit_time" property="articleTypeLastEditTime"></result>
+        </association>
+    </resultMap>
+    <select id="queryArticleTypeList" resultMap="articleTypeMap">
+        SELECT
+        a.article_type_id,
+        a.article_type_name,
+        a.priority,
+        a.article_type_create_time,
+        a.article_type_last_edit_time,
+        b.article_type_id as b_article_type_id,
+        b.article_type_name as b_article_type_name,
+        b.priority as b_priority,
+        b.article_type_create_time as b_article_type_create_time,
+        b.article_type_last_edit_time as b_article_type_last_edit_time
+        FROM
+        article_type as a left join article_type as b
+        on a.parent_id=b.article_type_id
+        <where>
+            <if test="articleType.articleTypeId !=null">and a.article_type_id=#{articleType.articleTypeId}</if>
+            <if test="articleType.articleTypeName !=null">and a.article_type_name like
+                '%${articleType.articleTypeName}%'
+            </if>
+            <if test="articleType.parentArticleType!=null and articleType.parentArticleType.articleTypeId ==null">and
+                a.parent_id is null
+            </if>
+            <if test="articleType.parentArticleType!=null and articleType.parentArticleType.articleTypeId !=null">and
+                a.parent_id=#{articleType.parentArticleType.articleTypeId}
+            </if>
+        </where>
+        order by a.priority desc
+        LIMIT #{rowIndex},#{pageSize};
+    </select>
+
+    <select id="queryAllTwoLevelArticleType" resultType="com.cdq.model.ArticleType">
+        select *
+        from article_type
+        where paren_id is not null
+        order by priority desc;
+    </select>
+
+    <select id="queryTwoLevelArticleTypeByParent" resultType="com.cdq.model.ArticleType">
+        select *
+        from article_type
+        where paren_id=#{parentArticleType.articleTypeId}
+        order by priority desc;
+    </select>
+
+    <select id="queryArticleTypeById" resultMap="articleTypeMap">
+       SELECT
+        a.article_type_id,
+        a.article_type_name,
+        a.priority,
+        a.article_type_create_time,
+        a.article_type_last_edit_time,
+        b.article_type_id as b_article_type_id,
+        b.article_type_name as b_article_type_name,
+        b.priority as b_priority,
+        b.article_type_create_time as b_article_type_create_time,
+        b.article_type_last_edit_time as b_article_type_last_edit_time
+        FROM
+        article_type as a left join article_type as b
+        on a.parent_id=b.article_type_id
+        where a.article_type_id=#{articleTypeId};
+    </select>
+    <update id="updateArticeType" parameterType="com.cdq.model.ArticleType">
+        update article_type
+        <set>
+            <if test="articleType.articleTypeName != null">article_type_name=#{articleType.articleTypeName},</if>
+            <if test="articleType.parentId != null">parent_id=#{articleType.parentId},</if>
+            <if test="articleType.priority != null">priority=#{articleType.priority},</if>
+            <if test="articleType.articleTypeLastEditTime != null">
+                article_type_last_edit_time=#{articleType.articleTypeLastEditTime}
+            </if>
+        </set>
+        where article_type_id = #{articleType.articleTypeId}
+    </update>
+
+</mapper>
