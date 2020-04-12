@@ -31,34 +31,27 @@
         article_type as a left join article_type as b
         on a.parent_id=b.article_type_id
         <where>
-            <if test="articleType.articleTypeId !=null">and a.article_type_id=#{articleType.articleTypeId}</if>
-            <if test="articleType.articleTypeName !=null">and a.article_type_name like
-                '%${articleType.articleTypeName}%'
+            <if test="articleTypeId !=null">and a.article_type_id=#{articleTypeId}</if>
+            <if test="articleTypeName !=null">and a.article_type_name like
+                '%${articleTypeName}%'
             </if>
-            <if test="articleType.parentArticleType!=null and articleType.parentArticleType.articleTypeId ==null">and
+            <if test="parentArticleType!=null and parentArticleType.articleTypeId ==null">and
                 a.parent_id is null
             </if>
-            <if test="articleType.parentArticleType!=null and articleType.parentArticleType.articleTypeId !=null">and
-                a.parent_id=#{articleType.parentArticleType.articleTypeId}
+            <if test="parentArticleType!=null and parentArticleType.articleTypeId !=null">and
+                a.parent_id=#{parentArticleType.articleTypeId}
             </if>
         </where>
-        order by a.priority desc
-        LIMIT #{rowIndex},#{pageSize};
+        order by a.priority desc;
     </select>
 
     <select id="queryAllTwoLevelArticleType" resultType="com.cdq.model.ArticleType">
         select *
         from article_type
-        where paren_id is not null
+        where parent_id is not null
         order by priority desc;
     </select>
 
-    <select id="queryTwoLevelArticleTypeByParent" resultType="com.cdq.model.ArticleType">
-        select *
-        from article_type
-        where paren_id=#{parentArticleType.articleTypeId}
-        order by priority desc;
-    </select>
 
     <select id="queryArticleTypeById" resultMap="articleTypeMap">
        SELECT

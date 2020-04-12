@@ -21,7 +21,6 @@ $(function () {
 
     var isSearch = false;
 
-    $("#home")
 
     //退出登录
     function logout() {

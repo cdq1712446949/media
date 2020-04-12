@@ -23,16 +23,14 @@ public class ArticleController {
 
     public static String USER_URL="http://SERVER-USER";
 
+
     /**
-     * 调用用户模块检查登录信息
+     * 根据请求返回文章列表
      * @return
      */
-    @RequestMapping("/getArticle.do")
-    public Map getArticle() throws InterruptedException {
+    @RequestMapping("/getArticle")
+    public Map getArticle()  {
         Map<String,Object> modelMap = new HashMap<>();
-        Thread.sleep(5000);
-        modelMap.put("success",false);
-        modelMap.put("errMsg","操作失败");
         return modelMap;
     }
 

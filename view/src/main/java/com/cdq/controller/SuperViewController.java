@@ -27,4 +27,9 @@ public class SuperViewController {
         return "user/login";
     }
 
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    public String test(){
+        return "user/test";
+    }
+
 }

@@ -19,8 +19,7 @@ public interface ArticleTypeDao {
      * @param articleType
      * @return
      */
-    List<ArticleType> queryArticleTypeList(@Param("articleType") ArticleType articleType, @Param("rowIndex") int page,
-                                           @Param("pageSize") int pageSize);
+    List<ArticleType> queryArticleTypeList( ArticleType articleType);
 
     /**
      * 修改文章类型，文章类型id不能为空

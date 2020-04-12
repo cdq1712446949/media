@@ -1,27 +1,50 @@
 package com.cdq.dao;
 
+
 import com.cdq.model.ArticleType;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-/**
- * @author ：ヅてＤＱ
- * @date ：Created in 2020/4/9 16:10
- * @description：测试类
- * @modified By：
- * @version: 1.0.1
- */
-public class ArticleTypeDaoTest extends BaseTest{
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ArticleTypeDaoTest {
 
     @Autowired
     private ArticleTypeDao articleTypeDao;
 
     @Test
-    public void testQueryTwoLevel(){
-        List<ArticleType> result = articleTypeDao.queryAllTwoLevelArticleType();
-        System.out.println(result.size());
+    public void testQueryArticleTypeList(){
+        ArticleType articleType=new ArticleType();
+//        articleType.setArticleTypeName("J");
+        ArticleType parentArticleType=new ArticleType();
+        parentArticleType.setArticleTypeId((short) 3);
+        articleType.setParentArticleType(parentArticleType);
+        List<ArticleType> list=articleTypeDao.queryArticleTypeList(articleType);
+        for (ArticleType a:list){
+            System.out.println(a.getArticleTypeName());
+        }
+    }
+
+    @Test
+    public void testUpdateArticleType(){
+        ArticleType articleType=new ArticleType();
+        articleType.setArticleTypeId((short) 1);
+        articleType.setArticleTypeName("关注");
+        int result=articleTypeDao.updateArticeType(articleType);
+        System.out.println(String.valueOf(result));
+    }
+
+    @Test
+    public void testQueryArticleTypeById(){
+        ArticleType articleType=new ArticleType();
+        articleType.setArticleTypeId((short) 4);
+        ArticleType articleType1=articleTypeDao.queryArticleTypeById(articleType);
+        System.out.println(articleType1.toString());
     }
 
 }

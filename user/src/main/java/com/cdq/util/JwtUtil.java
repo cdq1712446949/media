@@ -28,7 +28,15 @@ import java.util.UUID;
 public class JwtUtil {
 
     //解密的密钥 加密的时候传入密钥 解密的时候使用密钥来解析
-    public static final String JWT_KEY = "cdq-key";
+    private static final String JWT_KEY = "cdq-key";
+
+    public static final String HEAD_KEY = "media_header";
+    public static final String TOKEN = "token:";
+
+    //返回给前端的状态码，401表示需要重新登陆
+    public static final int RELOGIN=401;
+    //201表示重新发送当前请求
+    public static final int RESEND=201;
 
     /**
      * 由字符串生成加密key

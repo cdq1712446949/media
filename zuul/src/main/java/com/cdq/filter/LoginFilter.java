@@ -1,11 +1,12 @@
 package com.cdq.filter;
 
 import com.cdq.util.ConstansUtil;
+import com.cdq.util.MyHttpResponse;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.netflix.zuul.exception.ZuulException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,13 +37,8 @@ public class LoginFilter extends ZuulFilter {
     private static String[] INVOKE_USER_URL = new String[]{
             "login"
     };
-    private static String[] INVOKE_MEDIA_URL = new String[]{
-            "login",
-            "index",
-            "admin/login"
-    };
     private static String[] INVOKE_ARTICLE_URL = new String[]{
-
+            "alat"
     };
     private static String[] INVOKE_VIDEO_URL = new String[]{
 
@@ -69,7 +65,7 @@ public class LoginFilter extends ZuulFilter {
     }
 
     @Override
-    public Object run()  {
+    public Object run() {
         //获取请求地址
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
@@ -82,9 +78,15 @@ public class LoginFilter extends ZuulFilter {
         }
         //获取token转发到鉴权中心
         String token = request.getHeader(ConstansUtil.HEAD_KEY);
-        Map resultMap = restTemplate.getForObject(USER_URL+"checkLoginInfo?token="+token,Map.class);
-
-        return null;
+        if (token==null||token.equals("")){
+            return new MyHttpResponse(HttpStatus.BAD_REQUEST);
+        }
+        Map resultMap = restTemplate.getForObject(USER_URL + "checkLoginInfo?token=" + token, Map.class);
+        if ((boolean)resultMap.get("result")){
+            return null;
+        }else {
+            return resultMap;
+        }
     }
 
     /**
@@ -94,30 +96,26 @@ public class LoginFilter extends ZuulFilter {
      * @return
      */
     private boolean checkIsFilter(String[] tempUrls) {
-        if (tempUrls[0].equals(MEDIA)) {
-            for (String url : INVOKE_MEDIA_URL) {
-                if (url.equals(tempUrls[1])) {
-                    return false;
-                }
-            }
+        if (tempUrls[3].equals(MEDIA)) {
+            return false;
         }
-        if (tempUrls[0].equals(USER)) {
+        if (tempUrls[3].equals(USER)) {
             for (String url : INVOKE_USER_URL) {
-                if (url.equals(tempUrls[1])) {
+                if (url.equals(tempUrls[4])) {
                     return false;
                 }
             }
         }
-        if (tempUrls[0].equals(ARTICLE)) {
+        if (tempUrls[3].equals(ARTICLE)) {
             for (String url : INVOKE_ARTICLE_URL) {
-                if (url.equals(tempUrls[1])) {
+                if (url.equals(tempUrls[4])) {
                     return false;
                 }
             }
         }
-        if (tempUrls[0].equals(VIDEO)) {
+        if (tempUrls[3].equals(VIDEO)) {
             for (String url : INVOKE_VIDEO_URL) {
-                if (url.equals(tempUrls[1])) {
+                if (url.equals(tempUrls[4])) {
                     return false;
                 }
             }

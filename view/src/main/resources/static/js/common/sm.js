@@ -4,7 +4,7 @@
  *
  * =====================================================
  */
-;$.smVersion = "0.6.2";+function ($) {
+;$.smVersion = "0.6.3";+function ($) {
     "use strict";
 
     //全局配置
@@ -18,7 +18,7 @@
 
     $.smConfig = $.extend(defaults, $.config);
 
-}(Zepto);
+}(jQuery);
 
 + function($) {
     "use strict";
@@ -46,7 +46,7 @@
         return $(".page-current")[0] || $(".page")[0] || document.body;
     };
 
-}(Zepto);
+}(jQuery);
 
 /* global WebKitCSSMatrix:true */
 
@@ -288,7 +288,7 @@
             this.style.display = defaultDisplay(this.nodeName);
         });
     };
-})(Zepto);
+})(jQuery);
 
 /*===========================
 Device/OS Detection
@@ -395,7 +395,7 @@ Device/OS Detection
     device.isWeixin = /MicroMessenger/i.test(ua);
 
     $.device = device;
-})(Zepto);
+})(jQuery);
 
 ;(function () {
     'use strict';
@@ -1698,7 +1698,7 @@ Device/OS Detection
         modalPreloaderTitle: '加载中',
         modalContainer : document.body
     };
-}(Zepto);
+}(jQuery);
 
 /*======================================================
 ************   Calendar   ************
@@ -2523,7 +2523,7 @@ Device/OS Detection
             $(this).calendar();
         });
     };
-}(Zepto);
+}(jQuery);
 
 /*======================================================
 ************   Picker   ************
@@ -3111,25 +3111,25 @@ Device/OS Detection
             }
         });
     };
-}(Zepto);
+}(jQuery);
 
 /* jshint unused:false*/
 
-+ function($) {
++function ($) {
     "use strict";
 
     var today = new Date();
 
-    var getDays = function(max) {
+    var getDays = function (max) {
         var days = [];
-        for(var i=1; i<= (max||31);i++) {
-            days.push(i < 10 ? "0"+i : i);
+        for (var i = 1; i <= (max || 31); i++) {
+            days.push(i < 10 ? "0" + i : i);
         }
         return days;
     };
 
-    var getDaysByMonthAndYear = function(month, year) {
-        var int_d = new Date(year, parseInt(month)+1-1, 1);
+    var getDaysByMonthAndYear = function (month, year) {
+        var int_d = new Date(year, parseInt(month) + 1 - 1, 1);
         var d = new Date(int_d - 1);
         return getDays(d.getDate());
     };
@@ -3142,81 +3142,84 @@ Device/OS Detection
 
     var initYears = (function () {
         var arr = [];
-        for (var i = 1950; i <= 2030; i++) { arr.push(i); }
+        for (var i = 1950; i <= 2030; i++) {
+            arr.push(i);
+        }
         return arr;
     })();
 
 
     var defaults = {
-
-        rotateEffect: false,  //为了性能
-
-        value: [today.getFullYear(), formatNumber(today.getMonth()+1), formatNumber(today.getDate()), today.getHours(), formatNumber(today.getMinutes())],
-
+        rotateEffect: false, //为了性能
+        value: [today.getFullYear(), formatNumber(today.getMonth() + 1), formatNumber(today.getDate()), today.getHours(), formatNumber(today.getMinutes())],
         onChange: function (picker, values, displayValues) {
             var days = getDaysByMonthAndYear(picker.cols[1].value, picker.cols[0].value);
             var currentValue = picker.cols[2].value;
-            if(currentValue > days.length) currentValue = days.length;
+            if (currentValue > days.length)
+                currentValue = days.length;
             picker.cols[2].setValue(currentValue);
         },
-
         formatValue: function (p, values, displayValues) {
             return displayValues[0] + '-' + values[1] + '-' + values[2] + ' ' + values[3] + ':' + values[4];
         },
-
         cols: [
             // Years
-        {
-            values: initYears
-        },
-        // Months
-        {
-            values: initMonthes
-        },
-        // Days
-        {
-            values: getDays()
-        },
-
-        // Space divider
-        {
-            divider: true,
-            content: '  '
-        },
-        // Hours
-        {
-            values: (function () {
-                var arr = [];
-                for (var i = 0; i <= 23; i++) { arr.push(i); }
-                return arr;
-            })(),
-        },
-        // Divider
-        {
-            divider: true,
-            content: ':'
-        },
-        // Minutes
-        {
-            values: (function () {
-                var arr = [];
-                for (var i = 0; i <= 59; i++) { arr.push(i < 10 ? '0' + i : i); }
-                return arr;
-            })(),
-        }
+            {
+                values: initYears
+            },
+            // Months
+            {
+                values: initMonthes
+            },
+            // Days
+            {
+                values: getDays()
+            },
+            // Space divider
+            {
+                divider: true,
+                content: '  '
+            },
+            // Hours
+            {
+                values: (function () {
+                    var arr = [];
+                    for (var i = 0; i <= 23; i++) {
+                        arr.push(i);
+                    }
+                    return arr;
+                })(),
+            },
+            // Divider
+            {
+                divider: true,
+                content: ':'
+            },
+            // Minutes
+            {
+                values: (function () {
+                    var arr = [];
+                    for (var i = 0; i <= 59; i++) {
+                        arr.push(i < 10 ? '0' + i : i);
+                    }
+                    return arr;
+                })(),
+            }
         ]
     };
 
-    $.fn.datetimePicker = function(params) {
-        return this.each(function() {
-            if(!this) return;
+    $.fn.datetimePicker = function (params) {
+        return this.each(function () {
+            if (!this)
+                return;
             var p = $.extend(defaults, params);
             $(this).picker(p);
-            if (params.value) $(this).val(p.formatValue(p, p.value, p.value));
+            if (params.value)
+                $(this).val(p.formatValue(p, p.value, p.value));
         });
     };
 
-}(Zepto);
+}(jQuery);
 
 + function(window) {
 
@@ -5323,9 +5326,9 @@ Device/OS Detection
 }(window);
 
 /* ===============================================================================
-************   scroller   ************
-=============================================================================== */
-+ function($) {
+ ************   scroller   ************
+ =============================================================================== */
++function ($) {
     "use strict";
     //重置zepto自带的滚动条
     var _zeptoMethodCache = {
@@ -5333,25 +5336,35 @@ Device/OS Detection
         "scrollLeft": $.fn.scrollLeft
     };
     //重置scrollLeft和scrollRight
-    (function() {
+    (function () {
         $.extend($.fn, {
-            scrollTop: function(top, dur) {
-                if (!this.length) return;
+            scrollTop: function (top, dur) {
+                if (!this.length)
+                    return;
                 var scroller = this.data('scroller');
                 if (scroller && scroller.scroller) { //js滚动
                     return scroller.scrollTop(top, dur);
                 } else {
+                    if (typeof top === 'undefined' || isNaN(top)) {
+                        var scroller = _zeptoMethodCache.scrollTop.apply(this);
+                        return typeof scroller === 'number' ? scroller : scroller.scrollTop();
+                    }
                     return _zeptoMethodCache.scrollTop.apply(this, arguments);
                 }
             }
         });
         $.extend($.fn, {
-            scrollLeft: function(left, dur) {
-                if (!this.length) return;
+            scrollLeft: function (left, dur) {
+                if (!this.length)
+                    return;
                 var scroller = this.data('scroller');
                 if (scroller && scroller.scroller) { //js滚动
                     return scroller.scrollLeft(left, dur);
                 } else {
+                    if (typeof left === 'undefined' || isNaN(left)) {
+                        var scroller = _zeptoMethodCache.scrollLeft.apply(this);
+                        return typeof scroller === 'number' ? scroller : scroller.scrollLeft();
+                    }
                     return _zeptoMethodCache.scrollLeft.apply(this, arguments);
                 }
             }
@@ -5361,7 +5374,7 @@ Device/OS Detection
 
 
     //自定义的滚动条
-    var Scroller = function(pageContent, _options) {
+    var Scroller = function (pageContent, _options) {
         var $pageContent = this.$pageContent = $(pageContent);
 
         this.options = $.extend({}, this._defaults, _options);
@@ -5429,7 +5442,7 @@ Device/OS Detection
 
             //如果页面本身已经进行了原生滚动，那么把这个滚动换成JS的滚动
             var nativeScrollTop = this.$pageContent[0].scrollTop;
-            if(nativeScrollTop) {
+            if (nativeScrollTop) {
                 this.$pageContent[0].scrollTop = 0;
                 this.scrollTop(nativeScrollTop);
             }
@@ -5441,26 +5454,26 @@ Device/OS Detection
         _defaults: {
             type: 'native',
         },
-        _bindEventToDomWhenJs: function() {
+        _bindEventToDomWhenJs: function () {
             //"scrollStart", //the scroll started.
             //"scroll", //the content is scrolling. Available only in scroll-probe.js edition. See onScroll event.
             //"scrollEnd", //content stopped scrolling.
             if (this.scroller) {
                 var self = this;
-                this.scroller.on('scrollStart', function() {
+                this.scroller.on('scrollStart', function () {
                     self.$pageContent.trigger('scrollstart');
                 });
-                this.scroller.on('scroll', function() {
+                this.scroller.on('scroll', function () {
                     self.$pageContent.trigger('scroll');
                 });
-                this.scroller.on('scrollEnd', function() {
+                this.scroller.on('scrollEnd', function () {
                     self.$pageContent.trigger('scrollend');
                 });
             } else {
                 //TODO: 实现native的scrollStart和scrollEnd
             }
         },
-        scrollTop: function(top, dur) {
+        scrollTop: function (top, dur) {
             if (this.scroller) {
                 if (top !== undefined) {
                     this.scroller.scrollTo(0, -1 * top, dur);
@@ -5472,7 +5485,7 @@ Device/OS Detection
             }
             return this;
         },
-        scrollLeft: function(left, dur) {
+        scrollLeft: function (left, dur) {
             if (this.scroller) {
                 if (left !== undefined) {
                     this.scroller.scrollTo(-1 * left, 0);
@@ -5484,9 +5497,9 @@ Device/OS Detection
             }
             return this;
         },
-        on: function(event, callback) {
+        on: function (event, callback) {
             if (this.scroller) {
-                this.scroller.on(event, function() {
+                this.scroller.on(event, function () {
                     callback.call(this.wrapper);
                 });
             } else {
@@ -5494,7 +5507,7 @@ Device/OS Detection
             }
             return this;
         },
-        off: function(event, callback) {
+        off: function (event, callback) {
             if (this.scroller) {
                 this.scroller.off(event, callback);
             } else {
@@ -5502,11 +5515,12 @@ Device/OS Detection
             }
             return this;
         },
-        refresh: function() {
-            if (this.scroller) this.scroller.refresh();
+        refresh: function () {
+            if (this.scroller)
+                this.scroller.refresh();
             return this;
         },
-        scrollHeight: function() {
+        scrollHeight: function () {
             if (this.scroller) {
                 return this.scroller.scrollerHeight;
             } else {
@@ -5524,7 +5538,7 @@ Device/OS Detection
         args.shift();
         var internal_return;
 
-        this.each(function() {
+        this.each(function () {
 
             var $this = $(this);
 
@@ -5540,7 +5554,7 @@ Device/OS Detection
             if (typeof option === 'string' && typeof data[option] === 'function') {
                 internal_return = data[option].apply(data, args);
                 if (internal_return !== undefined)
-            return false;
+                    return false;
             }
 
         });
@@ -5561,33 +5575,33 @@ Device/OS Detection
     // Scroll NO CONFLICT
     // =================
 
-    $.fn.scroller.noConflict = function() {
+    $.fn.scroller.noConflict = function () {
         $.fn.scroller = old;
         return this;
     };
     //添加data-api
-    $(function() {
+    $(function () {
         $('[data-toggle="scroller"]').scroller();
     });
 
     //统一的接口,带有 .javascript-scroll 的content 进行刷新
-    $.refreshScroller = function(content) {
+    $.refreshScroller = function (content) {
         if (content) {
             $(content).scroller('refresh');
         } else {
-            $('.javascript-scroll').each(function() {
+            $('.javascript-scroll').each(function () {
                 $(this).scroller('refresh');
             });
         }
 
     };
     //全局初始化方法，会对页面上的 [data-toggle="scroller"]，.content. 进行滚动条初始化
-    $.initScroller = function(option) {
+    $.initScroller = function (option) {
         this.options = $.extend({}, typeof option === 'object' && option);
         $('[data-toggle="scroller"],.content').scroller(option);
     };
     //获取scroller对象
-    $.getScroller = function(content) {
+    $.getScroller = function (content) {
         //以前默认只能有一个无限滚动，因此infinitescroll都是加在content上，现在允许里面有多个，因此要判断父元素是否有content
         content = content.hasClass('content') ? content : content.parents('.content');
         if (content) {
@@ -5599,7 +5613,7 @@ Device/OS Detection
     //检测滚动类型,
     //‘js’: javascript 滚动条
     //‘native’: 原生滚动条
-    $.detectScrollerType = function(content) {
+    $.detectScrollerType = function (content) {
         if (content) {
             if ($(content).data('scroller') && $(content).data('scroller').scroller) {
                 return 'js';
@@ -5609,7 +5623,7 @@ Device/OS Detection
         }
     };
 
-}(Zepto);
+}(jQuery);
 
 /* ===============================================================================
 ************   Tabs   ************
@@ -5708,7 +5722,7 @@ Device/OS Detection
     });
 
 
-}(Zepto);
+}(jQuery);
 
 /* ===============================================================================
 ************   Tabs   ************
@@ -5795,7 +5809,7 @@ Device/OS Detection
 
 
 
-}(Zepto);
+}(jQuery);
 
 + function($) {
     "use strict";
@@ -5882,7 +5896,7 @@ Device/OS Detection
         "pullToRefreshTrigger": pullToRefreshTriggerJS,
         "destroyPullToRefresh": destroyPullToRefreshJS,
     };
-}(Zepto); // jshint ignore:line
+}(jQuery); // jshint ignore:line
 
 + function($) {
     'use strict';
@@ -6095,9 +6109,9 @@ Device/OS Detection
     };
 */
 
-}(Zepto); //jshint ignore:line
+}(jQuery); //jshint ignore:line
 
-+ function($) {
++function ($) {
     'use strict';
 
     function handleInfiniteScroll() {
@@ -6111,11 +6125,13 @@ Device/OS Detection
         var virtualListContainer = inf.find('.virtual-list');
         var virtualList;
         var onTop = inf.hasClass('infinite-scroll-top');
-        if (!distance) distance = 50;
+        if (!distance)
+            distance = 50;
         if (typeof distance === 'string' && distance.indexOf('%') >= 0) {
             distance = parseInt(distance, 10) / 100 * height;
         }
-        if (distance > height) distance = height;
+        if (distance > height)
+            distance = height;
         if (onTop) {
             if (scrollTop < distance) {
                 inf.trigger('infinite');
@@ -6124,28 +6140,30 @@ Device/OS Detection
             if (scrollTop + height >= scrollHeight - distance) {
                 if (virtualListContainer.length > 0) {
                     virtualList = virtualListContainer[0].f7VirtualList;
-                    if (virtualList && !virtualList.reachEnd) return;
+                    if (virtualList && !virtualList.reachEnd)
+                        return;
                 }
                 inf.trigger('infinite');
             }
         }
 
     }
-    $.attachInfiniteScroll = function(infiniteContent) {
+    $.attachInfiniteScroll = function (infiniteContent) {
         $.getScroller(infiniteContent).on('scroll', handleInfiniteScroll);
     };
-    $.detachInfiniteScroll = function(infiniteContent) {
+    $.detachInfiniteScroll = function (infiniteContent) {
         $.getScroller(infiniteContent).off('scroll', handleInfiniteScroll);
     };
 
-    $.initInfiniteScroll = function(pageContainer) {
+    $.initInfiniteScroll = function (pageContainer) {
         pageContainer = $(pageContainer);
-        var infiniteContent = pageContainer.hasClass('infinite-scroll')?pageContainer:pageContainer.find('.infinite-scroll');
-        if (infiniteContent.length === 0) return;
+        var infiniteContent = pageContainer.hasClass('infinite-scroll') ? pageContainer : pageContainer.find('.infinite-scroll');
+        if (infiniteContent.length === 0)
+            return;
         $.attachInfiniteScroll(infiniteContent);
         //如果是顶部无限刷新，要将滚动条初始化于最下端
-        pageContainer.forEach(function(v){
-            if($(v).hasClass('infinite-scroll-top')){
+        pageContainer.each(function (i, v) {
+            if ($(v).hasClass('infinite-scroll-top')) {
                 var height = v.scrollHeight - v.clientHeight;
                 $(v).scrollTop(height);
             }
@@ -6156,7 +6174,7 @@ Device/OS Detection
         }
         pageContainer.on('pageBeforeRemove', detachEvents);
     };
-}(Zepto);
+}(jQuery);
 
 +function ($) {
     "use strict";
@@ -6174,7 +6192,7 @@ Device/OS Detection
             $input.parents(".searchbar").removeClass("searchbar-active");
         });
     });
-}(Zepto);
+}(jQuery);
 
 /*======================================================
 ************   Panels   ************
@@ -6495,7 +6513,7 @@ Device/OS Detection
     };
 
     $.initSwipePanels();
-}(Zepto);
+}(jQuery);
 
 /**
  * 路由
@@ -6506,9 +6524,9 @@ Device/OS Detection
  *  3. 浏览器前进后退（history.forward/history.back）时，也使用动画效果
  *  4. 如果链接有 back 这个 class，那么则忽略一切，直接调用 history.back() 来后退
  *
- * 路由功能默认开启，如果需要关闭路由功能，那么在 zepto 之后，msui 脚本之前设置 $.config.router = false 即可（intro.js 中会 extend 到 $.smConfig 中）。
+ * 路由功能默认开启，如果需要关闭路由功能，那么在 jQuery 之后，msui 脚本之前设置 $.config.router = false 即可（intro.js 中会 extend 到 $.smConfig 中）。
  *
- * 可以设置 $.config.routerFilter 函数来设置当前点击链接是否使用路由功能，实参是 a 链接的 zepto 对象；返回 false 表示不使用 router 功能。
+ * 可以设置 $.config.routerFilter 函数来设置当前点击链接是否使用路由功能，实参是 a 链接的 jQuery 对象；返回 false 表示不使用 router 功能。
  *
  * ajax 载入新的文档时，并不会执行里面的 js。到目前为止，在开启路由功能时，建议的做法是：
  *  把所有页面的 js 都放到同一个脚本里，js 里面的事件绑定使用委托而不是直接的绑定在元素上（因为动态加载的页面元素还不存在），然后所有页面都引用相同的 js 脚本。非事件类可以通过监控 pageInit 事件，根据里面的 pageId 来做对应区别处理。
@@ -6559,12 +6577,12 @@ Device/OS Detection
  * 注: 以 _ 开头的函数标明用于此处内部使用，可根据需要随时重构变更，不对外确保兼容性。
  *
  */
-+function($) {
++function ($) {
     'use strict';
 
     if (!window.CustomEvent) {
-        window.CustomEvent = function(type, config) {
-            config = config || { bubbles: false, cancelable: false, detail: undefined};
+        window.CustomEvent = function (type, config) {
+            config = config || {bubbles: false, cancelable: false, detail: undefined};
             var e = document.createEvent('CustomEvent');
             e.initCustomEvent(type, config.bubbles, config.cancelable, config.detail);
             return e;
@@ -6596,7 +6614,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {String}
          */
-        getUrlFragment: function(url) {
+        getUrlFragment: function (url) {
             var hashIndex = url.indexOf('#');
             return hashIndex === -1 ? '' : url.slice(hashIndex + 1);
         },
@@ -6613,7 +6631,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {String}
          */
-        getAbsoluteUrl: function(url) {
+        getAbsoluteUrl: function (url) {
             var link = document.createElement('a');
             link.setAttribute('href', url);
             var absoluteUrl = link.href;
@@ -6626,7 +6644,7 @@ Device/OS Detection
          * @param {String} url url
          * @returns {String}
          */
-        getBaseUrl: function(url) {
+        getBaseUrl: function (url) {
             var hashIndex = url.indexOf('#');
             return hashIndex === -1 ? url.slice(0) : url.slice(0, hashIndex);
         },
@@ -6636,10 +6654,10 @@ Device/OS Detection
          * @param {String} url url
          * @returns {UrlObject}
          */
-        toUrlObject: function(url) {
+        toUrlObject: function (url) {
             var fullUrl = this.getAbsoluteUrl(url),
-                baseUrl = this.getBaseUrl(fullUrl),
-                fragment = this.getUrlFragment(url);
+                    baseUrl = this.getBaseUrl(fullUrl),
+                    fragment = this.getUrlFragment(url);
 
             return {
                 base: baseUrl,
@@ -6652,13 +6670,13 @@ Device/OS Detection
          * 判断浏览器是否支持 sessionStorage，支持返回 true，否则返回 false
          * @returns {Boolean}
          */
-        supportStorage: function() {
+        supportStorage: function () {
             var mod = 'sm.router.storage.ability';
             try {
                 sessionStorage.setItem(mod, mod);
                 sessionStorage.removeItem(mod);
                 return true;
-            } catch(e) {
+            } catch (e) {
                 return false;
             }
         }
@@ -6678,12 +6696,13 @@ Device/OS Detection
 
     var DIRECTION = {
         leftToRight: 'from-left-to-right',
-        rightToLeft: 'from-right-to-left'
+        rightToLeft: 'from-right-to-left',
     };
 
     var theHistory = window.history;
 
-    var Router = function() {
+    var Router = function () {
+
         this.sessionNames = {
             currentState: 'sm.router.currentState',
             maxStateId: 'sm.router.maxStateId'
@@ -6706,7 +6725,7 @@ Device/OS Detection
      *
      * @private
      */
-    Router.prototype._init = function() {
+    Router.prototype._init = function () {
 
         this.$view = $('body');
 
@@ -6737,7 +6756,7 @@ Device/OS Detection
         }
 
         if ($curVisibleSection.length &&
-            ($curVisibleSection.attr('id') !== $visibleSection.attr('id'))) {
+                ($curVisibleSection.attr('id') !== $visibleSection.attr('id'))) {
             // 在 router 到 inner page 的情况下，刷新（或者直接访问该链接）
             // 直接切换 class 会有「闪」的现象,或许可以采用 animateSection 来减缓一下
             $curVisibleSection.removeClass(routerConfig.curPageClass);
@@ -6771,31 +6790,33 @@ Device/OS Detection
      *
      * @param {String} url url
      * @param {Boolean=} ignoreCache 是否强制请求不使用缓存，对 document 生效，默认是 false
+     * @param {String=} direction 新文档切入的方向
+     * @param {Boolean=} isPushState 是否需要 pushState
      */
-    Router.prototype.load = function(url, ignoreCache) {
+    Router.prototype.load = function (url, ignoreCache, direction, isPushState) {
         if (ignoreCache === undefined) {
             ignoreCache = false;
         }
 
         if (this._isTheSameDocument(location.href, url)) {
-            this._switchToSection(Util.getUrlFragment(url));
+            this._switchToSection(Util.getUrlFragment(url), direction);
         } else {
             this._saveDocumentIntoCache($(document), location.href);
-            this._switchToDocument(url, ignoreCache);
+            this._switchToDocument(url, ignoreCache, isPushState, direction);
         }
     };
 
     /**
      * 调用 history.forward()
      */
-    Router.prototype.forward = function() {
+    Router.prototype.forward = function () {
         theHistory.forward();
     };
 
     /**
      * 调用 history.back()
      */
-    Router.prototype.back = function() {
+    Router.prototype.back = function () {
         theHistory.back();
     };
 
@@ -6814,22 +6835,23 @@ Device/OS Detection
      * 如果没对应的块，那么忽略。
      *
      * @param {String} sectionId 待切换显示的块的 id
+     * @param {String} direction 动画
      * @private
      */
-    Router.prototype._switchToSection = function(sectionId) {
+    Router.prototype._switchToSection = function (sectionId, direction) {
         if (!sectionId) {
             return;
         }
 
         var $curPage = this._getCurrentSection(),
-            $newPage = $('#' + sectionId);
+                $newPage = $('#' + sectionId);
 
         // 如果已经是当前页，不做任何处理
         if ($curPage === $newPage) {
             return;
         }
 
-        this._animateSection($curPage, $newPage, DIRECTION.rightToLeft);
+        this._animateSection($curPage, $newPage, direction);
         this._pushNewState('#' + sectionId, sectionId);
     };
 
@@ -6849,7 +6871,7 @@ Device/OS Detection
      * @param {String=} direction 新文档切入的方向
      * @private
      */
-    Router.prototype._switchToDocument = function(url, ignoreCache, isPushState, direction) {
+    Router.prototype._switchToDocument = function (url, ignoreCache, isPushState, direction) {
         var baseUrl = Util.toUrlObject(url).base;
 
         if (ignoreCache) {
@@ -6863,7 +6885,7 @@ Device/OS Detection
             this._doSwitchDocument(url, isPushState, direction);
         } else {
             this._loadDocument(url, {
-                success: function($doc) {
+                success: function ($doc) {
                     try {
                         context._parseDocument(url, $doc);
                         context._doSwitchDocument(url, isPushState, direction);
@@ -6871,7 +6893,7 @@ Device/OS Detection
                         location.href = url;
                     }
                 },
-                error: function() {
+                error: function () {
                     location.href = url;
                 }
             });
@@ -6891,7 +6913,7 @@ Device/OS Detection
      * @param {String} direction 动画切换方向，默认是 DIRECTION.rightToLeft
      * @private
      */
-    Router.prototype._doSwitchDocument = function(url, isPushState, direction) {
+    Router.prototype._doSwitchDocument = function (url, isPushState, direction) {
         if (typeof isPushState === 'undefined') {
             isPushState = true;
         }
@@ -6930,8 +6952,21 @@ Device/OS Detection
         // 其里面的默认展示的(.page-current) 的页面直接就覆盖了原显示的页面（因为都是 absolute）
         this.$view.prepend($newDoc);
 
+        // 通过 page 属性强制指定动画方向
+        if (direction !== 'none' && direction !== 'left' && direction === 'right') {
+            switch ($visibleSection.attr('data-direction')) {
+                case 'none':
+                    direction = 'none';
+                    break;
+                case 'left':
+                    direction = 'left';
+                    break;
+                case 'right':
+                    direction = 'rigth';
+                    break;
+            }
+        }
         this._animateDocument($currentDoc, $newDoc, $visibleSection, direction);
-
         if (isPushState) {
             this._pushNewState(url, $visibleSection.attr('id'));
         }
@@ -6947,7 +6982,7 @@ Device/OS Detection
      * @returns {Boolean}
      * @private
      */
-    Router.prototype._isTheSameDocument = function(url, anotherUrl) {
+    Router.prototype._isTheSameDocument = function (url, anotherUrl) {
         return Util.toUrlObject(url).base === Util.toUrlObject(anotherUrl).base;
     };
 
@@ -6970,9 +7005,9 @@ Device/OS Detection
      *
      * @private
      */
-    Router.prototype._loadDocument = function(url, callback) {
+    Router.prototype._loadDocument = function (url, callback) {
         if (this.xhr && this.xhr.readyState < 4) {
-            this.xhr.onreadystatechange = function() {
+            this.xhr.onreadystatechange = function () {
             };
             this.xhr.abort();
             this.dispatch(EVENTS.pageLoadCancel);
@@ -6985,17 +7020,17 @@ Device/OS Detection
 
         this.xhr = $.ajax({
             url: url,
-            success: $.proxy(function(data, status, xhr) {
+            success: $.proxy(function (data, status, xhr) {
                 // 给包一层 <html/>，从而可以拿到完整的结构
                 var $doc = $('<html></html>');
                 $doc.append(data);
                 callback.success && callback.success.call(null, $doc, status, xhr);
             }, this),
-            error: function(xhr, status, err) {
+            error: function (xhr, status, err) {
                 callback.error && callback.error.call(null, xhr, status, err);
                 self.dispatch(EVENTS.pageLoadError);
             },
-            complete: function(xhr, status) {
+            complete: function (xhr, status) {
                 callback.complete && callback.complete.call(null, xhr, status);
                 self.dispatch(EVENTS.pageLoadComplete);
             }
@@ -7009,7 +7044,7 @@ Device/OS Detection
      * @param $doc ajax 载入的页面的 jq 对象，可以看做是该页面的 $(document)
      * @private
      */
-    Router.prototype._parseDocument = function(url, $doc) {
+    Router.prototype._parseDocument = function (url, $doc) {
         var $innerView = $doc.find('.' + routerConfig.sectionGroupClass);
 
         if (!$innerView.length) {
@@ -7028,7 +7063,7 @@ Device/OS Detection
      * @param {String} url url
      * @private
      */
-    Router.prototype._saveDocumentIntoCache = function(doc, url) {
+    Router.prototype._saveDocumentIntoCache = function (doc, url) {
         var urlAsKey = Util.toUrlObject(url).base;
         var $doc = $(doc);
 
@@ -7046,11 +7081,11 @@ Device/OS Detection
      * @returns {State|null}
      * @private
      */
-    Router.prototype._getLastState = function() {
+    Router.prototype._getLastState = function () {
         var currentState = sessionStorage.getItem(this.sessionNames.currentState);
         try {
             currentState = JSON.parse(currentState);
-        } catch(e) {
+        } catch (e) {
             currentState = null;
         }
 
@@ -7063,7 +7098,7 @@ Device/OS Detection
      * @param {State} state
      * @private
      */
-    Router.prototype._saveAsCurrentState = function(state) {
+    Router.prototype._saveAsCurrentState = function (state) {
         sessionStorage.setItem(this.sessionNames.currentState, JSON.stringify(state));
     };
 
@@ -7075,7 +7110,7 @@ Device/OS Detection
      * @returns {number}
      * @private
      */
-    Router.prototype._getNextStateId = function() {
+    Router.prototype._getNextStateId = function () {
         var maxStateId = sessionStorage.getItem(this.sessionNames.maxStateId);
         return maxStateId ? parseInt(maxStateId, 10) + 1 : 1;
     };
@@ -7085,7 +7120,7 @@ Device/OS Detection
      *
      * @private
      */
-    Router.prototype._incMaxStateId = function() {
+    Router.prototype._incMaxStateId = function () {
         sessionStorage.setItem(this.sessionNames.maxStateId, this._getNextStateId());
     };
 
@@ -7098,30 +7133,36 @@ Device/OS Detection
      * @param direction 新文档切入方向
      * @private
      */
-    Router.prototype._animateDocument = function($from, $to, $visibleSection, direction) {
+    Router.prototype._animateDocument = function ($from, $to, $visibleSection, direction) {
         var sectionId = $visibleSection.attr('id');
-
-
         var $visibleSectionInFrom = $from.find('.' + routerConfig.curPageClass);
         $visibleSectionInFrom.addClass(routerConfig.visiblePageClass).removeClass(routerConfig.curPageClass);
-
         $visibleSection.trigger(EVENTS.pageAnimationStart, [sectionId, $visibleSection]);
-
         this._animateElement($from, $to, direction);
-
-        $from.animationEnd(function() {
+        //  无动画时
+        if (direction === 'none') {
             $visibleSectionInFrom.removeClass(routerConfig.visiblePageClass);
             // 移除 document 前后，发送 beforePageRemove 和 pageRemoved 事件
             $(window).trigger(EVENTS.beforePageRemove, [$from]);
             $from.remove();
             $(window).trigger(EVENTS.pageRemoved);
-        });
-
-        $to.animationEnd(function() {
             $visibleSection.trigger(EVENTS.pageAnimationEnd, [sectionId, $visibleSection]);
             // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
             $visibleSection.trigger(EVENTS.pageInit, [sectionId, $visibleSection]);
-        });
+        } else {
+            $from.animationEnd(function () {
+                $visibleSectionInFrom.removeClass(routerConfig.visiblePageClass);
+                // 移除 document 前后，发送 beforePageRemove 和 pageRemoved 事件
+                $(window).trigger(EVENTS.beforePageRemove, [$from]);
+                $from.remove();
+                $(window).trigger(EVENTS.pageRemoved);
+            });
+            $to.animationEnd(function () {
+                $visibleSection.trigger(EVENTS.pageAnimationEnd, [sectionId, $visibleSection]);
+                // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
+                $visibleSection.trigger(EVENTS.pageInit, [sectionId, $visibleSection]);
+            });
+        }
     };
 
     /**
@@ -7132,19 +7173,26 @@ Device/OS Detection
      * @param direction
      * @private
      */
-    Router.prototype._animateSection = function($from, $to, direction) {
+    Router.prototype._animateSection = function ($from, $to, direction) {
         var toId = $to.attr('id');
         $from.trigger(EVENTS.beforePageSwitch, [$from.attr('id'), $from]);
-
         $from.removeClass(routerConfig.curPageClass);
         $to.addClass(routerConfig.curPageClass);
         $to.trigger(EVENTS.pageAnimationStart, [toId, $to]);
         this._animateElement($from, $to, direction);
-        $to.animationEnd(function() {
+        $to.attr('data-direction', direction);
+        // 无动画时
+        if (direction === 'none') {
             $to.trigger(EVENTS.pageAnimationEnd, [toId, $to]);
             // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
             $to.trigger(EVENTS.pageInit, [toId, $to]);
-        });
+        } else {
+            $to.animationEnd(function () {
+                $to.trigger(EVENTS.pageAnimationEnd, [toId, $to]);
+                // 外层（init.js）中会绑定 pageInitInternal 事件，然后对页面进行初始化
+                $to.trigger(EVENTS.pageInit, [toId, $to]);
+            });
+        }
     };
 
     /**
@@ -7157,21 +7205,26 @@ Device/OS Detection
      * @param direction 切换的方向
      * @private
      */
-    Router.prototype._animateElement = function($from, $to, direction) {
+    Router.prototype._animateElement = function ($from, $to, direction) {
         // todo: 可考虑如果入参不指定，那么尝试读取 $to 的属性，再没有再使用默认的
         // 考虑读取点击的链接上指定的方向
+        if (direction === 'right') {
+            direction = DIRECTION.rightToLeft;
+        } else if (direction === 'left') {
+            direction = DIRECTION.leftToRight;
+        }
         if (typeof direction === 'undefined') {
             direction = DIRECTION.rightToLeft;
         }
-
         var animPageClasses = [
             'page-from-center-to-left',
             'page-from-center-to-right',
             'page-from-right-to-center',
-            'page-from-left-to-center'].join(' ');
+            'page-from-left-to-center',
+        ].join(' ');
 
         var classForFrom, classForTo;
-        switch(direction) {
+        switch (direction) {
             case DIRECTION.rightToLeft:
                 classForFrom = 'page-from-center-to-left';
                 classForTo = 'page-from-right-to-center';
@@ -7180,21 +7233,30 @@ Device/OS Detection
                 classForFrom = 'page-from-center-to-right';
                 classForTo = 'page-from-left-to-center';
                 break;
+            case 'none':
+                classForFrom = '';
+                classForTo = '';
+                break;
             default:
                 classForFrom = 'page-from-center-to-left';
                 classForTo = 'page-from-right-to-center';
                 break;
         }
-
         $from.removeClass(animPageClasses).addClass(classForFrom);
         $to.removeClass(animPageClasses).addClass(classForTo);
-
-        $from.animationEnd(function() {
+        // 无动画时
+        if (direction === 'none') {
+            $to.find('.' + routerConfig.curPageClass).attr('data-direction', direction);
             $from.removeClass(animPageClasses);
-        });
-        $to.animationEnd(function() {
             $to.removeClass(animPageClasses);
-        });
+        } else {
+            $from.animationEnd(function () {
+                $from.removeClass(animPageClasses);
+            });
+            $to.animationEnd(function () {
+                $to.removeClass(animPageClasses);
+            });
+        }
     };
 
     /**
@@ -7203,7 +7265,7 @@ Device/OS Detection
      * @returns {*}
      * @private
      */
-    Router.prototype._getCurrentSection = function() {
+    Router.prototype._getCurrentSection = function () {
         return this.$view.find('.' + routerConfig.curPageClass).eq(0);
     };
 
@@ -7217,19 +7279,42 @@ Device/OS Detection
      * @param {State} fromState 旧 state
      * @private
      */
-    Router.prototype._back = function(state, fromState) {
+    Router.prototype._back = function (state, fromState) {
+        var direction = 'left';
         if (this._isTheSameDocument(state.url.full, fromState.url.full)) {
             var $newPage = $('#' + state.pageId);
             if ($newPage.length) {
                 var $currentPage = this._getCurrentSection();
-                this._animateSection($currentPage, $newPage, DIRECTION.leftToRight);
+                switch ($currentPage.attr('data-direction')) {
+                    case 'none':
+                        direction = 'none';
+                        break;
+                    case 'left':
+                        direction = 'right';
+                        break;
+                    case 'right':
+                        direction = 'left';
+                        break;
+                }
+                this._animateSection($currentPage, $newPage, direction);
                 this._saveAsCurrentState(state);
             } else {
                 location.href = state.url.full;
             }
         } else {
             this._saveDocumentIntoCache($(document), fromState.url.full);
-            this._switchToDocument(state.url.full, false, false, DIRECTION.leftToRight);
+            switch (this.$view.find('.' + routerConfig.curPageClass).attr('data-direction')) {
+                case 'none':
+                    direction = 'none';
+                    break;
+                case 'left':
+                    direction = 'right';
+                    break;
+                case 'right':
+                    direction = 'left';
+                    break;
+            }
+            this._switchToDocument(state.url.full, false, false, direction);
             this._saveAsCurrentState(state);
         }
     };
@@ -7241,7 +7326,7 @@ Device/OS Detection
      * @param {State} fromState 旧 state
      * @private
      */
-    Router.prototype._forward = function(state, fromState) {
+    Router.prototype._forward = function (state, fromState) {
         if (this._isTheSameDocument(state.url.full, fromState.url.full)) {
             var $newPage = $('#' + state.pageId);
             if ($newPage.length) {
@@ -7266,7 +7351,7 @@ Device/OS Detection
      * @param event
      * @private
      */
-    Router.prototype._onPopState = function(event) {
+    Router.prototype._onPopState = function (event) {
         var state = event.state;
         // if not a valid state, do nothing
         if (!state || !state.pageId) {
@@ -7300,7 +7385,7 @@ Device/OS Detection
      * @param {String} sectionId 新状态中显示的 section 元素的 id
      * @private
      */
-    Router.prototype._pushNewState = function(url, sectionId) {
+    Router.prototype._pushNewState = function (url, sectionId) {
         var state = {
             id: this._getNextStateId(),
             pageId: sectionId,
@@ -7318,11 +7403,11 @@ Device/OS Detection
      * @returns {string}
      * @private
      */
-    Router.prototype._generateRandomId = function() {
+    Router.prototype._generateRandomId = function () {
         return "page-" + (+new Date());
     };
 
-    Router.prototype.dispatch = function(event) {
+    Router.prototype.dispatch = function (event) {
         var e = new CustomEvent(event, {
             bubbles: true,
             cancelable: true
@@ -7348,7 +7433,7 @@ Device/OS Detection
             'close-panel'
         ];
 
-        for (var i = classBlackList.length -1 ; i >= 0; i--) {
+        for (var i = classBlackList.length - 1; i >= 0; i--) {
             if ($link.hasClass(classBlackList[i])) {
                 return true;
             }
@@ -7378,9 +7463,9 @@ Device/OS Detection
     /**
      * 自定义是否执行路由功能的过滤器
      *
-     * 可以在外部定义 $.config.routerFilter 函数，实参是点击链接的 Zepto 对象。
+     * 可以在外部定义 $.config.routerFilter 函数，实参是点击链接的 jQuery 对象。
      *
-     * @param $link 当前点击的链接的 Zepto 对象
+     * @param $link 当前点击的链接的 jQuery 对象
      * @returns {boolean} 返回 true 表示执行路由功能，否则不做路由处理
      */
     function customClickFilter($link) {
@@ -7395,7 +7480,7 @@ Device/OS Detection
         return true;
     }
 
-    $(function() {
+    $(function () {
         // 用户可选关闭router功能
         if (!$.smConfig.router) {
             return;
@@ -7416,7 +7501,7 @@ Device/OS Detection
 
         var router = $.router = new Router();
 
-        $(document).on('click', 'a', function(e) {
+        $(document).on('click', 'a', function (e) {
             var $target = $(e.currentTarget);
 
             var filterResult = customClickFilter($target);
@@ -7439,12 +7524,12 @@ Device/OS Detection
                 }
 
                 var ignoreCache = $target.attr('data-no-cache') === 'true';
-
-                router.load(url, ignoreCache);
+                var direction = $target.attr('data-direction') || 'right';
+                router.load(url, ignoreCache, direction);
             }
         });
     });
-}(Zepto);
+}(jQuery);
 
 /**
  * @typedef {Object} State
@@ -7515,72 +7600,71 @@ Device/OS Detection
         });
     }
   };
-}(Zepto);
+}(jQuery);
 
 /*jshint unused: false*/
-+function($) {
++function ($) {
     'use strict';
 
-    var getPage = function() {
+    var getPage = function () {
         var $page = $(".page-current");
-        if (!$page[0]) $page = $(".page").addClass('page-current');
+        if (!$page[0])
+            $page = $(".page").addClass('page-current');
         return $page;
     };
 
     //初始化页面中的JS组件
-    $.initPage = function(page) {
+    $.initPage = function (page) {
         var $page = getPage();
-        if (!$page[0]) $page = $(document.body);
-        var $content = $page.hasClass('content') ?
-                       $page :
-                       $page.find('.content');
+        if (!$page[0])
+            $page = $(document.body);
+        var $content = $page.hasClass('content') ? $page : $page.find('.content');
         $content.scroller();  //注意滚动条一定要最先初始化
 
         $.initPullToRefresh($content);
         $.initInfiniteScroll($content);
         $.initCalendar($content);
+        typeof $.initCityPicker !== 'undefined' && $.initCityPicker($content);
 
         //extend
-        if ($.initSwiper) $.initSwiper($content);
+        if ($.initSwiper)
+            $.initSwiper($content);
     };
 
     if ($.smConfig.showPageLoadingIndicator) {
         //这里的 以 push 开头的是私有事件，不要用
-        $(window).on('pageLoadStart', function() {
+        $(window).on('pageLoadStart', function () {
             $.showIndicator();
-
         });
-        $(window).on('pageAnimationStart', function() {
+        $(window).on('pageAnimationStart', function () {
             $.hideIndicator();
         });
-        $(window).on('pageLoadCancel', function() {
+        $(window).on('pageLoadCancel', function () {
             $.hideIndicator();
         });
-        $(window).on('pageLoadComplete', function() {
+        $(window).on('pageLoadComplete', function () {
             $.hideIndicator();
         });
-        $(window).on('pageLoadError', function() {
+        $(window).on('pageLoadError', function () {
             $.hideIndicator();
             $.toast('加载失败');
         });
     }
 
-    $(window).on('pageAnimationStart', function(event,id,page) {
+    $(window).on('pageAnimationStart', function (event, id, page) {
         // 在路由切换页面动画开始前,为了把位于 .page 之外的 popup 等隐藏,此处做些处理
         $.closeModal();
         $.closePanel();
         // 如果 panel 的 effect 是 reveal 时,似乎是 page 的动画或别的样式原因导致了 transitionEnd 时间不会触发
         // 这里暂且处理一下
         $('body').removeClass('panel-closing');
-        $.allowPanelOpen = true;  
+        $.allowPanelOpen = true;
     });
-   
-    $(window).on('pageInit', function() {
+
+    $(window).on('pageInit', function () {
         $.hideIndicator();
         $.lastPosition({
-            needMemoryClass: [
-                '.content'
-            ]
+            needMemoryClass: ['.content']
         });
     });
     // safari 在后退的时候会使用缓存技术，但实现上似乎存在些问题，
@@ -7591,13 +7675,13 @@ Device/OS Detection
     // 1. aD -> bDE
     // 2. back
     // 3. aD -> bD
-    window.addEventListener('pageshow', function(event) {
+    window.addEventListener('pageshow', function (event) {
         if (event.persisted) {
             location.reload();
         }
     });
 
-    $.init = function() {
+    $.init = function () {
         var $page = getPage();
         var id = $page[0].id;
         $.initPage();
@@ -7605,7 +7689,7 @@ Device/OS Detection
     };
 
     //DOM READY
-    $(function() {
+    $(function () {
         //直接绑定
         FastClick.attach(document.body);
 
@@ -7613,12 +7697,12 @@ Device/OS Detection
             $.init();
         }
 
-        $(document).on('pageInitInternal', function(e, id, page) {
+        $(document).on('pageInitInternal', function (e, id, page) {
             $.init();
         });
     });
 
-}(Zepto);
+}(jQuery);
 
 /**
  * ScrollFix v0.1
@@ -7682,4 +7766,4 @@ Device/OS Detection
         initScrollFix();
     }
 
-}(Zepto);
+}(jQuery);

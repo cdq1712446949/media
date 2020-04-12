@@ -1277,7 +1277,7 @@ a:active {
 }
 
 .list-block {
-    margin: 1.75rem 0;
+    margin: 1.3rem 0;
     font-size: .85rem
 }
 
@@ -3789,7 +3789,7 @@ html.with-statusbar-overlay .login-screen, html.with-statusbar-overlay .popup.ta
 }
 
 .facebook-card .card-content-inner {
-    padding: .75rem .5rem
+    padding: .15rem .5rem
 }
 
 .panel-overlay {
