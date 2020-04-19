@@ -24,6 +24,11 @@ public interface UserDao {
      */
     UserInfo queryUserInfo(User user);
 
-
+    /**
+     * 用户注册接口
+     * @param user
+     * @return
+     */
+    int registerUser(User user);
 
 }

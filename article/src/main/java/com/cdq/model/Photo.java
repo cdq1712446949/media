@@ -20,13 +20,14 @@ public class Photo {
     private UserReport userReport;
     @Getter
     @Setter
+    //表示图片上传顺序
+    private short photoNum;
+    @Getter
+    @Setter
     private String photoName;
     @Getter
     @Setter
     private String photoAddr;
-    @Getter
-    @Setter
-    private String photoDiscription;
     @Getter
     @Setter
     private Date photoCreateTime;

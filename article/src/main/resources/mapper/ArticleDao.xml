@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cdq.blog.dao.ArticleDao">
+<mapper namespace="com.cdq.dao.ArticleDao">
     <resultMap id="articleMap" type="com.cdq.model.Article">
         <id property="articleId" column="article_id"></id>
         <result property="articleDiscription" column="article_discription"></result>
         <result property="goodNum" column="good_num"></result>
         <result property="lookNum" column="look_num"></result>
-        <result property="articleTitle" column="article_title"></result>
-        <result property="articleKeyWord" column="article_key_word"></result>
         <result property="articleContent" column="article_content"></result>
         <result property="articleStatus" column="article_status"></result>
         <result property="articleCreateTime" column="article_create_time"></result>
@@ -51,15 +49,12 @@
         art.parent_id,
         art.article_type_name,
         art.priority,
-        art.click_num,
         art.article_type_create_time,
-        art.article_type_last_edit_time,
-        al.*
+        art.article_type_last_edit_time
         FROM
         article as a
         LEFT JOIN user as u on a.user_id=u.user_id
         LEFT JOIN article_type art on a.article_type_id= art.article_type_id
-        LEFT JOIN article_lable as al on a.article_id=al.article_id
         where a.article_id=#{articleId}
     </select>
     <!--查询文章列表，一级文章类型，二级文章类型，创建时间，内容-->
@@ -78,10 +73,8 @@
         art.parent_id,
         art.article_type_name,
         art.priority,
-        art.click_num,
         art.article_type_create_time,
         art.article_type_last_edit_time,
-        al.*,
         c.comment_num
         FROM
         article as a
@@ -99,7 +92,6 @@
         ) as art on a.article_type_id= art.article_type_id
         LEFT JOIN (select distinct(article_id),count(article_id) as comment_num from user_comment
         group by article_id) as c on a.article_id=c.article_id
-        LEFT JOIN article_lable as al on a.article_id=al.article_id
         <where>
             <if test="article.articleType!= null ">
                 <if test="article.articleType.articleTypeId != -1">
@@ -110,13 +102,10 @@
                 and year(article_create_time)=year(#{article.articleCreateTime})
                 and month(article_create_time)= month(#{article.articleCreateTime})
             </if>
-            <if test="article.articleKeyWord != null ">and (
-                article_key_word like '%${article.articleKeyWord}%')
-            </if>
             <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
             and art.article_type_id is not null
         </where>
-        ORDER BY #{sortColumn} #{ad}
+        order by good_num+look_num desc
         <if test="rowIndex!=0 or pageSize!=0">limit #{rowIndex},#{pageSize}</if>
     </select>
     <!--根据用户id获取最新的五条文章记录-->
@@ -130,12 +119,13 @@
         order by article_create_time desc limit 0,5;
     </select>
     <!--添加文章记录-->
-    <insert id="insertArticle" parameterType="com.cdq.model.Article">
+    <insert id="insertArticle" parameterType="com.cdq.model.Article" useGeneratedKeys="true" keyProperty="articleId"
+        keyColumn="article_id">
         insert into
         article(
-        user_id,article_type_id,article_title,article_discription,article_key_word,article_content,article_create_time
+        user_id,article_type_id,article_content,article_create_time
         ) values (
-        #{user.userId},#{articleType.articleTypeId},#{articleTitle},#{articleDiscription},#{articleKeyWord},#{articleContent},#{articleCreateTime}
+        #{user.userId},#{articleType.articleTypeId},#{articleContent},#{articleCreateTime}
         )
     </insert>
     <!--修改文章记录-->
@@ -145,9 +135,6 @@
             <if test="articleType!=null and articleType.articleTypeId != null">article_type_id =
                 #{articleType.articleTypeId}
             </if>
-            <if test="articleTitle != null">article_title = #{articleTitle}</if>
-            <if test="articleDiscription != null">article_discription = #{articleDiscription}</if>
-            <if test="articleKeyWord != null">article_key_word = #{articleKeyWord}</if>
             <if test="articleContent != null">article_content = #{articleContent}</if>
         </set>
         where article_id = #{articleId} and user_id=#{user.userId}

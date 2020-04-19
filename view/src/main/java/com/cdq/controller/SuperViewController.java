@@ -27,6 +27,11 @@ public class SuperViewController {
         return "user/login";
     }
 
+    @RequestMapping(value = "/articleEdit",method = RequestMethod.GET)
+    public String articleEdit(){
+        return "user/articleEdit";
+    }
+
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public String test(){
         return "user/test";

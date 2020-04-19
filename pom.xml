@@ -19,6 +19,7 @@
         <module>video</module>
         <module>video1</module>
         <module>other</module>
+        <module>images7010</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

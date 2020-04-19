@@ -1,6 +1,6 @@
 package com.cdq.dao;
 
-import com.mysql.cj.protocol.x.Notice;
+import com.cdq.model.Notice;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 

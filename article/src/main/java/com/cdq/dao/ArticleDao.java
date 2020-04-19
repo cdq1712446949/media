@@ -16,16 +16,13 @@ public interface ArticleDao {
      * * 根据id查询，id查询不在组合查询内
      * * 根据作者查询
      * @param article 组合查询条件
-     * @param sortColumn 根据哪个字段排序
      * @param rowIndex 从第几行开始获取
      * @param pageSize 每一页记录的数量
-     * @param ad 确定是升序（asc）还是降序（desc）
      * @return
      */
     //TODO 修改查询条件（articleDao.xml）
     List<Article> queryArticleList(@Param("article") Article article, @Param("rowIndex") @Min(0) int rowIndex,
-                                   @Param("pageSize") int pageSize, @Param("sortColumn") String sortColumn,
-                                   @Param("ad") String ad);
+                                   @Param("pageSize") int pageSize);
 
     /**
      * 添加文章记录

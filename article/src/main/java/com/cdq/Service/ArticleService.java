@@ -13,7 +13,7 @@ public interface ArticleService {
      * @param pageSize
      * @return
      */
-    ArticleExecution getArticleList(Article article, int pageIndex, int pageSize, String sortColumn, String ad);
+    ArticleExecution getArticleList(Article article, int pageIndex, int pageSize);
 
     /**
      * 添加文章记录

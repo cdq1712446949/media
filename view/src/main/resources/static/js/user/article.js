@@ -53,6 +53,7 @@ $(function () {
     });
 
     $('#article_type').change(function () {
+        $.init();
         var parentTypeId;
         var localFirstTypeList = JSON.parse(sessionStorage.getItem("first_level_list"));
         var name1 = this.value.split(" ")[0];
@@ -73,6 +74,8 @@ $(function () {
                 success: function (data) {
                     var templist = getTypeName(data.firstLevelList);
                     allPicker.cols[1].replaceValues(templist);
+                    allPicker.value[1] = templist[0];
+                    allPicker.updateValue();
                     fistName = name1;
                 }
             });

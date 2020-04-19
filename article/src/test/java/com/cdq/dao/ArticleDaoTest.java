@@ -29,7 +29,7 @@ public class ArticleDaoTest extends BaseTest {
 //        articleType.setParentArticleType(parentArticleType);
 //        article.setArticleType(articleType);
         List<Article> articles=articleDao.queryArticleList(article,
-                0,0,"good_num+look_num","desc");
+                0,0);
         System.out.println(String.valueOf(articles.size()));
     }
 

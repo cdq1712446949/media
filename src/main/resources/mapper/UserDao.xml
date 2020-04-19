@@ -2,30 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdq.media.mapper.UserDao">
 
-    <!--注册-->
-    <insert id="registerUser" parameterType="com.cdq.media.model.User" >
-        insert into user(
-        user_id,user_name,pass_word,nick_name,
-        <if test="userDesc != null">user_desc,</if>
-        user_sex,user_birthday,
-        <if test="userEmail != null">user_email,</if>
-        <if test="userHeadPhoto != null">user_head_photo,</if>
-        user_create_time
-        <if test="userLastEditTime != null">,user_last_edit_time</if>
-        <if test="userLastLoginTime != null"> ,user_last_login_time</if>
-        <if test="userLastLoginIp != null"> ,user_last_login_ip</if>
-        )values (
-        #{userId},#{userName},#{passWord},#{nickName},
-        <if test="userDesc != null">#{userDesc},</if>
-        #{userSex},#{userBirthday},
-        <if test="userEmail != null">#{userEmail},</if>
-        <if test="userHeadPhoto != null">#{userHeadPhoto},</if>
-        #{userCreateTime}
-        <if test="userLastEditTime != null">,#{userLastEditTime}</if>
-        <if test="userLastLoginTime != null"> ,#{userLastLoginTime}</if>
-        <if test="userLastLoginIp != null"> ,#{userLastLoginIp}</if>
-        )
-    </insert>
+
     
     <!--登录用的方法，用户名，手机号，邮箱都可以当做账号登录-->
     <select id="queryUserByUserName" resultType="com.cdq.media.model.User">

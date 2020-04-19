@@ -31,6 +31,9 @@ zuul:
     video:
       ServiceId: server-video
       path: /video/**
+    image:
+      ServiceId: server-image
+      path: /image/**
   ignored-services: "*"
 
 

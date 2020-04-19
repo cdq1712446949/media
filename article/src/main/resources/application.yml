@@ -1,6 +1,11 @@
 spring:
   application:
-    name: client-article #此实例注册到eureka服务端的name
+    name: client-article
+  servlet:
+    multipart:
+      enabled: true
+
+#此实例注册到eureka服务端的name
 # datasource:
 #    driver-class-name: "com.mysql.jdbc.Driver"
 #    url: "jdbc:mysql://localhost:3306/media?useUnicode=true&characterEncoding=utf8"
@@ -18,3 +23,4 @@ eureka:
     prefer-ip-address: true #是否显示IP地址
     leaseRenewalIntervalInSeconds: 10 #eureka客户需要多长时间发送心跳给eureka服务器，表明它仍然活着,默认为30 秒 (与下面配置的单位都是秒)
     leaseExpirationDurationInSeconds: 30 #Eureka服务器在接收到实例的最后一次发出的心跳后，需要等待多久才可以将此实例删除，默认为90秒
+

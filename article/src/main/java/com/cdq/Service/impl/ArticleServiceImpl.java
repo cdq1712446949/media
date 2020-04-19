@@ -51,12 +51,10 @@ public class ArticleServiceImpl implements ArticleService {
      * @param article
      * @param pageIndex
      * @param pageSize
-     * @param sortColumn
-     * @param ad
      * @return
      */
     @Override
-    public ArticleExecution getArticleList(Article article, int pageIndex, int pageSize, String sortColumn, String ad) {
+    public ArticleExecution getArticleList(Article article, int pageIndex, int pageSize) {
         //校验参数
         if (article.getArticleStatus() == null) {
             return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
@@ -69,23 +67,11 @@ public class ArticleServiceImpl implements ArticleService {
         if (pageIndex <= 0 && pageSize <= 0) {
             return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
         }
-        if (!sortColumn.equals("1") && !sortColumn.equals("2")) {
-            return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
-        }
-        if (!ad.equals(DESC) && !ad.equals(ASC)) {
-            return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
-        }
         //页码转换
         int rowIndex = PageUtil.pageToRowIndex(pageIndex, pageSize);
-        if (sortColumn.equals(1)){
-            sortColumn=HOT_SORT;
-        }
-        if (sortColumn.equals(2)){
-            sortColumn=DATE_SORT;
-        }
         //请求数据库查询数据
         try {
-            List<Article> articles = articleDao.queryArticleList(article, rowIndex, pageSize, sortColumn, ad);
+            List<Article> articles = articleDao.queryArticleList(article, rowIndex, pageSize);
             return new ArticleExecution(BaseStateEnum.SUCCESS, articles);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,6 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         ArticleType articleType = new ArticleType();
         articleType.setArticleTypeId(article.getArticleType().getArticleTypeId());
+        //判断类型是否是二级文章类型
         if (articleTypeDao.queryArticleTypeById(articleType).getParentArticleType().getArticleTypeId() == null) {
             return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
         }
@@ -197,7 +184,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 通过id获取文章记录
-     *
      * @param article
      * @return
      */
