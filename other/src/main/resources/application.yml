@@ -1,42 +1,18 @@
+server:
+  port: 7020
 
 spring:
   application:
-    name: zuul #此实例注册到eureka服务端的name
-
-server:
-  port: 7000
+    name: server-other #此实例注册到eureka服务端的name
 
 eureka:
   client:
     serviceUrl:
         defaultZone: http://eureka4002.com:4002/eureka, http://eureka4003.com:4003/eureka,http://eureka4004.com:4004/eureka  #eureka服务端提供的注册地址 参考服务端配置的这个路径
   instance:
-    instance-id: zuul-0 #此实例注册到eureka服务端的唯一的实例ID
+    instance-id: other-0 #此实例注册到eureka服务端的唯一的实例ID
     prefer-ip-address: true #是否显示IP地址
     leaseRenewalIntervalInSeconds: 10 #eureka客户需要多长时间发送心跳给eureka服务器，表明它仍然活着,默认为30 秒 (与下面配置的单位都是秒)
     leaseExpirationDurationInSeconds: 30 #Eureka服务器在接收到实例的最后一次发出的心跳后，需要等待多久才可以将此实例删除，默认为90秒
-
-
-zuul:
-  routes:
-    article:
-      ServiceId: client-article
-      path: /article/**
-    user:
-      ServiceId: server-user
-      path: /user/**
-    view:
-      ServiceId: server-view
-      path: /media/**
-    video:
-      ServiceId: server-video
-      path: /video/**
-    image:
-      ServiceId: server-image
-      path: /image/**
-    other:
-      ServiceId: server-other
-      path: /other/**
-  ignored-services: "*"
 
 

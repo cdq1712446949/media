@@ -13,3 +13,4 @@ zuul:7000
 zuul1:7001
 zuul2:7002
 images:7010
+other:7020

@@ -34,9 +34,9 @@ public interface AdvertisementService {
     AdvertisementExecution changeAdvertisement(Advertisement advertisement);
 
     /**
-     * 用户获取广告列表(添加缓存)
+     * 用户获取最新的广告(添加缓存)
      * @return
      */
-    AdvertisementExecution getAdvertisementListUser();
+    AdvertisementExecution getAdvertisementListUser(String cacheKey);
 
 }

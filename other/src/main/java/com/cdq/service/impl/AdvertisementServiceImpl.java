@@ -2,6 +2,7 @@ package com.cdq.service.impl;
 
 import com.cdq.dao.AdvertisementDao;
 import com.cdq.dto.AdvertisementExecution;
+import com.cdq.dto.RedisCache;
 import com.cdq.enums.AdvertisementStateEnum;
 import com.cdq.model.Advertisement;
 import com.cdq.service.AdvertisementService;
@@ -9,6 +10,7 @@ import com.cdq.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -21,6 +23,7 @@ import java.util.List;
  * @modified By：
  * @version: 1.0.1
  */
+@Service
 public class AdvertisementServiceImpl implements AdvertisementService {
 
 
@@ -108,12 +111,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
     }
 
-    @Cacheable(value = "advertisementList")
+
+    @Cacheable(value = "ugal" , key = "#cacheKey")
     @Override
-    public AdvertisementExecution getAdvertisementListUser() {
+    public AdvertisementExecution getAdvertisementListUser(String cacheKey) {
         Advertisement advertisement=new Advertisement();
+        //用户只能获取正常状态下的广告记录
         advertisement.setAdvertisementStatus((byte) 0);
-        List<Advertisement> list=advertisementDao.queryAdvertisement(advertisement,0,8);
+        List<Advertisement> list=advertisementDao.queryAdvertisement(advertisement,0,1);
+
         return new AdvertisementExecution(AdvertisementStateEnum.SUCCESS,list);
     }
 

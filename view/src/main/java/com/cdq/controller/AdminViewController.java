@@ -21,5 +21,11 @@ public class AdminViewController {
         return "admin/login";
     }
 
+    @RequestMapping(value = "/index",method = RequestMethod.GET)
+    public String index(){
+        return "admin/index";
+    }
+
+
 
 }

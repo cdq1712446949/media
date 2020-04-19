@@ -6,12 +6,10 @@
         insert into photo(
         photo_addr,photo_num,photo_create_time,
         <if test="article!=null and article.articleId != null"> article_id</if>
-        <if test="advertisement!=null and advertisement.advertisementId != null"> advertisement_id</if>
         <if test="userReport != null and userReport.userReportId != null"> user_report_id</if>
         ) values (
         #{photoAddr},#{photoNum},#{photoCreateTime},
         <if test="article!=null and article.articleId != null"> #{article.articleId}</if>
-        <if test="advertisement!=null and advertisement.advertisementId != null"> #{advertisement.advertisementId}</if>
         <if test="userReport != null and userReport.userReportId != null"> #{userReport.userReportId}</if>
         );
     </insert>

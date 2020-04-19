@@ -3,10 +3,12 @@ package com.cdq.dto;
 
 import com.cdq.enums.AdvertisementStateEnum;
 import com.cdq.model.Advertisement;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.List;
 
+@ToString
 public class AdvertisementExecution implements Serializable {
 
     private int state;

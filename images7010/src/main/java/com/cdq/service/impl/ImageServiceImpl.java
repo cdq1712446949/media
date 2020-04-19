@@ -27,7 +27,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional
     public ImageExecution addImage(Photo photo) {
-        //检验参数(文章，广告，举报三选一，必须有，但是我不想写代码)
+        //检验参数(文章，举报选一，必须有，但是我不想写代码)
         //添加创建时间
         photo.setPhotoCreateTime(new Date());
         int result = imageDao.insertImage(photo);

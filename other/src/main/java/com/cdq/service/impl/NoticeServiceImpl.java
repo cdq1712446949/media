@@ -7,6 +7,7 @@ import com.cdq.service.NoticeService;
 import com.cdq.util.PageUtil;
 import com.cdq.model.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.List;
  * @modified By：
  * @version: 1.0.1
  */
+@Service
 public class NoticeServiceImpl implements NoticeService {
 
 

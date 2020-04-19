@@ -42,6 +42,7 @@
         where  (user_name=#{userName}
         or user_email=#{userName})
         and pass_word=#{passWord}
+        <if test="userRole != null">and user_role = #{userRole}</if>
     </select>
     <!--查询-->
     <select id="queryUserInfo" resultType="com.cdq.model.UserInfo">

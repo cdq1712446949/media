@@ -1,48 +1,40 @@
 $(function () {
 
-    var loginUrl='/media/user/admin/login';
+    var loginUrl='http://media.com/user/admin/login';
+    var role;
 
     $('.tishi').hide();
-
-    $('#btn-login').click(function () {
-       login();
-    });
-
-    $('.user input').focus(function () {
-        $('.user input').css("border-style","none");
-        $('#tishi-username').hide();
-    });
-    $('.user-in input').focus(function () {
-        $('.user-in input').css("border-style","none");
-        $('#tishi-password').hide();
-    });
 
     //根据headr中的token判断是否已经登录,如果已经登录则返回上一层页面
     if (sessionStorage.getItem('media_admin_login_info')!=null){
         window.location.href='/media/index';
     }
 
-    function login() {
-        var un=$('.user input').val();
-        var pw=$('.user-in input').val();
-        if (un==''){
-            $('.user input').css({"border-color":"red","border-style":"solid"});
-            $('#tishi-username').show();
-            return;
-        }
-        if (pw==''){
-            $('.user-in input').css({"border-color":"red","border-style":"solid"});
-            $('#tishi-password').show();
-            return;
-        }
-        // loginUrl.append('username='+)
-        // loginUrl=loginUrl+'username='+un+'&&'+'password='+pw;
+     login = function(url) {
+        var un=$('#username').val();
+        var pw=$('#password').val();
+         //表示内容检查结果
+         var isReturn = false;
+         if (un == '') {
+             $('#username').css("border-color","red");
+         } else {
+             isReturn = true;
+         }
+         if (pw == '') {
+             $('#password').css("border-color","red");
+         } else {
+             isReturn = true;
+         }
+         if (!isReturn) {
+             return;
+         }
         $.ajax({
-           url:loginUrl,
+           url:url,
            type:'POST',
             data:{
                username:un,
-                password:pw
+                password:pw,
+                role:role
             },
             dataType:'JSON',
             success:function (data) {

@@ -34,7 +34,5 @@ public class Photo {
     @Getter
     @Setter
     private Byte photoStatus;
-    @Getter
-    @Setter
-    private Advertisement advertisement;
+
 }
