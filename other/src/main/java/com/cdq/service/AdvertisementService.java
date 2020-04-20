@@ -24,7 +24,7 @@ public interface AdvertisementService {
      * @param advertisement
      * @return
      */
-    AdvertisementExecution addAdvertisement(Advertisement advertisement);
+    AdvertisementExecution addAdvertisement(Advertisement advertisement,String delKey);
 
     /**
      * 修改广告（设置权限拦截器）

@@ -7,6 +7,8 @@ import com.cdq.service.NoticeService;
 import com.cdq.util.PageUtil;
 import com.cdq.model.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,7 @@ public class NoticeServiceImpl implements NoticeService {
     private NoticeDao noticeDao;
 
     @Override
-    public NoticeExecution getNoticeList( Notice notice, int page, int pageSize) {
+    public NoticeExecution getNoticeList( Notice notice, int page, int pageSize,String cacheKey) {
         List<Notice> list=noticeDao.queryNoticeList(notice,PageUtil.pageToRowIndex(page,pageSize),pageSize);
         return new NoticeExecution(NoticeStateEnum.SUCCESS,list);
     }
@@ -40,7 +42,7 @@ public class NoticeServiceImpl implements NoticeService {
      */
     @Override
     @Transactional
-    public NoticeExecution addNotice(Notice notice) {
+    public NoticeExecution addNotice(Notice notice,String delKey) {
         //参数校验
         if (notice.getNoticeContent().equals("")||notice.getNoticeContent()==null){
             return new NoticeExecution(NoticeStateEnum.EMPTY_CONTENT);

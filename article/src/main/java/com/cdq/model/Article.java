@@ -37,21 +37,37 @@ public class Article {
     @Getter
     @Setter
     private String articleContent;
-    //    文章作者
+    /**
+     *文章作者
+     */
     @Getter
     @Setter
     private User user;
-    //    文章类型
+    /**
+     * 文章类型
+      */
     @Getter
     @Setter
     private ArticleType articleType;
-    //评论数量
+    /**
+     * 评论数量
+     */
     @Getter
     @Setter
     private int commentNum;
-    //评论列表
+    /**
+     * 评论列表
+     */
     @Getter
     @Setter
     private List<UserComment> userCommentList;
+
+    @Getter
+    @Setter
+    private Date startTime;
+
+    @Getter
+    @Setter
+    private Date endTime;
 
 }

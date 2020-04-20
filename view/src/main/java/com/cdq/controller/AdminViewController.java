@@ -26,6 +26,23 @@ public class AdminViewController {
         return "admin/index";
     }
 
+    @RequestMapping(value = "/articleList",method = RequestMethod.GET)
+    public String articleList(){
+        return "admin/article_list";
+    }
 
+    @RequestMapping(value = "/adverList",method = RequestMethod.GET)
+    public String adverList(){
+        return "admin/adver_list";
+    }
 
+    @RequestMapping(value = "/noticeList",method = RequestMethod.GET)
+    public String noticeList(){
+        return "admin/notice_list";
+    }
+
+    @RequestMapping(value = "/artiTypeList",method = RequestMethod.GET)
+    public String artiTypeList(){
+        return "admin/type_list";
+    }
 }

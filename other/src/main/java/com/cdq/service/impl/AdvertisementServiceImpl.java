@@ -52,8 +52,8 @@ public class AdvertisementServiceImpl implements AdvertisementService {
      */
     @Override
     @Transactional
-    @CacheEvict(value = "advertisementList" , allEntries = true)
-    public AdvertisementExecution addAdvertisement(Advertisement advertisement) {
+    @CacheEvict(value = "ugal" , allEntries = true)
+    public AdvertisementExecution addAdvertisement(Advertisement advertisement,String delKey) {
         //参数校验
         if (advertisement.getAdvertisementHref() != null && !advertisement.getAdvertisementHref().equals("")) {
             if (advertisement.getAdvertisementName() != null && !advertisement.getAdvertisementName().equals("")) {
@@ -90,7 +90,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
      */
     @Transactional
     @Override
-    @CacheEvict(value = "advertisementList" , allEntries = true)
+    @CacheEvict(value = "ugal" , allEntries = true)
     public AdvertisementExecution changeAdvertisement(Advertisement advertisement) {
         //校验参数
         if (advertisement.getAdvertisementId()==null||advertisement.getAdvertisementId()==0){

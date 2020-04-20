@@ -17,14 +17,14 @@ public interface NoticeService {
      * @param notice
      * @return
      */
-    NoticeExecution getNoticeList(Notice notice, int page, int pageSize);
+    NoticeExecution getNoticeList(Notice notice, int page, int pageSize,String cacheKey);
 
     /**
      * 添加公告
      * @param notice
      * @return
      */
-    NoticeExecution addNotice(Notice notice);
+    NoticeExecution addNotice(Notice notice,String delKey);
 
     /**
      * 修改公告记录

@@ -10,5 +10,5 @@ package com.cdq.util;
 public class ConstansUtil {
 
     public static String ADVER_CACHE_NAME = "adverList";
-
+    public static String NOTICE_CACHE_NAME = "noticeList";
 }

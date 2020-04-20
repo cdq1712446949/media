@@ -101,6 +101,7 @@
             <if test="article.articleCreateTime != null">
                 and year(article_create_time)=year(#{article.articleCreateTime})
                 and month(article_create_time)= month(#{article.articleCreateTime})
+                and day (article_create_time)= day (#{article.articleCreateTime})
             </if>
             <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
             and art.article_type_id is not null
