@@ -56,7 +56,7 @@ public class AdvertisementController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/addAdver")
+    @RequestMapping(value = "/addAdver" , method = RequestMethod.POST)
     public Map<String, Object> addAdvertisement(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>(16);
         String adverStr = HttpServletRequestUtil.getString(request, "adverStr");

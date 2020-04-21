@@ -28,21 +28,57 @@ public class AdminViewController {
 
     @RequestMapping(value = "/articleList",method = RequestMethod.GET)
     public String articleList(){
-        return "admin/article_list";
+        return "admin/list_article";
     }
 
     @RequestMapping(value = "/adverList",method = RequestMethod.GET)
     public String adverList(){
-        return "admin/adver_list";
+        return "admin/list_adver";
     }
 
     @RequestMapping(value = "/noticeList",method = RequestMethod.GET)
     public String noticeList(){
-        return "admin/notice_list";
+        return "admin/list_notice";
+    }
+
+    @RequestMapping(value = "/reportList",method = RequestMethod.GET)
+    public String reportList(){
+        return "admin/list_report";
+    }
+
+    @RequestMapping(value = "/reasonList",method = RequestMethod.GET)
+    public String reasonList(){
+        return "admin/list_report_reason";
     }
 
     @RequestMapping(value = "/artiTypeList",method = RequestMethod.GET)
     public String artiTypeList(){
-        return "admin/type_list";
+        return "admin/list_type";
     }
+
+    @RequestMapping(value = "/userData",method = RequestMethod.GET)
+    public String userData(){
+        return "admin/data_user";
+    }
+
+    @RequestMapping(value = "/articleData",method = RequestMethod.GET)
+    public String articleData(){
+        return "admin/data_article";
+    }
+
+    @RequestMapping(value = "/imgData",method = RequestMethod.GET)
+    public String imgData(){
+        return "admin/data_img";
+    }
+
+    @RequestMapping(value = "/addAdver",method = RequestMethod.GET)
+    public String addAdver(){
+        return "admin/add_adver";
+    }
+
+    @RequestMapping(value = "/addNotice",method = RequestMethod.GET)
+    public String addNotice(){
+        return "admin/add_notice";
+    }
+
 }

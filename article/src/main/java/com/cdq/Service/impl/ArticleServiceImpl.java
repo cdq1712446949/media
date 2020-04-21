@@ -8,6 +8,7 @@ import com.cdq.enums.BaseStateEnum;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
 import com.cdq.model.ArticleType;
+import com.cdq.until.ConstansUtil;
 import com.cdq.until.DateUtil;
 import com.cdq.until.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,10 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-    public static final String HOT_SORT = "good_num+look_num";//根据热度排序
-    public static final String DATE_SORT = "article_create_time";//根据创建时间排序
-    public static final String DESC = "desc";//降序
-    public static final String ASC = "asc";//升序
 
     @Autowired
     private ArticleDao articleDao;
+
     @Autowired
     private ArticleTypeDao articleTypeDao;
 
@@ -48,10 +46,10 @@ public class ArticleServiceImpl implements ArticleService {
      * 5.ad可选值：desc，asc
      * 页码转换为记录行数
      *
-     * @param article
-     * @param pageIndex
-     * @param pageSize
-     * @return
+     * @param article 参数
+     * @param pageIndex 页数
+     * @param pageSize 每页数量
+     * @return 结果
      */
     @Override
     public ArticleExecution getArticleList(Article article, int pageIndex, int pageSize) {
@@ -85,14 +83,14 @@ public class ArticleServiceImpl implements ArticleService {
      * 添加创建时间属性值
      * user.userId不能为空
      *
-     * @param article
-     * @return
+     * @param article 参数
+     * @return 结果
      */
     @Override
     @Transactional
     public ArticleExecution addArticle(Article article) {
         //校验参数
-        if (article.getUser().getUserId() == null || article.getUser().getUserId().equals("")) {
+        if (article.getUser().getUserId() == null || ConstansUtil.EMPTY_STR.equals(article.getUser().getUserId())) {
             return new ArticleExecution(BaseStateEnum.EMPTY_USER);
         }
         ArticleType articleType = new ArticleType();
@@ -101,7 +99,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (articleTypeDao.queryArticleTypeById(articleType).getParentArticleType().getArticleTypeId() == null) {
             return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
         }
-        if (article.getArticleContent() == null || article.getArticleContent().equals("")) {
+        if (article.getArticleContent() == null || ConstansUtil.EMPTY_STR.equals(article.getArticleContent())) {
             return new ArticleExecution(BaseStateEnum.EMPTY_INFO);
         }
         //添加创建时间属性值
@@ -123,8 +121,8 @@ public class ArticleServiceImpl implements ArticleService {
      * 修改文章记录
      * 校验参数：id,user.userId不能为空
      *
-     * @param article
-     * @return
+     * @param article 参数
+     * @return 结果
      */
     @Override
     @Transactional
@@ -136,7 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (article.getUser() == null) {
             return new ArticleExecution(BaseStateEnum.EMPTY_USER);
         }
-        if (article.getUser().getUserId() == null && article.getUser().getUserId().equals("")) {
+        if (article.getUser().getUserId() == null && ConstansUtil.EMPTY_STR.equals(article.getUser().getUserId())) {
             return new ArticleExecution(BaseStateEnum.EMPTY_USER);
         }
         //请求数据库，修改记录
@@ -156,8 +154,8 @@ public class ArticleServiceImpl implements ArticleService {
      * 修改文章状态，
      * 如果放在changeArticle方法中，每次执行修改文章状态都会执行大量代码,所以分离出该方法
      *
-     * @param article
-     * @return
+     * @param article 参数
+     * @return 结果
      */
     @Override
     @Transactional
@@ -184,8 +182,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 通过id获取文章记录
-     * @param article
-     * @return
+     * @param article 参数
+     * @return 结果
      */
     @Override
     public ArticleExecution getArticleById(Article article) {
@@ -210,8 +208,8 @@ public class ArticleServiceImpl implements ArticleService {
      * 校验参数
      * 1.user.userId
      *
-     * @param article
-     * @return
+     * @param article 参数
+     * @return 结果
      */
     @Override
     public ArticleExecution getNewArticleByUserId(Article article) {
@@ -219,7 +217,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (article.getUser() == null) {
             return new ArticleExecution(BaseStateEnum.EMPTY_USER);
         }
-        if (article.getUser().getUserId() == null || article.getUser().getUserId().equals("")) {
+        if (article.getUser().getUserId() == null || ConstansUtil.EMPTY_STR.equals(article.getUser().getUserId())) {
             return new ArticleExecution(BaseStateEnum.EMPTY_USER);
         }
         //调用dao层获取数据
