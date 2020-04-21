@@ -243,25 +243,21 @@
 
         <!--页面主要内容-->
         <main class="lyear-layout-content">
-
             <div class="container-fluid">
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-
-                                <form action="#!" method="post" class="row">
-
+                                <form class="row">
                                     <div class="form-group col-md-12">
                                         <label for="adver_name">名称</label>
                                         <input type="text" class="form-control" id="adver_name" name="seo_keywords"
-                                               value="" placeholder="关键词"/>
+                                               value="" placeholder="名称"/>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label for="adver_href">地址</label>
                                         <input type="text" class="form-control" id="adver_href" name="seo_keywords"
-                                               value="" placeholder="关键词"/>
+                                               value="" placeholder="地址"/>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>广告图片（一张）</label>
@@ -269,8 +265,7 @@
                                             <ul class="list-inline clearfix lyear-uploads-pic">
                                                 <li id="img-1" class="col-xs-4 col-sm-3 col-md-2">
                                                     <figure >
-                                                        <img  src="http://media.com/image/images/system/gallery/15.jpg"
-                                                             alt="图片一">
+                                                        <img id="img1"  src="" alt="图片一">
                                                         <figcaption>
                                                             <a onclick="delImg(this)" class="btn btn-round btn-square btn-danger" del-id="img-1"><i
                                                                     class="mdi mdi-delete"></i></a>
@@ -278,15 +273,15 @@
                                                     </figure>
                                                 </li>
                                                 <li class="col-xs-4 col-sm-3 col-md-2">
-                                                    <a class="pic-add" id="add-pic-btn" href="#!" title="点击上传"></a>
+                                                    <input id="input-img" type="file" title="点击上传" accept="image/png,image/jpg" onchange=" chooseFile(this)"></input>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-12">
-                                        <button onclick="addAdverList()" class="btn btn-primary ajax-post" target-form="add-form">确
+                                    <div class=" col-md-12">
+                                        <a onclick="addAdverList()" class="btn btn-primary" >确
                                             定
-                                        </button>
+                                        </a>
                                         <button type="button" class="btn btn-default"
                                                 onclick="javascript:history.back(-1);return false;">返 回
                                         </button>
@@ -309,6 +304,8 @@
 <script type="text/javascript" src="http://media.com/media/js/jquery.tagsinput.min.js"></script>
 <!--对话框插件-->
 <script type="text/javascript" src="http://media.com/media/js/common/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="http://media.com/media/js/common/bootstrap-notify.min.js"></script>
+<script type="text/javascript" src="http://media.com/media/js/admin/lightyear.js"></script>
 <script type="text/javascript" src="http://media.com/media/js/admin/add_adver.js"></script>
 </body>
 </html>

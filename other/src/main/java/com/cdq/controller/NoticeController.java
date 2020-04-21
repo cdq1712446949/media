@@ -7,6 +7,7 @@ import com.cdq.model.Notice;
 import com.cdq.service.NoticeService;
 import com.cdq.util.ConstansUtil;
 import com.cdq.util.HttpServletRequestUtil;
+import com.cdq.util.MultipartUtil;
 import com.cdq.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,9 @@ public class NoticeController {
         String noticeStr = HttpServletRequestUtil.getString(request, "noticeStr");
         try {
             Notice notice = (Notice) ObjectUtil.toPojo(noticeStr, Notice.class);
+            //处理缩略图
+//            String url = MultipartUtil.getImaeUrl(request,ConstansUtil.PEX_ADVER);
+//            notice.set
             NoticeExecution result = noticeService.addNotice(notice,ConstansUtil.NOTICE_CACHE_NAME);
             if (result.getState() == 0){
                 modelMap.put("success",true);

@@ -9,6 +9,14 @@ package com.cdq.util;
  */
 public class ConstansUtil {
 
+    public static String EMPTY = "";
+
     public static String ADVER_CACHE_NAME = "adverList";
     public static String NOTICE_CACHE_NAME = "noticeList";
+
+    public static String WINDOWS_SRC = "D:/projectdev/media_image/";
+    public static String LINUX_SRC = "/home/xiangze/image/";
+
+    public static String PEX_ADVER = "adver";
+    public static String PEX_NOTICE = "notice";
 }
