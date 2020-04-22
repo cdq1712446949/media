@@ -31,4 +31,11 @@ public interface UserDao {
      */
     int registerUser(User user);
 
+    /**
+     * 管理员登录用的接口
+     * @param user
+     * @return
+     */
+    User querySuperAdmin(User user);
+
 }

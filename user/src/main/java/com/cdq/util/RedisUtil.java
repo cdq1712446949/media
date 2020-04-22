@@ -29,8 +29,8 @@ public class RedisUtil {
     public void set (String key, Object value, long time , TimeUnit timeUnit){
         redisTemplate.opsForValue().set(key,value,time,timeUnit);
     }
-    public void del (String key){
-        redisTemplate.delete(key);
+    public boolean del (String key){
+        return  redisTemplate.delete(key);
     }
 
 

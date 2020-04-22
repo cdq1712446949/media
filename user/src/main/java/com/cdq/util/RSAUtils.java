@@ -111,8 +111,7 @@ public class RSAUtils {
      */
     public static String getKeyString(Key key) throws Exception {
         byte[] keyBytes = key.getEncoded();
-        String s = (new BASE64Encoder()).encode(keyBytes);
-        return s;
+        return (new BASE64Encoder()).encode(keyBytes);
     }
 
     /**
@@ -289,7 +288,7 @@ public class RSAUtils {
         System.out.println("privateKey:"+privateKey);
 
         System.err.println("公钥加密——私钥解密");
-        String source = "高可用架构对于互联网服务基本是标配。";
+        String source = "ceshi01";
         System.out.println("\r加密前文字：\r\n" + source);
         String aData = RSAUtils.encrypt(publicKey, source);
         System.out.println("加密后文字：\r\n" + aData);

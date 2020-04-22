@@ -8,6 +8,18 @@ import java.util.Date;
 
 @ToString
 public class User {
+    /**
+     * -1禁止用户登录
+     * 0正常
+     * 1禁止评论并且该用户所有评论不可见
+     * 2禁止发布文章但是以前发布的可以看
+     * 3禁止发布文章并且以前的文章也被屏蔽
+     */
+    public static Byte STATUS_FROZEN = -1;
+    public static Byte STATUS_NORMAL = 0;
+    public static Byte STATUS_FROZEN_1 = 1;
+    public static Byte STATUS_FROZEN_2 = 2;
+    public static Byte STATUS_FROZEN_3 = 3;
 
     public final static int SUPER_ADMIN = 0;//超级管理员
     public final static int ADMIN = 1;//普通管理员

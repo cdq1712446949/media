@@ -20,6 +20,11 @@ public interface UserService {
      */
     UserExecution getUerInfo(User user);
 
-
+    /**
+     * 超级管理员登录方法
+     * @param user
+     * @return
+     */
+    UserExecution adminLogin(User user);
 
 }

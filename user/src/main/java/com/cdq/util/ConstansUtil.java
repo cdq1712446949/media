@@ -14,6 +14,9 @@ public class ConstansUtil {
     public static Byte USER_ADMIN = 1;
     public static Byte USER_NORMAL = 2;
 
+    public static String EMPTY = "";
 
+    public static String USER_STR = "userStr";
 
+    public static String SUCCESS = "success";
 }

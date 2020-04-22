@@ -4,17 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.cdq.execution.UserExecution;
 import com.cdq.model.User;
 import com.cdq.service.UserService;
-import com.cdq.util.ConstansUtil;
-import com.cdq.util.JsonUtil;
-import com.cdq.util.JwtUtil;
-import com.cdq.util.RedisUtil;
+import com.cdq.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -45,22 +42,59 @@ public class AdminController {
      *
      * @return
      */
-    @RequestMapping(value = "/login" , method = RequestMethod.POST)
-    public Map<String, Object> login(HttpServletResponse response, String username, String password) {
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Map<String, Object> login(HttpServletRequest request) {
         //定义返回给前端的map
         Map<String, Object> modelMap = new HashMap<>();
         //接收前端参数
-        User user = new User();
-        user.setUserName(username);
-        user.setPassWord(password);
+        User user = (User) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, ConstansUtil.USER_STR), User.class);
         //添加角色属性，限制用户角色为管理员
         user.setUserRole(ConstansUtil.USER_ADMIN);
         //调用service层查验参数，连接数据库验证账号密码
         UserExecution result = userService.login(user);
         //根据service返回结果生成返回给前端的数据
+        resResult(result, modelMap);
+        return modelMap;
+    }
+
+    /**
+     * 超级管理员账号登录接口
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/adminLogin", method = RequestMethod.POST)
+    public Map adminLogin(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        User superUser = (User) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, ConstansUtil.USER_STR), User.class);
+        UserExecution result = userService.adminLogin(superUser);
+        resResult(result, modelMap);
+        return modelMap;
+    }
+
+    /**
+     * 退出登录接口
+     * 添加验证：要退出的账号是否和当前登录账号一致
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Map logout(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String userId = HttpServletRequestUtil.getString(request, "userId");
+        boolean result = redisUtil.del(JwtUtil.TOKEN + userId);
+        if (result){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+        }else {
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put("errMsg","erro");
+        }
+        return modelMap;
+    }
+
+    private void resResult(UserExecution result, Map modelMap) {
         if (result.getState() == 0) {
-            //状态码如果是0，表示账号密码正确
-            //账号密码正确生成jwt返回给前端
             try {
                 //生成JWT
                 String payLoad = JSON.toJSONString(JsonUtil.getJson(result.getUser()));
@@ -79,7 +113,6 @@ public class AdminController {
             modelMap.put("success", false);
             modelMap.put("errMsg", "用户名或者密码错误");
         }
-        return modelMap;
     }
 
 }
