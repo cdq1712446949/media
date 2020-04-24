@@ -18,7 +18,7 @@ public class ArticleDaoTest extends BaseTest {
     @Test
     public void testQueryArticleList(){
         Article article=new Article();
-
+        article.setArticleStatus((byte) 0);
 //        ArticleType articleType=new ArticleType();
 //        articleType.setArticleTypeId((short) 12);
 //        article.setArticleType(articleType);
@@ -29,7 +29,7 @@ public class ArticleDaoTest extends BaseTest {
 //        articleType.setParentArticleType(parentArticleType);
 //        article.setArticleType(articleType);
         List<Article> articles=articleDao.queryArticleList(article,
-                0,0);
+                0,10);
         System.out.println(String.valueOf(articles.size()));
     }
 

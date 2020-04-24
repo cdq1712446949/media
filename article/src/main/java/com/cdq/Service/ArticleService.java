@@ -50,4 +50,13 @@ public interface ArticleService {
      */
     ArticleExecution getNewArticleByUserId(Article article);
 
+    /**
+     * 获取关注文章
+     * @param userId
+     * @param indexPage
+     * @param pageSize
+     * @return
+     */
+    ArticleExecution getAttArticle(String userId , int indexPage, int pageSize);
+
 }

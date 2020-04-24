@@ -3,7 +3,6 @@ package com.cdq.controller;
 import com.cdq.Service.ArticleService;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
-import com.cdq.model.ArticleType;
 import com.cdq.model.User;
 import com.cdq.until.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,25 +44,19 @@ public class ArticleController {
      * @return 结果
      */
     @RequestMapping("/getArticle")
-    public Map getArticle(String typeId, String indexPage) {
+    public Map getArticle(HttpServletRequest request, String indexPage) {
         Map<String, Object> modelMap = new HashMap<>();
-        Article article = new Article();
-        ArticleExecution result = null;
-        // TODO 有时间加上try catch（我是真的不想加,我好懒啊）
-        if (typeId != null && !ConstansUtil.EMPTY_STR.equals(typeId)) {
-            ArticleType articleType = new ArticleType();
-            articleType.setArticleTypeId(Short.valueOf(typeId));
-            article.setArticleType(articleType);
-            result = articleService.getArticleList(article, Integer.parseInt(indexPage), 10);
-        } else {
-            result = articleService.getArticleList(article, Integer.parseInt(indexPage), 10);
-        }
+        //参数转化
+        Article article = (Article) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, "artiStr"), Article.class);
+        article.setArticleStatus((byte) 0);
+        //service层调用
+        ArticleExecution result = articleService.getArticleList(article, Integer.parseInt(indexPage), 10);
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
-            modelMap.put("articleList", result.getArticleList());
+            modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
-            modelMap.put("errMsg", result.getStateInfo());
+            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
         }
         return modelMap;
     }
@@ -84,10 +77,7 @@ public class ArticleController {
         if (productStr != null || !ConstansUtil.EMPTY_STR.equals(productStr)) {
             Article article = objectMapper.readValue(productStr, Article.class);
             //获取文章发布者信息
-            // TODO 获取token中的id
-            User user = new User();
-            user.setUserId("18271579008757346");
-            article.setUser(user);
+            article.setUser(ObjectUtil.getUserId(request));
             //添加文章记录
             ArticleExecution articleExecution = articleService.addArticle(article);
             if (articleExecution.getState() != 0) {
@@ -113,6 +103,11 @@ public class ArticleController {
                     //对结果进行处理
                     if ((boolean) result.get(ConstansUtil.SUCCESS)) {
                         modelMap.put(ConstansUtil.SUCCESS, true);
+                    } else {
+                        return result;
+                    }
+                    if ((boolean) result.get(ConstansUtil.SUCCESS)) {
+                        modelMap.put(ConstansUtil.SUCCESS, true);
                         modelMap.put("articleId", article.getArticleId());
                     }
                 }
@@ -125,6 +120,22 @@ public class ArticleController {
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put("errMsg", "信息不全");
+        }
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/ugaal",method = RequestMethod.POST)
+    public Map getAttArticle(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<>();
+        String userId = ObjectUtil.getUserId(request).getUserId();
+        int indexPage = HttpServletRequestUtil.getInt(request,"indexPage");
+        ArticleExecution result = articleService.getAttArticle(userId,indexPage,10);
+        if (result.getState()==0){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+            modelMap.put(ConstansUtil.ARTICLE_LIST,result.getArticleList());
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
         }
         return modelMap;
     }
@@ -142,13 +153,6 @@ public class ArticleController {
         return modelMap;
     }
 
-
-    @RequestMapping("/getUser")
-    public Map getUser() {
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("userInfo", restTemplate.getForObject(ConstansUtil.IMAGE_URL + "/getUser.do", Object.class));
-        return modelMap;
-    }
 
     private String addThumils(Article article, CommonsMultipartFile multipartFile) throws IOException {
         ImageHolder imageHolder = new ImageHolder(multipartFile.getFileItem().getName(), multipartFile.getInputStream());

@@ -16,7 +16,7 @@
 <body>
 <header class="bar bar-nav">
 
-    <a href="/media/articleEdit" id="add_article" class="pull-right" style="font-size: xx-large">
+    <a href="http://media.com/media/login" id="add_article" class="pull-right" style="font-size: xx-large">
         +
     </a>
     <input id="article_type" type="text" placeholder="文章类型"
@@ -29,35 +29,17 @@
         <a href="#tab2" class="tab-link button">关注</a>
     </div>
     <div class="tabs">
-        <div id="tab1" class="tab active">
-            <div class="card facebook-card" style="width: 90%; ">
-                <div class="card-header no-border">
-                    <div class="facebook-avatar"><img
-                            src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                            width="34" height="34"></div>
-                    <div class="facebook-name">夜萧</div>
-                    <div class="facebook-date">星期一 3:47pm</div>
-                </div>
-                <div class="card-content"><img
-                        src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                        width="33%" style="float: left;"></div>
-                <div class="card-content"><img
-                        src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                        width="33%" style="float: left; "></div>
-                <div class="card-content"><img
-                        src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                        width="33%" style="float: left; "></div>
-                <div class="card-content"><img
-                        src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
-                        width="33%"></div>
-                <div class="card-footer no-border">
-                    <a href="#" class="link">赞</a>
-                    <a href="#" class="link">评论</a>
-                    <a href="#" class="link">分享</a>
-                </div>
+        <div id="tab2" class="tab ">
+
+            <!-- Icons in standard bar fixed to the bottom of the screen -->
+            <div class="bar bar-footer" style="display: none;">
+                <a class="icon icon-edit pull-left"></a>
+                <input type="text" style="height: 80%; width: 70%; margin: 10px; padding: 5px">
+                <a id="btn_share" class="icon icon-share pull-right" style="display: none"></a>
+                <a id="btn_send" class="icon icon-star pull-right" style="display: none;"></a>
             </div>
         </div>
-        <div id="tab2" class="tab">
+        <div id="tab1" class="tab active">
             <div class="page-current">
                 <!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
                 <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100"

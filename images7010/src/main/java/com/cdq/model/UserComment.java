@@ -12,6 +12,7 @@ public class UserComment {
 
     public static final int  BAN_STATUS=-1;
     public static final int NORMAL_STATUS=0;
+
     @Getter
     @Setter
     private Integer userCommentId;

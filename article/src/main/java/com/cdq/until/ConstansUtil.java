@@ -30,4 +30,8 @@ public class ConstansUtil {
 
     public static String SUCCESS = "success";
 
+    public static String TOKEN = "token";
+    public static String ERRMSG = "errMsg";
+    public static String ARTICLE_LIST = "articleList";
+
 }

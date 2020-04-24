@@ -37,4 +37,29 @@ public class SuperViewController {
         return "user/test";
     }
 
+    @RequestMapping(value = "/article",method = RequestMethod.GET)
+    public String article(){
+        return "user/article";
+    }
+
+    @RequestMapping(value = "/video",method = RequestMethod.GET)
+    public String video(){
+        return "user/video";
+    }
+
+    @RequestMapping(value = "/search",method = RequestMethod.GET)
+    public String search(){
+        return "user/search";
+    }
+
+    @RequestMapping(value = "/message",method = RequestMethod.GET)
+    public String message(){
+        return "user/message";
+    }
+
+    @RequestMapping(value = "/me",method = RequestMethod.GET)
+    public String me(){
+        return "user/me";
+    }
+
 }

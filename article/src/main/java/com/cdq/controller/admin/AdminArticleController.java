@@ -52,6 +52,7 @@ public class AdminArticleController {
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
             modelMap.put("articleList", result.getArticleList());
+            modelMap.put("size",result.getCount());
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put("errMsg", result.getStateInfo());

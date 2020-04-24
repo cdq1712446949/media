@@ -1,10 +1,27 @@
 $(function () {
 
+    //获取文章地址
+    var articleListUrl = 'http://media.com/article/getArticle';
     //获取所有二级文章类型地址
     var twoLevelUrl = "/article/aflat";
     var fistName = '生活';
-    var firstChooser = '';
     var allPicker;
+    var isLogin = false;
+    var typeId = '';
+    var indexPage = 0;
+
+    var userInfo = sessionStorage.getItem("media_login_info");
+    if (userInfo==null){
+        isLogin = false;
+    } else {
+        isLogin = true;
+    }
+
+    if (isLogin){
+        var eml = document.getElementById("add_article");
+        eml.setAttribute('href','http://media.com/media/articleEdit')
+    }
+
     $(document).on("pageInit", function () {
         var fistLevelList;
         var twoList;
@@ -80,7 +97,6 @@ $(function () {
                 }
             });
         }
-
     });
 
 
@@ -98,7 +114,74 @@ $(function () {
         return names;
     }
 
+    getArticleList1 = function(){
+
+    };
+
+     getArticleList2 = function(){
+        var article = {};
+        if (typeId != ''){
+            var articleType = {};
+            articleType.articleTypeId = typeId;
+        }
+        $.ajax({
+            url: articleListUrl,
+            type: 'GET',
+            data: {
+                artiStr: JSON.stringify(article),
+                indexPage:indexPage
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                if (data.success) {
+                    var articleList = data.articleList;
+                    var tempHtml = '';
+                    $.each(articleList, function (index, item) {
+                        var uinfo = item.user;
+                        var t1 = ' <div class="card facebook-card" style="width: 90%; " data-aid="'+item.articleId+'">\n' +
+                            '                <div class="card-header no-border">\n' +
+                            '                    <div class="facebook-avatar"><img\n' +
+                            '                            src="http://media.com/image/images/'+uinfo.userHeadPhoto+'"\n' +
+                            '                            width="34" height="34"></div>\n' +
+                            '                    <div class="facebook-name">'+uinfo.nickName+'</div>\n' +
+                            '                    <div class="facebook-date">'+item.articleCreateTime+'</div>\n' +
+                            '                </div>';
+                       var t4 = '<div class="card-content"><div class="card-content-inner">\n' +
+                           '        <p>'+item.articleContent+'</p>\n' +
+                           '      </div></div>'
+                        var t2='';
+                        $.each(item.photoList,function (ind,ite) {
+                            if (ind == item.photoList.length-1){
+                                t2+='  <div class="card-content"><img\n' +
+                                    '                        src="http://media.com/image/images/'+ite.photoAddr+'"\n' +
+                                    '                        width="33%"></div>';
+                            } else {
+                                t2+='  <div class="card-content"><img\n' +
+                                    '                        src="http://media.com/image/images/'+ite.photoAddr+'"\n' +
+                                    '                        width="33%" style="float: left;"></div>'
+                            }
+                        });
+                        t2 = '<div class="row" style="padding:20px">'+t2+'</div>';
+                        var t3 = ' <div class="card-footer no-border">\n' +
+                            '                    <a href="#" data-aid="" class="link">赞('+item.goodNum+')</a>\n' +
+                            '                    <a href="#" data-aid="" class="link">评论('+item.commentNum+')</a>\n' +
+                            '                    <a href="#" data-aid="" class="link">分享</a>\n' +
+                            '                </div>  </div>';
+                        var t = t1+t4+t2+t3;
+                        tempHtml += t;
+                    });
+                    $('#tab1').html(tempHtml);
+                } else {
+                    alert("获取文章列表失败，" + data.errMsg);
+                }
+            }
+        })
+    };
+
+    getArticleList2();
+
     $.init();
+
 
 
 });

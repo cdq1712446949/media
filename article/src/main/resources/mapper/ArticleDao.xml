@@ -33,7 +33,14 @@
             <result property="articleTypeCreateTime" column="article_type_create_time"></result>
             <result property="articleTypeLastEditTime" column="article_type_last_edit_time"></result>
         </association>
-
+        <collection property="photoList" ofType="com.cdq.model.Photo" column="article_id" >
+            <id property="photoId" column="photo_id"></id>
+            <result property="article.articleId" column="photo_article_id"></result>
+            <result property="photoNum" column="photo_num"></result>
+            <result property="photoName" column="photo_name"></result>
+            <result property="photoAddr" column="photo_addr"></result>
+            <result property="photoCreateTime" column="photo_create_time"></result>
+        </collection>
     </resultMap>
     <!--根据文章id获取文章记录-->
     <select id="queryArticleById" resultMap="articleMap">
@@ -57,6 +64,7 @@
         LEFT JOIN article_type art on a.article_type_id= art.article_type_id
         where a.article_id=#{articleId}
     </select>
+
     <!--查询文章列表，一级文章类型，二级文章类型，创建时间，内容-->
     <select id="queryArticleList" resultMap="articleMap">
         SELECT
@@ -75,7 +83,73 @@
         art.priority,
         art.article_type_create_time,
         art.article_type_last_edit_time,
-        c.comment_num
+        c.comment_num,
+        p.*
+        FROM(select * from article  limit #{rowIndex},#{pageSize}) as a
+        LEFT JOIN user as u on a.user_id=u.user_id
+        LEFT JOIN (select * from article_type
+        <where>
+            <if test="article.articleType != null">
+                <if test="article.articleType.parentArticleType!= null">
+                    <if test="article.articleType.parentArticleType.articleTypeId != -1">
+                        parent_id=#{article.articleType.parentArticleType.articleTypeId}
+                    </if>
+                </if>
+            </if>
+        </where>
+        ) as art on a.article_type_id= art.article_type_id
+        LEFT JOIN (select distinct(article_id),count(article_id) as comment_num from user_comment
+        group by article_id) as c on a.article_id=c.article_id
+        LEFT JOIN photo as p on a.article_id=p.article_id
+        <where>
+            <if test="article.articleType!= null ">
+                <if test="article.articleType.articleTypeId != -1">
+                    a.article_type_id = #{article.articleType.articleTypeId}
+                </if>
+            </if>
+            <if test="article.articleCreateTime != null">
+                and year(article_create_time)=year(#{article.articleCreateTime})
+                and month(article_create_time)= month(#{article.articleCreateTime})
+            </if>
+            <if test="article.endTime != null and article.startTime!= null">
+                and a.article_create_time between #{article.startTime} And #{article.endTime}
+            </if>
+            <if test="article.articleContent!=null">
+                and a.article_content like '%${article.articleContent}%'
+            </if>
+            <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
+            and art.article_type_id is not null
+        </where>
+        order by good_num+look_num desc
+    </select>
+
+    <select id="queryAttArticle" parameterType="java.lang.String" resultMap="articleMap">
+        SELECT
+        a.*,
+        u.user_id,
+        u.nick_name,
+        u.user_sex,
+        u.user_role,
+        u.user_exprience,
+        u.user_email,
+        u.user_birthday,
+        u.user_head_photo,
+        c.comment_num,
+        p.*
+        from user as u1 left join attention as att1 on u1.user_id=att1.attention_user_id
+        left join user as u on att1.attented_user_id=u.user_id
+        left join article as a on u.user_id=a.user_id
+        LEFT JOIN (select distinct(article_id),count(article_id) as comment_num from user_comment
+        group by article_id) as c on a.article_id=c.article_id
+        LEFT JOIN photo as p on a.article_id=p.article_id
+        where u1.user_id = #{userId}
+        order by a.article_create_time desc
+        <if test="rowIndex!=0 or pageSize!=0">limit #{rowIndex},#{pageSize}</if>
+    </select>
+
+    <select id="queryArticleCount" parameterType="com.cdq.model.Article" resultType="java.lang.Integer">
+        SELECT
+        count(a.article_id)
         FROM
         article as a
         LEFT JOIN user as u on a.user_id=u.user_id
@@ -84,7 +158,7 @@
             <if test="article.articleType != null">
                 <if test="article.articleType.parentArticleType!= null">
                     <if test="article.articleType.parentArticleType.articleTypeId != -1">
-                    parent_id=#{article.articleType.parentArticleType.articleTypeId}
+                        parent_id=#{article.articleType.parentArticleType.articleTypeId}
                     </if>
                 </if>
             </if>
@@ -101,13 +175,16 @@
             <if test="article.articleCreateTime != null">
                 and year(article_create_time)=year(#{article.articleCreateTime})
                 and month(article_create_time)= month(#{article.articleCreateTime})
-                and day (article_create_time)= day (#{article.articleCreateTime})
+            </if>
+            <if test="article.endTime != null and article.startTime!= null">
+                and a.article_create_time between #{article.startTime} And #{article.endTime}
+            </if>
+            <if test="article.articleContent!=null">
+                and a.article_content like '%${article.articleContent}%'
             </if>
             <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
             and art.article_type_id is not null
         </where>
-        order by good_num+look_num desc
-        <if test="rowIndex!=0 or pageSize!=0">limit #{rowIndex},#{pageSize}</if>
     </select>
     <!--根据用户id获取最新的五条文章记录-->
     <select id="queryNewArticleByUserId" resultType="com.cdq.model.Article">
@@ -121,7 +198,7 @@
     </select>
     <!--添加文章记录-->
     <insert id="insertArticle" parameterType="com.cdq.model.Article" useGeneratedKeys="true" keyProperty="articleId"
-        keyColumn="article_id">
+            keyColumn="article_id">
         insert into
         article(
         user_id,article_type_id,article_content,article_create_time

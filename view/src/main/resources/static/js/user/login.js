@@ -1,6 +1,6 @@
 $(function () {
 
-    var loginUrl = '/user/login';
+    var loginUrl = 'http://media.com/user/login';
 
     var isRem = false;
     var localUserInfo = JSON.parse(localStorage.getItem("user_info_arr"));
@@ -66,7 +66,6 @@ $(function () {
             dataType: 'JSON',
             success: function (data) {
                 if (data.success) {
-
                     // var user=JSON.stringify(data.userInfo)
                     sessionStorage.setItem("media_token", data.token);
                     sessionStorage.setItem("media_login_info", data.userInfo);
@@ -75,11 +74,10 @@ $(function () {
                             userName: un,
                             passWord: pw
                         };
-
                         localStorage.setItem("user_info_arr",JSON.stringify(user));
                     }
                     alert("登录成功 ")
-                    window.location.href = 'http://media.com/media/index';
+                    window.location.href = 'http://media.com/media/article';
                 } else {
                     alert(data.errMsg);
                 }

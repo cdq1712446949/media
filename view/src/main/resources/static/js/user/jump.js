@@ -50,7 +50,10 @@ $(function () {
                 break;
         }
         $('#content').html(tempHtml);
-    }
+    };
+
+
+
     $('.tab-item').click(function () {
         var viewName = this.id;
         jumpView(viewName);

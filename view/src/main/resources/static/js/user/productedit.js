@@ -3,6 +3,7 @@
  */
 
 $(function () {
+    //获取地址栏中的articleId
     var articleId = getQueryString("articleId");
     //根据是否有productId选择执行函数
     //文章信息获取地址
@@ -13,16 +14,17 @@ $(function () {
     var modifyArticleUrl = '/article/modifyArticle';
     //获取文章类别列表
     var getCategoryListUrl = '/article/aflat';
+    var mediaToken = 'media_token';
     var isEdit = false;
     if (articleId) {
-        getProductInfo();
+        getArticleInfo();
         isEdit = true;
     } else {
-        getProductCategoryList();
+        getArticleTypeList();
         isEdit = false;
     }
 
-    function getProductInfo() {
+    function getArticleInfo() {
         $.getJSON(initPriductUrl, function (data) {
             if (data.success) {
                 var product = data.product;
@@ -32,14 +34,14 @@ $(function () {
                 $('#product-normal-price').val(product.normalPrice);
                 $('#product-now-price').val(product.promotionPrice);
                 var optionSelected = product.productCategory.productCategoryId;
-                initProductCategory(optionSelected);
+                initArticleType(optionSelected);
             } else {
                 $.toast("获取商品信息失败" + data.errMsg);
             }
         });
     }
 
-    function initProductCategory(optionSelected) {
+    function initArticleType(optionSelected) {
         $.getJSON(getCategoryListUrl, function (data) {
             if (data.success) {
                 var productCategoryList = data.firstLevelList;
@@ -100,7 +102,7 @@ $(function () {
        })
     });
 
-    function getProductCategoryList() {
+    function getArticleTypeList() {
         $.getJSON(getCategoryListUrl, function (data) {
             if (data.success) {
                 var productCategoryList = data.firstLevelList;
@@ -146,7 +148,7 @@ $(function () {
                     }
                 });
             formData.append('productStr', JSON.stringify(article));
-
+            formData.append('token',sessionStorage.getItem(mediaToken));
             $.ajax({
                 url: isEdit ? modifyArticleUrl : addArticleUrl,
                 type: 'POST',
@@ -156,9 +158,11 @@ $(function () {
                 cache: false,
                 success: function (data) {
                     if (data.success) {
-                        $.toast('提交成功！');
+                        window.history.back(-1);
+                        $.toast('发布成功！');
                     } else {
-                        $.toast('提交失败！' + data.errMsg);
+                        window.history.back(-1);
+                        $.toast('发布失败！' + data.errMsg);
                     }
                 }
             });

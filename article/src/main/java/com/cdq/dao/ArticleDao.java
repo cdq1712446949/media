@@ -64,4 +64,20 @@ public interface ArticleDao {
      */
     List<Article> queryNewArticleByUserId(Article article);
 
+    /**
+     * 获取该条件下的文章数量
+     * @param article
+     * @return
+     */
+    int queryArticleCount(@Param("article") Article article);
+
+    /**
+     * 根据userId获取该用户关注的人的文章
+     * @param userId
+     * @param rowIndex
+     * @param pageSize
+     * @return
+     */
+    List<Article> queryAttArticle(@Param("userId") String userId ,@Param("rowIndex")int rowIndex,
+                                  @Param("pageSize")int pageSize );
 }

@@ -54,7 +54,7 @@ public class Article {
      */
     @Getter
     @Setter
-    private int commentNum;
+    private Integer commentNum;
     /**
      * 评论列表
      */
@@ -69,5 +69,9 @@ public class Article {
     @Getter
     @Setter
     private Date endTime;
+
+    @Getter
+    @Setter
+    private List<Photo> photoList;
 
 }

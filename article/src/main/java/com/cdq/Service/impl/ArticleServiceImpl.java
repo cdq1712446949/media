@@ -4,6 +4,7 @@ package com.cdq.Service.impl;
 import com.cdq.Service.ArticleService;
 import com.cdq.dao.ArticleDao;
 import com.cdq.dao.ArticleTypeDao;
+import com.cdq.enums.ArticleStateEnum;
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
@@ -46,9 +47,9 @@ public class ArticleServiceImpl implements ArticleService {
      * 5.ad可选值：desc，asc
      * 页码转换为记录行数
      *
-     * @param article 参数
+     * @param article   参数
      * @param pageIndex 页数
-     * @param pageSize 每页数量
+     * @param pageSize  每页数量
      * @return 结果
      */
     @Override
@@ -70,7 +71,9 @@ public class ArticleServiceImpl implements ArticleService {
         //请求数据库查询数据
         try {
             List<Article> articles = articleDao.queryArticleList(article, rowIndex, pageSize);
-            return new ArticleExecution(BaseStateEnum.SUCCESS, articles);
+            ArticleExecution result = new ArticleExecution(BaseStateEnum.SUCCESS, articles);
+            result.setCount(articleDao.queryArticleCount(article));
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
@@ -182,6 +185,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 通过id获取文章记录
+     *
      * @param article 参数
      * @return 结果
      */
@@ -226,6 +230,23 @@ public class ArticleServiceImpl implements ArticleService {
             return new ArticleExecution(BaseStateEnum.SUCCESS, list);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
+
+    /**
+     *  //TODO 添加参数校验
+     * @param userId
+     * @param indexPage
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ArticleExecution getAttArticle(String userId, int indexPage, int pageSize) {
+        List<Article> result = articleDao.queryAttArticle(userId,PageUtil.pageToRowIndex(indexPage,pageSize),pageSize);
+        if (result != null){
+            return new ArticleExecution(BaseStateEnum.SUCCESS,result);
+        } else {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
         }
     }

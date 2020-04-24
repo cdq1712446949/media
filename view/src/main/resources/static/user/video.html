@@ -3,22 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="http://media.com/media/css/common/sm.min.css">
     <link rel="stylesheet" href="http://media.com/media/css/common/common.css">
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-    <script src='http://media.com/media/js/jquery-3.3.1.js'></script>
+    <script src='http://media.com/media/js/jquery-3.3.1.js' type="text/javascript" charset="UTF-8"></script>
 </head>
+<style type="text/css">
+    .infinite-scroll-preloader {
+        margin-top: -20px;
+    }
+</style>
 <body>
+
 <div class="content">
-    <div class="page-current">
-        video
+    <div class="tabs">
+        <div id="tab2" class="tab active">
+            <div class="page-current">
+                <!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
+                <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100"
+                     style="margin-top: 12%;height: 90%;">
+                    <div class="list-block">
+                        <ul class="list-container">
+                        </ul>
+                    </div>
+                    <!-- 加载提示符 -->
+                    <div class="infinite-scroll-preloader">
+                        <div class="preloader"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="http://media.com/media/js/user/video.js" type="text/javascript" charset="UTF-8"></script>
 </div>
-</body>
+
+
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://media.com/media/js/common/sm-extend.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/sm.js' charset='utf-8'></script>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" type="text/javascript" charset="UTF-8"></script>
-<script>
-    $.init();
-</script>
+</body>
 </html>

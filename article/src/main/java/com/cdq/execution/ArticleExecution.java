@@ -3,6 +3,9 @@ package com.cdq.execution;
 
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.model.Article;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 /**
@@ -13,14 +16,24 @@ import java.util.List;
 public class ArticleExecution {
 
     //状态值
+    @Getter
+    @Setter
     private int state;
     //状态信息
+    @Getter
+    @Setter
     private String stateInfo;
     //操作对象数量
+    @Getter
+    @Setter
     private int count;
     //单个操作对象
+    @Getter
+    @Setter
     private Article article;
     //操作对象列表
+    @Getter
+    @Setter
     private List<Article> articleList;
 
     //失败时使用的构造器
@@ -43,41 +56,4 @@ public class ArticleExecution {
         this.articleList = articles;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public String getStateInfo() {
-        return stateInfo;
-    }
-
-    public void setStateInfo(String stateInfo) {
-        this.stateInfo = stateInfo;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
-        this.count = 1;
-    }
-
-    public List<Article> getArticleList() {
-        return articleList;
-    }
-
-    public void setArticleList(List<Article> articleList) {
-        this.count = articleList.size();
-        this.articleList = articleList;
-    }
 }
