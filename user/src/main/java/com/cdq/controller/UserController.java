@@ -4,17 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.cdq.execution.UserExecution;
 import com.cdq.model.User;
 import com.cdq.service.UserService;
-import com.cdq.util.JsonUtil;
-import com.cdq.util.JwtUtil;
-import com.cdq.util.R;
-import com.cdq.util.RedisUtil;
+import com.cdq.util.*;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.management.modelmbean.ModelMBean;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +90,9 @@ public class UserController {
         return modelMap;
     }
 
+    /**
+     * 用户注册接口
+     */
     @RequestMapping("/register")
     @HystrixCommand(
             commandKey = "register",
@@ -99,9 +102,22 @@ public class UserController {
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "3000")
             }
     )
-    public Object register(String user) {
-        Map<String, Object> tempMap = (Map) restTemplate.getForObject("http://CLIENT-ARTICLE/getArticle.do", Object.class);
-        return R.success(tempMap.toString());
+    public Map<String, Object> register(HttpServletRequest request) {
+        Map<String ,Object> modelMap = new HashMap<>();
+        //参数转换
+        User user = (User) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request,ConstansUtil.USER_STR),User.class);
+        //生成userId
+        user.setUserId(UserIdUtil.createUserId());
+        //调用service层
+        UserExecution result = userService.register(user);
+        if (result.getState()==0){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+            modelMap.put(ConstansUtil.USER_ID,user.getUserId());
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        }
+        return modelMap;
     }
 
     /**

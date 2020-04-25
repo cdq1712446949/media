@@ -27,4 +27,11 @@ public interface UserService {
      */
     UserExecution adminLogin(User user);
 
+    /**
+     * 用户注册接口
+     * @param user
+     * @return
+     */
+    UserExecution register(User user);
+
 }

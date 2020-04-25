@@ -244,8 +244,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleExecution getAttArticle(String userId, int indexPage, int pageSize) {
         List<Article> result = articleDao.queryAttArticle(userId,PageUtil.pageToRowIndex(indexPage,pageSize),pageSize);
+        int count = articleDao.queryAttArticleCount(userId);
         if (result != null){
-            return new ArticleExecution(BaseStateEnum.SUCCESS,result);
+            ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS,result);
+            articleExecution.setCount(count);
+            return articleExecution;
         } else {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
         }

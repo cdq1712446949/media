@@ -53,7 +53,6 @@ $(function () {
     };
 
 
-
     $('.tab-item').click(function () {
         var viewName = this.id;
         jumpView(viewName);

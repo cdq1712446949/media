@@ -62,4 +62,19 @@ public class SuperViewController {
         return "user/me";
     }
 
+    @RequestMapping(value = "/artideti",method = RequestMethod.GET)
+    public String articleDetial(){
+        return "user/article_detial";
+    }
+
+    @RequestMapping(value = "/register" , method = RequestMethod.GET)
+    public String register(){
+        return  "user/register";
+    }
+
+    @RequestMapping(value = "/report" , method = RequestMethod.GET)
+    public String report(){
+        return  "user/report";
+    }
+
 }

@@ -80,4 +80,12 @@ public interface ArticleDao {
      */
     List<Article> queryAttArticle(@Param("userId") String userId ,@Param("rowIndex")int rowIndex,
                                   @Param("pageSize")int pageSize );
+
+    /**
+     * 查询关注用户文章数量
+     * @param userId
+     * @return
+     */
+    int queryAttArticleCount(@Param("userId") String userId);
+
 }

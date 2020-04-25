@@ -98,5 +98,26 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 用户注册接口
+     * @param user
+     * @return
+     */
+    @Override
+    public UserExecution register(User user) {
+        //TODO 参数校验
+        //调用dao层
+        int result = userDao.registerUser(user);
+        //处理头像
+        if (user.getUserHeadPhoto()==null || ConstansUtil.EMPTY.equals(user.getUserHeadPhoto())){
+            user.setUserHeadPhoto("\\head\\default.png");
+        }
+        if (result == 0 ){
+            return new UserExecution(UserStateEnum.INNER_ERROR);
+        }else {
+            return new UserExecution(UserStateEnum.SUCCESS);
+        }
+    }
+
 
 }

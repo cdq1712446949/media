@@ -33,5 +33,9 @@ public class ConstansUtil {
     public static String TOKEN = "token";
     public static String ERRMSG = "errMsg";
     public static String ARTICLE_LIST = "articleList";
+    public static String TOTAL_SIZE = "totalSize";
+    public static String TOTAL_PAGE = "totalPage";
+
+    public static String USER_COMMENT_STR = "userCommentStr";
 
 }

@@ -163,14 +163,14 @@ $(function () {
                         });
                         t2 = '<div class="row" style="padding:20px">'+t2+'</div>';
                         var t3 = ' <div class="card-footer no-border">\n' +
-                            '                    <a href="#" data-aid="" class="link">赞('+item.goodNum+')</a>\n' +
-                            '                    <a href="#" data-aid="" class="link">评论('+item.commentNum+')</a>\n' +
-                            '                    <a href="#" data-aid="" class="link">分享</a>\n' +
+                            '                    <a href="#" data-aid="'+item.articleId+'" class="link">赞('+item.goodNum+')</a>\n' +
+                            '                    <a onclick="addComment(this)" data-uid="'+uinfo.userId+'" data-aid="'+item.articleId+'" class="link">评论('+item.commentNum+')</a>\n' +
+                            '                    <a href="#" data-aid="'+item.articleId+'" class="link">分享</a>\n' +
                             '                </div>  </div>';
-                        var t = t1+t4+t2+t3;
+                        var t = '<li>'+t1+t4+t2+t3+'</li>';
                         tempHtml += t;
                     });
-                    $('#tab1').html(tempHtml);
+                    $('#list_tab1').html(tempHtml);
                 } else {
                     alert("获取文章列表失败，" + data.errMsg);
                 }
@@ -180,9 +180,8 @@ $(function () {
 
     getArticleList2();
 
+
     $.init();
-
-
 
 });
 

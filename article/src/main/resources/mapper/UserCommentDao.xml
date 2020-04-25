@@ -50,9 +50,31 @@
         left join user as fuu on ucc.from_user_id=fuu.user_id
         where ucc.user_comment_status=0
         and ucc.article_id=#{userComment.article.articleId}
-        <if test="userComment.fromUser!=null and userComment.fromUser.userId!=null">and ucc.user_id=#{userComment.fromUser.userId}</if>
+        <if test="userComment.fromUser!=null and userComment.fromUser.userId!=null">and
+            ucc.user_id=#{userComment.fromUser.userId}
+        </if>
         and ucc.comment_id is null
         order by ucc.user_comment_create_time desc
         limit #{rowIndex},#{pageSize};
     </select>
+
+    <insert id="insertUserComment" parameterType="com.cdq.model.UserComment">
+        insert into user_comment(
+        article_id,from_user_id,user_comment_content,user_comment_create_time
+        <if test="#{userComment != null and userComment.userCommentId != null}">
+            ,comment_id
+        </if>
+        <if test="#{toUser != null and toUser.userId != null}">
+            ,to_user_id
+        </if>
+        )values(
+        #{article.articleId},#{fromUser.userId},#{userCommentContent},#{userCommentCreateTime}
+        <if test="#{userComment != null and userComment.userCommentId != null}">
+            ,#{userComment.userCommentId}
+        </if>
+        <if test="#{toUser != null and toUser.userId != null}">
+            ,#{toUser.userId}
+        </if>
+        )
+    </insert>
 </mapper>

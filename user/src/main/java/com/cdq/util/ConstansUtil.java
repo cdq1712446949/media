@@ -19,4 +19,6 @@ public class ConstansUtil {
     public static String USER_STR = "userStr";
 
     public static String SUCCESS = "success";
+    public static String USER_ID = "userId";
+    public static String ERRMSG = "errMsg";
 }

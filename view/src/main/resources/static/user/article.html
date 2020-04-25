@@ -28,8 +28,22 @@
         <a href="#tab1" class="tab-link active button">推荐</a>
         <a href="#tab2" class="tab-link button">关注</a>
     </div>
+
     <div class="tabs">
-        <div id="tab2" class="tab ">
+        <div id="tab1" class="tab active">
+
+            <!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
+            <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100"
+                 style="margin-top: 12%;height: 90%;" id="tab1_cont">
+                <div class="list-block">
+                    <ul class="list-container" id="list_tab1">
+                    </ul>
+                </div>
+                <!-- 加载提示符 -->
+                <div class="infinite-scroll-preloader">
+                    <div class="preloader"></div>
+                </div>
+            </div>
 
             <!-- Icons in standard bar fixed to the bottom of the screen -->
             <div class="bar bar-footer" style="display: none;">
@@ -39,17 +53,17 @@
                 <a id="btn_send" class="icon icon-star pull-right" style="display: none;"></a>
             </div>
         </div>
-        <div id="tab1" class="tab active">
+        <div id="tab2" class="tab ">
             <div class="page-current">
                 <!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
                 <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100"
                      style="margin-top: 12%;height: 90%;">
                     <div class="list-block">
-                        <ul class="list-container">
+                        <ul class="list-container" id="list_tab2">
                         </ul>
                     </div>
                     <!-- 加载提示符 -->
-                    <div class="infinite-scroll-preloader">
+                    <div class="infinite-scroll-preloader" id="tab2_tishifu">
                         <div class="preloader"></div>
                     </div>
                 </div>
@@ -58,6 +72,7 @@
     </div>
     <script src="http://media.com/media/js/user/scroll.js" type="text/javascript" charset="UTF-8"></script>
     <script src="http://media.com/media/js/user/article.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="http://media.com/media/js/user/comment.js" type="text/javascript" charset="UTF-8"></script>
 </div>
 
 

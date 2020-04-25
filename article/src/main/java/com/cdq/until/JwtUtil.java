@@ -1,10 +1,7 @@
 package com.cdq.until;
 
 import com.alibaba.fastjson.JSON;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 
@@ -123,10 +120,14 @@ public class JwtUtil {
         //签名秘钥，和生成的签名的秘钥一模一样
         SecretKey key = generalKey();
         //得到DefaultJwtParser
-        Claims claims = Jwts.parser()
-                .setSigningKey(key)
-                .parseClaimsJws(jwt).getBody();
-        return claims;
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(key)
+                    .parseClaimsJws(jwt).getBody();
+            return claims;
+        }catch (ExpiredJwtException e){
+            return null;
+        }
     }
 
 

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="http://media.com/media/css/common/sm.min.css">
+    <link rel="stylesheet" href="http://media.com/media/css/common/common.css">
+    <script src='http://media.com/media/js/jquery-3.3.1.js' type="text/javascript" charset="UTF-8"></script>
+</head>
+<style type="text/css">
+    .infinite-scroll-preloader {
+        margin-top: -20px;
+    }
+    .no-dian{
+        style:"list-style-type: none";
+    }
+</style>
+<body>
+<!-- 标题栏 -->
+<header class="bar bar-nav" style="background-color: white">
+    <a href="javascript:window.history.back(-1)" class="label pull-left" style="margin: 10px 0px 0px 50px">返回</a>
+    <a id="action_icon" class="icon icon-share pull-right" style="margin: 0px 50px 0px 0px " ></a>
+</header>
+<div class="content">
+
+    <div class="card facebook-card" data-aid="1">
+        <div class="card-header no-border">
+            <div class="facebook-avatar"><img src="http://media.com/image/images/\head\2.jpg" width="34" height="34">
+            </div>
+            <div class="facebook-name">SuperAdmin</div>
+            <div class="facebook-date">2020-04-23T06:22:00.000+0000</div>
+        </div>
+        <div class="card-content">
+            <div class="card-content-inner">
+                <p>是的法规和</p>
+            </div>
+        </div>
+        <div class="row" style="padding:20px">
+            <div class="card-content"><img src="http://media.com/image/images/\article\2020042314215954430.jpg"
+                                           width="33%" style="float: left;"></div>
+            <div class="card-content"><img src="http://media.com/image/images/\article\2020042314261244864.jpg"
+                                           width="33%"></div>
+        </div>
+        <div class="card-footer no-border">
+            <a href="#" data-aid="1" class="link">赞(0)</a>
+            <a onclick="addComment(this)" data-aid="1" class="link">评论(1)</a>
+            <a href="#" data-aid="1" class="link">分享</a>
+        </div>
+        <div style="height:1200px;width:100%;overflow:auto;background:white;">
+            <ul class="list-container" style="list-style-type: none">
+                <li>
+                    <div class="card">
+                        <div class="card-header no-border">
+                            <div class="facebook-avatar">
+                                <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                     height="34">
+                            </div>
+                            <div class="facebook-name" style="float: left">SuperAdmin</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                        </div>
+                    </div>
+                    <ul class="list-container">
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="card-header no-border">
+                            <div class="facebook-avatar">
+                                <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                     height="34">
+                            </div>
+                            <div class="facebook-name">SuperAdmin</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                        </div>
+                    </div>
+                    <ul class="list-container">
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="card-header no-border">
+                            <div class="facebook-avatar">
+                                <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                     height="34">
+                            </div>
+                            <div class="facebook-name">SuperAdmin</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                        </div>
+                    </div>
+                    <ul class="list-container">
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="card-header no-border">
+                            <div class="facebook-avatar">
+                                <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                     height="34">
+                            </div>
+                            <div class="facebook-name">SuperAdmin</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                        </div>
+                    </div>
+                    <ul class="list-container">
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header no-border">
+                                <div class="facebook-avatar">
+                                    <img src="http://media.com/image/images/\head\2.jpg" width="34"
+                                         height="34">
+                                </div>
+                                <div class="facebook-name">SuperAdmin</div>
+                            </div>
+                            <div class="card-content">
+                                <div class="card-content-inner">头和尾的卡片。卡头是用来显示一些额外的信息，或自定义操作卡标题和页脚。</div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Icons in standard bar fixed to the bottom of the screen -->
+    </div>
+    <div id="footer_comment" class="bar bar-footer" style="display: none;">
+        <a class="icon icon-edit pull-left"></a>
+        <input type="text" style="height: 80%; width: 70%; margin: 10px; padding: 5px">
+        <a id="btn_share" class="icon icon-share pull-right" style="display: none"></a>
+        <a id="btn_send" class="icon icon-star pull-right" style="display: none;"></a>
+    </div>
+
+</div>
+
+<script src="http://media.com/media/js/common/common.js" type="text/javascript" charset="UTF-8"></script>
+<script src="http://media.com/media/js/user/article_detial.js" type="text/javascript" charset="UTF-8"></script>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://media.com/media/js/common/sm-extend.js' charset='utf-8'></script>
+<script type='text/javascript' src='http://media.com/media/js/common/sm.js' charset='utf-8'></script>
+</body>
+<script type="text/javascript">
+    $.init();
+</script>
+</html>

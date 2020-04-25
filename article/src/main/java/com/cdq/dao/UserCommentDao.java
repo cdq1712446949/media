@@ -19,4 +19,11 @@ public interface UserCommentDao {
     List<UserComment> queryUserCommentList(@Param("userComment") UserComment userComment,
                                            @Param("rowIndex") int rowIndex, @Param("pageSize") int pageSize);
 
+    /**
+     * 添加用户评论
+     * @param userComment
+     * @return
+     */
+    int insertUserComment(UserComment userComment);
+
 }

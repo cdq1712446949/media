@@ -6,6 +6,12 @@ $(function () {
     function advert(config) {
     }
 
+    // var viewId = window.location.hash;
+    // if (viewId != null && viewId != ''){
+    //     var eml = document.getElementById('ifra_content');
+    //     eml.getAttribute('src','http://media.com/media/'+viewId.substring(1,viewId.length));
+    // }
+
     advert.prototype = {
         constructor: advert,
         adsBox: function () {

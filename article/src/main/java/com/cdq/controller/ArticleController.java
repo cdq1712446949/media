@@ -3,7 +3,6 @@ package com.cdq.controller;
 import com.cdq.Service.ArticleService;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
-import com.cdq.model.User;
 import com.cdq.until.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +45,7 @@ public class ArticleController {
     @RequestMapping("/getArticle")
     public Map getArticle(HttpServletRequest request, String indexPage) {
         Map<String, Object> modelMap = new HashMap<>();
-        //参数转化
+        //        //参数转化
         Article article = (Article) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, "artiStr"), Article.class);
         article.setArticleStatus((byte) 0);
         //service层调用
@@ -58,6 +57,13 @@ public class ArticleController {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
         }
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/ugabi" , method = RequestMethod.POST)
+    public Map getArticleById(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+
         return modelMap;
     }
 
@@ -124,18 +130,25 @@ public class ArticleController {
         return modelMap;
     }
 
-    @RequestMapping(value = "/ugaal",method = RequestMethod.POST)
-    public Map getAttArticle(HttpServletRequest request){
-        Map<String,Object> modelMap = new HashMap<>();
+    @RequestMapping(value = "/ugaal", method = RequestMethod.POST)
+    public Map getAttArticle(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
         String userId = ObjectUtil.getUserId(request).getUserId();
-        int indexPage = HttpServletRequestUtil.getInt(request,"indexPage");
-        ArticleExecution result = articleService.getAttArticle(userId,indexPage,10);
-        if (result.getState()==0){
-            modelMap.put(ConstansUtil.SUCCESS,true);
-            modelMap.put(ConstansUtil.ARTICLE_LIST,result.getArticleList());
-        }else{
-            modelMap.put(ConstansUtil.SUCCESS,false);
-            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        if (ConstansUtil.EMPTY_STR.equals(userId)) {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, "当前登录已过期，请重新登录");
+            return modelMap;
+        }
+        int indexPage = HttpServletRequestUtil.getInt(request, "indexPage");
+        ArticleExecution result = articleService.getAttArticle(userId, indexPage, 10);
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+            modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
+            modelMap.put(ConstansUtil.TOTAL_SIZE, result.getCount());
+            modelMap.put(ConstansUtil.TOTAL_PAGE, Math.ceil(result.getCount() / 10));
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
         }
         return modelMap;
     }
