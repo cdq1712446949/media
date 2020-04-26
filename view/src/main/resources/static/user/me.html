@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <script src='http://media.com/media/js/jquery-3.3.1.js'></script>
 </head>
+<style>
+    .white-sty {
+        background-color: white;
+    }
+
+    .user-info-a {
+        font-size: small;
+        color: #000;
+    }
+    .yuan-head{
+        width: 3.2rem;
+        border-radius:5rem;
+        margin: 1rem 0 0 0;
+    }
+</style>
 <body>
 <div class="content" style="background-color: whitesmoke;">
     <div class="page-current">
@@ -15,7 +30,95 @@
             <p><a href="http://media.com/media/user/login.html" class="button button-success">登录</a></p>
         </div>
         <div id="login-yes">
-
+            <header class="bar bar-nav white-sty">
+                <h1 class="title">个人中心</h1>
+            </header>
+            <div class="content white-sty">
+                <div style="width: 100%; text-align: center;">
+                    <img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg"
+                         class="yuan-head" onclick="chooseFile()">
+                    <input type="file" id="head_change" style="display: none">
+                </div>
+                <div class="row" style="text-align: center">
+                    <a class="user-info-a">粉丝:1000 &nbsp;&nbsp;</a>
+                    <a class="user-info-a">文章:1000</a>
+                </div>
+                <div class="content-block-title" style="margin: 0.5rem 0 0.5rem 1rem">个人信息</div>
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">昵称</div>
+                                <div class="item-after">ヅてＤＱ</div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">签名</div>
+                                <div class="item-after">少壮不努力，老大徒伤悲</div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-media"><i class="icon icon-f7"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">性别</div>
+                                <div class="item-after">男</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block-title" style="margin: 0.5rem 0 0.5rem 1rem">账号管理</div>
+                <div class="list-block media-list inset" style="margin-bottom: 0.5rem">
+                    <ul>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">我的文章</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">我的关注</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">我的收藏</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item-link item-content">
+                                <div class="item-inner">
+                                    <div class="item-title-row">
+                                        <div class="item-title">账号设置</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-block">
+                    <div class="row" >
+                        <div class="col-100" style="text-align: center">
+                            <a href="#" class="button button-big button-fill button-danger"
+                               style="width: 100%;">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

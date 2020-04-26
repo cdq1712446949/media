@@ -17,10 +17,13 @@ $(function () {
         isLogin = true;
     }
 
-    if (isLogin){
-        var eml = document.getElementById("add_article");
-        eml.setAttribute('href','http://media.com/media/articleEdit')
-    }
+    addArticle = function(){
+        if (isLogin){
+            window.parent.location.href = 'http://media.com/media/articleEdit';
+        }else {
+            window.parent.location.href = 'http://media.com/media/login';
+        }
+    };
 
     $(document).on("pageInit", function () {
         var fistLevelList;

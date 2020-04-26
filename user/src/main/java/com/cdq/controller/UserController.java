@@ -92,6 +92,9 @@ public class UserController {
 
     /**
      * 用户注册接口
+     * TODO 添加ip重复注册验证机制
+     * 注册前检查redis缓存中是否有当前ip注册记录
+     * 注册成功后，添加redis记录，时间设置为24小时
      */
     @RequestMapping("/register")
     @HystrixCommand(

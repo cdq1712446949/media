@@ -9,7 +9,9 @@ $(function () {
         $('#login-no').hide();
         $('#login-yes').show();
     }
-
-
+    
+    chooseFile = function () {
+        document.getElementById("head_change").click();
+    }
 
 });

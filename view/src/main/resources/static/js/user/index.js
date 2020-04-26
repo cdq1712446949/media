@@ -12,6 +12,8 @@ $(function () {
     //     eml.getAttribute('src','http://media.com/media/'+viewId.substring(1,viewId.length));
     // }
 
+    //TODO 获取用户所有未读消息数量
+
     advert.prototype = {
         constructor: advert,
         adsBox: function () {

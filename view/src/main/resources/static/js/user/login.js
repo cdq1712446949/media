@@ -7,8 +7,8 @@ $(function () {
     if (localUserInfo == null) {
         localStorage.setItem("user_info_arr", "");
     } else {
-        $('#username input').val( localUserInfo.userName);
-        $('#password input').val( localUserInfo.passWord);
+        $('#username input').val(localUserInfo.userName);
+        $('#password input').val(localUserInfo.passWord);
     }
 
 
@@ -74,10 +74,10 @@ $(function () {
                             userName: un,
                             passWord: pw
                         };
-                        localStorage.setItem("user_info_arr",JSON.stringify(user));
+                        localStorage.setItem("user_info_arr", JSON.stringify(user));
                     }
                     alert("登录成功 ")
-                    window.location.href = 'http://media.com/media/article';
+                    window.location.href = 'http://media.com/media/index';
                 } else {
                     alert(data.errMsg);
                 }
