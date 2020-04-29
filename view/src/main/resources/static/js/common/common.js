@@ -28,7 +28,7 @@ function changeKaptcha(img) {
 
 function getQueryString(name) {
     //解析地址,获取参数json对象
-    var href = window.location.href;
+    var href = decodeURI(window.location.href);
     var arr1 = href.split('?');
     if (arr1.length <= 1) {
         return null;

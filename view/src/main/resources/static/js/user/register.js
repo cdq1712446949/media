@@ -13,14 +13,14 @@ $(function () {
 
     regiter = function () {
         var user = {};
-        user.userName = $('#username').val();
-        user.password = $('#password').val();
-        user.nickName = $('#nick_name').val();
-        user.userSex = $('#sex').val();
-        user.userDesc = $('#intr').val();
-        user.userBirthday = $('#birth').val();
-        user.userEmail = $('#user_email').val();
-        if (user.userName==null || user.password==null){
+        user.userName = $('#username input').val();
+        user.passWord = $('#password input').val();
+        user.nickName = $('#nick_name input').val();
+        user.userSex = $('#sex input').val();
+        user.userDesc = $('#intr input').val();
+        user.userBirthday = $('#birth input').val();
+        user.userEmail = $('#user_email input').val();
+        if (user.userName==null || user.passWord==null){
             $('#uname-tishi').show();
             $('#password-tishi').show();
             return

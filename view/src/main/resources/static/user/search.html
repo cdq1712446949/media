@@ -12,24 +12,34 @@
     .infinite-scroll-preloader {
         margin-top: -20px;
     }
+
     .user-info-a {
-        font-size: large;
+        font-size: smaller;
         color: #000;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
+
     .white-sty {
         background-color: white;
     }
+
     .link-top {
         width: 100%;
         height: 1px;
         border-top: solid #ACC0D8 1px;
     }
-    .lable-content{
-        margin: 1rem;
-    }
-    .type-li{
-        display: inline-block;
 
+    .lable-content {
+        margin: 0.3rem;
+    }
+
+    .type-li {
+        display: inline-block;
+        margin: 0.3rem 1rem;
+        text-align: center;
     }
 </style>
 <body>
@@ -46,41 +56,35 @@
     </div>
 </div>
 <div class="content white-sty">
-    <div id="lable_content" class="lable-content">
-        <div class="row">
-            <div class="col-50"><a class="pull-left user-info-a">1.周扬青再爆料</a></div>
-            <div class="col-50"><a class="pull-left user-info-a">2.周扬青再爆料</a></div>
-        </div>
-        <div class="row">
-            <div class="col-50"><a class="pull-left user-info-a">1.周扬青再爆料</a></div>
-            <div class="col-50"><a class="pull-left user-info-a">2.周扬青再爆料</a></div>
-        </div>
-        <div class="row">
-            <div class="col-50"><a class="pull-left user-info-a">1.周扬青再爆料</a></div>
-            <div class="col-50"><a class="pull-left user-info-a">2.周扬青再爆料</a></div>
-        </div>
-        <div class="row">
-            <div class="col-50"><a class="pull-left user-info-a">1.周扬青再爆料</a></div>
-            <div class="col-50"><a class="pull-left user-info-a">2.周扬青再爆料</a></div>
-        </div>
-        <div class="row">
-            <div class="col-50"><a class="pull-left user-info-a">1.周扬青再爆料</a></div>
-            <div class="col-50"><a class="pull-left user-info-a">2.周扬青再爆料</a></div>
-        </div>
+    <div style="text-align: center;">
+        <a class="label">热门话题</a></div>
+    <div class="link-top"></div>
+    <div class="link-top"></div>
+    <div id="lable1_content" class="lable-content">
+
     </div>
     <div class="link-top"></div>
     <div>
-        <ul class="list-block" >
-            <li class="type-li"><a class="icon icon-share"></a> </br> <a>分享</a></li>
-            <li class="type-li"><a class="icon icon-share"></a> </br> <a>分享</a></li>
-            <li class="type-li"><a class="icon icon-share"></a> </br> <a>分享</a></li>
-            <li class="type-li"><a class="icon icon-share"></a> </br> <a>分享</a></li>
+        <ul class="list-block" style="margin: 5px; padding: 5px 10px 5px 20px">
+            <li class="type-li"><a class="icon icon-share"></a> </br> <a>生活</a></li>
+            <li class="type-li"><a class="icon icon-app"></a> </br> <a>游戏</a></li>
+            <li class="type-li"><a class="icon icon-home"></a> </br> <a>两性</a></li>
+            <li class="type-li"><a class="icon icon-emoji"></a> </br> <a>美妆</a></li>
+            <li class="type-li"><a class="icon icon-up"></a> </br> <a>运动</a></li>
+            <li class="type-li"><a class="icon icon-code"></a> </br> <a>科技</a></li>
+            <li class="type-li"><a class="icon icon-new"></a> </br> <a>萌宠</a></li>
+            <li class="type-li"><a class="icon icon-browser"></a> </br> <a>政治</a></li>
         </ul>
+    </div>
+    <div class="link-top"></div>
+    <div style="text-align: center;">
+        <a class="label">实时上升热点</a></div>
+    <div class="link-top"></div>
+    <div id="lable2_content" class="lable-content">
+
     </div>
 </div>
 <script src="http://media.com/media/js/user/search.js" type="text/javascript" charset="UTF-8"></script>
-
-
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/sm-extend.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/sm.js' charset='utf-8'></script>

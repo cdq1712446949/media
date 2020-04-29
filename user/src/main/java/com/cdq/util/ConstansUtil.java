@@ -21,4 +21,8 @@ public class ConstansUtil {
     public static String SUCCESS = "success";
     public static String USER_ID = "userId";
     public static String ERRMSG = "errMsg";
+    public static String SECRET_MESSAGE_LIST = "secretMessageList";
+    public static String MESSAGE_NUMBER_LIST = "messageNumberList";
+    public static String TOKEN= "token";
+    public static String FROM_USER_ID = "fromUserId";
 }

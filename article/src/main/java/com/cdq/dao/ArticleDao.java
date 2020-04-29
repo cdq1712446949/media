@@ -15,7 +15,8 @@ public interface ArticleDao {
      * * 根据title,discription模糊查询
      * * 根据id查询，id查询不在组合查询内
      * * 根据作者查询
-     * @param article 组合查询条件
+     *
+     * @param article  组合查询条件
      * @param rowIndex 从第几行开始获取
      * @param pageSize 每一页记录的数量
      * @return
@@ -59,6 +60,7 @@ public interface ArticleDao {
     /**
      * 根据userId获取最新发布的五篇文章
      * 文章状态必须为0才可以获取
+     *
      * @param article
      * @return
      */
@@ -66,6 +68,7 @@ public interface ArticleDao {
 
     /**
      * 获取该条件下的文章数量
+     *
      * @param article
      * @return
      */
@@ -73,19 +76,36 @@ public interface ArticleDao {
 
     /**
      * 根据userId获取该用户关注的人的文章
+     *
      * @param userId
      * @param rowIndex
      * @param pageSize
      * @return
      */
-    List<Article> queryAttArticle(@Param("userId") String userId ,@Param("rowIndex")int rowIndex,
-                                  @Param("pageSize")int pageSize );
+    List<Article> queryAttArticle(@Param("userId") String userId, @Param("rowIndex") int rowIndex,
+                                  @Param("pageSize") int pageSize);
 
     /**
      * 查询关注用户文章数量
+     *
      * @param userId
      * @return
      */
     int queryAttArticleCount(@Param("userId") String userId);
+
+    /**
+     * 获取带有视频的文章列表
+     *
+     * @param article
+     * @return
+     */
+    List<Article> queryVideoArticle(@Param("article") Article article, @Param("rowIndex") int rowIndex,
+                                    @Param("pageSize") int pageSize);
+
+    /**
+     * 查询视频文章总数
+     * @return
+     */
+    int queryVideoArticleCount();
 
 }

@@ -4,7 +4,6 @@ package com.cdq.Service.impl;
 import com.cdq.Service.ArticleService;
 import com.cdq.dao.ArticleDao;
 import com.cdq.dao.ArticleTypeDao;
-import com.cdq.enums.ArticleStateEnum;
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
@@ -235,7 +234,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     /**
-     *  //TODO 添加参数校验
+     * //TODO 添加参数校验
+     *
      * @param userId
      * @param indexPage
      * @param pageSize
@@ -243,13 +243,37 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public ArticleExecution getAttArticle(String userId, int indexPage, int pageSize) {
-        List<Article> result = articleDao.queryAttArticle(userId,PageUtil.pageToRowIndex(indexPage,pageSize),pageSize);
+        List<Article> result = articleDao.queryAttArticle(userId, PageUtil.pageToRowIndex(indexPage, pageSize), pageSize);
         int count = articleDao.queryAttArticleCount(userId);
-        if (result != null){
-            ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS,result);
+        if (result != null) {
+            ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS, result);
             articleExecution.setCount(count);
             return articleExecution;
         } else {
+            return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
+
+    /**
+     * 获取视频文章列表
+     * @param article
+     * @param indexPage
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ArticleExecution getVideoArticle(Article article, int indexPage, int pageSize) {
+        try {
+            List<Article> result = articleDao.queryVideoArticle(article,PageUtil.pageToRowIndex(indexPage,pageSize),pageSize);
+            int count = articleDao.queryVideoArticleCount();
+            if (result != null) {
+                ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS, result);
+                articleExecution.setCount(count);
+                return articleExecution;
+            }else {
+                return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+            }
+        } catch (Exception e) {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
         }
     }

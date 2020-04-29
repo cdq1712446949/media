@@ -16,6 +16,10 @@ public class ArticleDaoTest extends BaseTest {
     private ArticleDao articleDao;
 
     @Test
+    public void testQueryVideo(){
+    }
+
+    @Test
     public void testQueryArticleList(){
         Article article=new Article();
         article.setArticleStatus((byte) 0);

@@ -15,63 +15,37 @@ import java.util.List;
  * @version: 1.0.1
  */
 @ToString
+@Getter
+@Setter
 public class Article {
-    @Getter
-    @Setter
+
     private Integer articleId;
-    @Getter
-    @Setter
-    private Short goodNum;
-    @Getter
-    @Setter
     private Short lookNum;
-    @Getter
-    @Setter
+    private Integer goodNum;
+    private String videoSrc;
     private Byte articleStatus;
-    @Getter
-    @Setter
     private Date articleCreateTime;
-    @Getter
-    @Setter
     private Date articleLastEditTime;
-    @Getter
-    @Setter
     private String articleContent;
     /**
      *文章作者
      */
-    @Getter
-    @Setter
     private User user;
     /**
      * 文章类型
       */
-    @Getter
-    @Setter
     private ArticleType articleType;
+    private ArticleLable articleLable;
     /**
      * 评论数量
      */
-    @Getter
-    @Setter
     private Integer commentNum;
     /**
      * 评论列表
      */
-    @Getter
-    @Setter
     private List<UserComment> userCommentList;
-
-    @Getter
-    @Setter
     private Date startTime;
-
-    @Getter
-    @Setter
     private Date endTime;
-
-    @Getter
-    @Setter
     private List<Photo> photoList;
 
 }

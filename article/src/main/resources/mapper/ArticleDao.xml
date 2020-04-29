@@ -4,13 +4,14 @@
     <resultMap id="articleMap" type="com.cdq.model.Article">
         <id property="articleId" column="article_id"></id>
         <result property="articleDiscription" column="article_discription"></result>
-        <result property="goodNum" column="good_num"></result>
         <result property="lookNum" column="look_num"></result>
+        <result property="goodNum" column="good_num"></result>
         <result property="articleContent" column="article_content"></result>
         <result property="articleStatus" column="article_status"></result>
         <result property="articleCreateTime" column="article_create_time"></result>
         <result property="articleLastEditTime" column="article_last_edit_time"></result>
         <result property="commentNum" column="comment_num"></result>
+        <result property="videoSrc" column="video_src"></result>
         <!--多对一关联-->
         <association property="user" column="user_id" javaType="com.cdq.model.User">
             <id property="userId" column="user_id"></id>
@@ -33,7 +34,7 @@
             <result property="articleTypeCreateTime" column="article_type_create_time"></result>
             <result property="articleTypeLastEditTime" column="article_type_last_edit_time"></result>
         </association>
-        <collection property="photoList" ofType="com.cdq.model.Photo" column="article_id" >
+        <collection property="photoList" ofType="com.cdq.model.Photo" column="article_id">
             <id property="photoId" column="photo_id"></id>
             <result property="article.articleId" column="photo_article_id"></result>
             <result property="photoNum" column="photo_num"></result>
@@ -42,6 +43,24 @@
             <result property="photoCreateTime" column="photo_create_time"></result>
         </collection>
     </resultMap>
+    <select id="queryArticleByLable" resultMap="articleMap">
+        SELECT
+        a.*,
+        u.user_id,
+        u.nick_name,
+        u.user_sex,
+        u.user_head_photo,
+        comm.comment_num,
+        tu.good_num
+        from (select * from article limit  #{rowIndex},#{pageSize}) as a
+        left join User as u on a.user_id = u.user_id
+        left join (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up group by up_article_id )
+         as tu on tu.up_article_id=a.article_id
+         left join  (select distinct(article_id),count(article_id) as comment_num from user_comment group by article_id)
+         as comm on a.article_id=comm.article_id
+         where a.video_src is not null
+        order by a.look_num desc
+    </select>
     <!--根据文章id获取文章记录-->
     <select id="queryArticleById" resultMap="articleMap">
         SELECT
@@ -73,9 +92,6 @@
         u.nick_name,
         u.user_sex,
         u.user_role,
-        u.user_exprience,
-        u.user_email,
-        u.user_birthday,
         u.user_head_photo,
         art.article_type_id,
         art.parent_id,
@@ -84,8 +100,9 @@
         art.article_type_create_time,
         art.article_type_last_edit_time,
         c.comment_num,
+        tu.good_num,
         p.*
-        FROM(select * from article  limit #{rowIndex},#{pageSize}) as a
+        FROM(select * from article limit #{rowIndex},#{pageSize}) as a
         LEFT JOIN user as u on a.user_id=u.user_id
         LEFT JOIN (select * from article_type
         <where>
@@ -101,6 +118,8 @@
         LEFT JOIN (select distinct(article_id),count(article_id) as comment_num from user_comment
         group by article_id) as c on a.article_id=c.article_id
         LEFT JOIN photo as p on a.article_id=p.article_id
+        LEFT JOIN (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up
+        group by up_article_id) as tu on a.article_id=tu.up_article_id
         <where>
             <if test="article.articleType!= null ">
                 <if test="article.articleType.articleTypeId != -1">
@@ -120,9 +139,40 @@
             <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
             and art.article_type_id is not null
         </where>
-        order by good_num+look_num desc
+        order by look_num desc
     </select>
 
+    <!--获取视频文章列表-->
+    <select id="queryVideoArticle" resultMap="articleMap">
+        SELECT
+        a.*,
+        u.user_id,
+        u.nick_name,
+        u.user_sex,
+        u.user_head_photo,
+        comm.comment_num,
+        tu.good_num
+        from (select * from article limit  #{rowIndex},#{pageSize}) as a
+        left join User as u on a.user_id = u.user_id
+        left join (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up group by up_article_id )
+         as tu on tu.up_article_id=a.article_id
+         left join  (select distinct(article_id),count(article_id) as comment_num from user_comment group by article_id)
+         as comm on a.article_id=comm.article_id
+         where a.video_src is not null
+        order by a.look_num desc
+    </select>
+    <!--获取视频文章列表总数-->
+    <select id="queryVideoArticleCount" resultType="java.lang.Integer">
+        SELECT count(a.article_id)
+        from article  as a
+        left join User as u on a.user_id = u.user_id
+        left join (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up group by up_article_id )
+         as tu on tu.up_article_id=a.article_id
+         left join  (select distinct(article_id),count(article_id) as comment_num from user_comment group by article_id)
+         as comm on a.article_id=comm.article_id
+         where a.video_src is not null
+        order by a.look_num desc
+    </select>
     <select id="queryAttArticle" resultMap="articleMap">
         SELECT
         a.*,

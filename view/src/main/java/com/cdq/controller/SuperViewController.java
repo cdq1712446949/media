@@ -77,4 +77,9 @@ public class SuperViewController {
         return  "user/report";
     }
 
+    @RequestMapping(value = "/chat" , method = RequestMethod.GET)
+    public String chat(){
+        return  "user/chat";
+    }
+
 }

@@ -6,6 +6,8 @@
 
     <link rel="stylesheet" href="http://media.com/media/css/common/sm.min.css">
     <link rel="stylesheet" href="http://media.com/media/css/common/common.css">
+    <link href="//cdn.bootcss.com/video.js/7.0.0-alpha.1/alt/video-js-cdn.css" rel="stylesheet">
+
     <script src='http://media.com/media/js/jquery-3.3.1.js' type="text/javascript" charset="UTF-8"></script>
 </head>
 <style type="text/css">
@@ -14,30 +16,30 @@
     }
 </style>
 <body>
-
+<header class="bar bar-nav">
+    <h1 class='title'>视频</h1>
+    <a class="icon icon-refresh pull-right" id="a_refrash"></a>
+</header>
 <div class="content">
-    <div class="tabs">
-        <div id="tab2" class="tab active">
+
             <div class="page-current">
                 <!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
-                <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100"
-                     style="margin-top: 12%;height: 90%;">
+                <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100">
                     <div class="list-block">
-                        <ul class="list-container">
+                        <ul class="list-container" id="video_content">
+
                         </ul>
                     </div>
                     <!-- 加载提示符 -->
-                    <div class="infinite-scroll-preloader">
+                    <div class="infinite-scroll-preloader" id="tishifu">
                         <div class="preloader"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     <script src="http://media.com/media/js/user/video.js" type="text/javascript" charset="UTF-8"></script>
 </div>
 
-
+<script src="//cdn.bootcss.com/video.js/7.0.0-alpha.1/video.min.js"></script>
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/sm-extend.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/sm.js' charset='utf-8'></script>

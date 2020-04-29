@@ -59,4 +59,10 @@ public interface ArticleService {
      */
     ArticleExecution getAttArticle(String userId , int indexPage, int pageSize);
 
+    /**
+     * 获取视频文章，根据热度排序
+     * @return
+     */
+    ArticleExecution getVideoArticle(Article article,int indexPage,int pageSize);
+
 }

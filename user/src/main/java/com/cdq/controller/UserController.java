@@ -41,18 +41,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    @RequestMapping(value = "/getUser.do")
-    public R getUser() {
-        return R.success("UserController.getUser()");
-    }
-
     /**
      * 用户登录方法
      * 业务逻辑：
      * 1.查询用户名是否存在，如果存在检查密码是否正确，如果不存在返回提示信息，如果密码错误返回提示信息
      * 2.密码正确后根据用户信息生成token加密后返回给用户，并提示登陆成功
-     *
      * @return
      */
     @RequestMapping(value = "/login")
@@ -108,6 +101,7 @@ public class UserController {
     public Map<String, Object> register(HttpServletRequest request) {
         Map<String ,Object> modelMap = new HashMap<>();
         //参数转换
+        String userStr = HttpServletRequestUtil.getString(request,ConstansUtil.USER_STR);
         User user = (User) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request,ConstansUtil.USER_STR),User.class);
         //生成userId
         user.setUserId(UserIdUtil.createUserId());
@@ -125,11 +119,13 @@ public class UserController {
 
     /**
      * 降级方法访问控制修饰类型，返回类型，参数都要和原方法一致
-     *
-     * @param user
+     * @param request
      * @return
      */
-    public Object registerErro(String user) {
-        return R.error("服务异常，请重试！");
+    public Map<String,Object> registerErro(HttpServletRequest request) {
+        Map modelMap =new HashMap();
+        modelMap.put(ConstansUtil.SUCCESS,false);
+        modelMap.put(ConstansUtil.ERRMSG,"服务异常，请重试");
+        return modelMap;
     }
 }

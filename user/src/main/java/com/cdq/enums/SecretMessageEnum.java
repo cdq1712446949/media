@@ -1,6 +1,6 @@
 package com.cdq.enums;
 
-public enum UserStateEnum {
+public enum SecretMessageEnum {
 
     SUCCESS(0, "操作成功"),INNER_ERROR(-1001,"系统错误"),EMPTY_USER(-1002,"user不能为null"),
     EMPTY_USERNAME(-1003,"账号不能为空"),EMPTY_PASSWORD(-1004,"密码不能为空"),ACCOUNT_ERROR(-1005,"帐号或者密码错误"),
@@ -10,7 +10,7 @@ public enum UserStateEnum {
     private int state;
     private String stateInfo;
 
-    UserStateEnum(int state, String stateInfo) {
+    SecretMessageEnum(int state, String stateInfo) {
         this.state = state;
         this.stateInfo = stateInfo;
     }

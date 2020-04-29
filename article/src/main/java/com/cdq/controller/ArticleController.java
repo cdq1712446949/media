@@ -3,6 +3,7 @@ package com.cdq.controller;
 import com.cdq.Service.ArticleService;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
+import com.cdq.model.ArticleType;
 import com.cdq.until.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,19 +49,20 @@ public class ArticleController {
         //        //参数转化
         Article article = (Article) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, "artiStr"), Article.class);
         article.setArticleStatus((byte) 0);
+        //接收typeId参数
+        String typeId = HttpServletRequestUtil.getString(request, "typeId");
+        if (typeId != null && !ConstansUtil.EMPTY_STR.equals(typeId)) {
+            ArticleType articleType = new ArticleType();
+            articleType.setArticleTypeId(Short.valueOf(typeId));
+            article.setArticleType(articleType);
+        }
         //service层调用
         ArticleExecution result = articleService.getArticleList(article, Integer.parseInt(indexPage), 10);
-        if (result.getState() == 0) {
-            modelMap.put(ConstansUtil.SUCCESS, true);
-            modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
-        } else {
-            modelMap.put(ConstansUtil.SUCCESS, false);
-            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
-        }
+        resolveResult(result, modelMap);
         return modelMap;
     }
 
-    @RequestMapping(value = "/ugabi" , method = RequestMethod.POST)
+    @RequestMapping(value = "/ugabi", method = RequestMethod.POST)
     public Map getArticleById(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
 
@@ -137,19 +139,22 @@ public class ArticleController {
         if (ConstansUtil.EMPTY_STR.equals(userId)) {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put(ConstansUtil.ERRMSG, "当前登录已过期，请重新登录");
+            modelMap.put(ConstansUtil.ERR_CODE, ConstansUtil.CODE_LOGIN_TIME_OUT);
             return modelMap;
         }
         int indexPage = HttpServletRequestUtil.getInt(request, "indexPage");
         ArticleExecution result = articleService.getAttArticle(userId, indexPage, 10);
-        if (result.getState() == 0) {
-            modelMap.put(ConstansUtil.SUCCESS, true);
-            modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
-            modelMap.put(ConstansUtil.TOTAL_SIZE, result.getCount());
-            modelMap.put(ConstansUtil.TOTAL_PAGE, Math.ceil(result.getCount() / 10));
-        } else {
-            modelMap.put(ConstansUtil.SUCCESS, false);
-            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
-        }
+        resolveResult(result, modelMap);
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/ugval", method = RequestMethod.POST)
+    public Map getVideoArticle(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        //调用service
+        ArticleExecution result = articleService.getVideoArticle(new Article(),
+                HttpServletRequestUtil.getInt(request, ConstansUtil.INDEX_PAGE), 10);
+        resolveResult(result, modelMap);
         return modelMap;
     }
 
@@ -171,6 +176,18 @@ public class ArticleController {
         ImageHolder imageHolder = new ImageHolder(multipartFile.getFileItem().getName(), multipartFile.getInputStream());
         String dest = PathUtil.getShopImagePath(String.valueOf(article.getArticleId()));
         return ImageUtil.generateThumbnails(imageHolder, dest);
+    }
+
+    private void resolveResult(ArticleExecution result, Map modelMap) {
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+            modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
+            modelMap.put(ConstansUtil.TOTAL_SIZE, result.getCount());
+            modelMap.put(ConstansUtil.TOTAL_PAGE, Math.ceil(result.getCount() / 10));
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
+        }
     }
 
 }

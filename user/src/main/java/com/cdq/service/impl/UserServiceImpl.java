@@ -10,6 +10,8 @@ import com.cdq.util.ConstansUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -89,7 +91,7 @@ public class UserServiceImpl implements UserService {
         User admin = userDao.querySuperAdmin(user);
         if (admin != null) {
             if (!admin.getUserStatus().equals(User.STATUS_FROZEN)) {
-                return new UserExecution(UserStateEnum.SUCCESS,admin);
+                return new UserExecution(UserStateEnum.SUCCESS, admin);
             } else {
                 return new UserExecution(UserStateEnum.ACCOUNT_BAN);
             }
@@ -100,22 +102,28 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 用户注册接口
+     *
      * @param user
      * @return
      */
     @Override
     public UserExecution register(User user) {
         //TODO 参数校验
-        //调用dao层
-        int result = userDao.registerUser(user);
+        user.setUserCreateTime(new Date());
         //处理头像
-        if (user.getUserHeadPhoto()==null || ConstansUtil.EMPTY.equals(user.getUserHeadPhoto())){
+        if (user.getUserHeadPhoto() == null || ConstansUtil.EMPTY.equals(user.getUserHeadPhoto())) {
             user.setUserHeadPhoto("\\head\\default.png");
         }
-        if (result == 0 ){
-            return new UserExecution(UserStateEnum.INNER_ERROR);
-        }else {
-            return new UserExecution(UserStateEnum.SUCCESS);
+        //调用dao层
+        try {
+            int result = userDao.registerUser(user);
+            if (result == 0) {
+                return new UserExecution(UserStateEnum.INNER_ERROR);
+            } else {
+                return new UserExecution(UserStateEnum.SUCCESS);
+            }
+        } catch (Exception e) {
+            return new UserExecution(UserStateEnum.ALREAD_EXIT);
         }
     }
 

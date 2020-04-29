@@ -71,7 +71,12 @@ $(function () {
                     });
                     $('#list_tab2').append(tempHtml);
                 } else {
+                    if (data.errCode=='600'){
+                        sessionStorage.removeItem('media_login_info');
+                        sessionStorage.removeItem('media_token');
+                    }
                     alert("获取文章列表失败，" + data.errMsg);
+
                 }
             }
         })
@@ -97,13 +102,6 @@ $(function () {
         setTimeout(function () {
             // 重置加载flag
             loading = false;
-            if (lastIndex >= maxItems) {
-                // 加载完毕，则注销无限加载事件，以防不必要的加载
-                $.detachInfiniteScroll($('.infinite-scroll'));
-                // 删除加载提示符
-                $('.infinite-scroll-preloader').remove();
-                return;
-            }
             // 添加新条目
             indexPage += 1;
             if (indexPage>totalPageSize){

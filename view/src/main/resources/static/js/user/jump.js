@@ -7,9 +7,9 @@ $(function () {
             window.location.href='http://media.com/media/login';
         }
         //修改页面
-        var tempHtml = '<iframe src="user/'
+        var tempHtml = '<iframe src="http://media.com/media/'
             +viewName
-            + '.html" style="width: 100%; height: 100%; border: none;"></iframe>';
+            + '" style="width: 100%; height: 100%; border: none;"></iframe>';
         switch (activeName){
             case 'article':
                 $('#article').removeClass('active');
