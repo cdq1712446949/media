@@ -5,11 +5,13 @@ import com.cdq.enums.SecretMessageEnum;
 import com.cdq.execution.SecretMessageExecution;
 import com.cdq.model.SecretMessage;
 import com.cdq.service.SecretMessageService;
+import com.cdq.util.ConstansUtil;
 import com.cdq.util.MessageNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,13 +29,14 @@ public class SecretMessageServiceImpl implements SecretMessageService {
 
     /**
      * 获取未读消息列表
+     *
      * @param secretMessage
      * @return
      */
     @Override
     public SecretMessageExecution getSecreMessageNum(SecretMessage secretMessage) {
         //参数校验
-        if (secretMessage.getToUser()==null){
+        if (secretMessage.getToUser() == null) {
             return new SecretMessageExecution(SecretMessageEnum.EMPTY_USER);
         }
         //调用service层
@@ -47,13 +50,14 @@ public class SecretMessageServiceImpl implements SecretMessageService {
 
     /**
      * 获取当前聊天对象的未读消息
+     *
      * @param secretMessage
      * @return
      */
     @Override
     public SecretMessageExecution getSMByFromUser(SecretMessage secretMessage) {
         //参数校验
-        if (secretMessage.getFromUser()==null||secretMessage.getToUser()==null){
+        if (secretMessage.getFromUser() == null || secretMessage.getToUser() == null) {
             return new SecretMessageExecution(SecretMessageEnum.EMPTY_USER);
         }
         //调用service层
@@ -67,13 +71,14 @@ public class SecretMessageServiceImpl implements SecretMessageService {
 
     /**
      * 获取历史消息记录
+     *
      * @param secretMessage
      * @return
      */
     @Override
     public SecretMessageExecution getHistoryMessage(SecretMessage secretMessage) {
         //参数校验
-        if (secretMessage.getFromUser()==null||secretMessage.getToUser()==null){
+        if (secretMessage.getFromUser() == null || secretMessage.getToUser() == null) {
             return new SecretMessageExecution(SecretMessageEnum.EMPTY_USER);
         }
         //调用service层
@@ -87,16 +92,44 @@ public class SecretMessageServiceImpl implements SecretMessageService {
 
     /**
      * 批量修改私信状态
+     *
      * @param list
      * @param state
      * @return
      */
     @Override
     public SecretMessageExecution changeMessageState(List<Integer> list, Byte state) {
-        if (list==null||list.size()==0){
+        if (list == null || list.size() == 0) {
             return new SecretMessageExecution(SecretMessageEnum.SUCCESS);
         }
-        secretMessageDao.updateMessageIsSee(list,state);
+        secretMessageDao.updateMessageIsSee(list, state);
         return new SecretMessageExecution(SecretMessageEnum.SUCCESS);
+    }
+
+    /**
+     * 添加私信记录接口
+     * @param secretMessage
+     * @return
+     */
+    @Override
+    public SecretMessageExecution addMessage(SecretMessage secretMessage) {
+        //校验参数
+        if (!(secretMessage.getFromUser() != null && !ConstansUtil.EMPTY.equals(secretMessage.getFromUser().getUserId()))) {
+            return new SecretMessageExecution(SecretMessageEnum.EMPTY_USER);
+        }
+        if (!(secretMessage.getToUser() != null && !ConstansUtil.EMPTY.equals(secretMessage.getToUser().getUserId()))) {
+            return new SecretMessageExecution(SecretMessageEnum.EMPTY_USER);
+        }
+        if (!(secretMessage.getMessageContent() != null && !ConstansUtil.EMPTY.equals(secretMessage.getMessageContent()))) {
+            return new SecretMessageExecution(SecretMessageEnum.EMPTY_CONTENT);
+        }
+        secretMessage.setMessageCreateTime(new Date());
+        //调用dao层
+        int result = secretMessageDao.insertSecretMessage(secretMessage);
+        if (result!=0){
+            return new SecretMessageExecution(SecretMessageEnum.SUCCESS);
+        }else{
+            return new SecretMessageExecution(SecretMessageEnum.INNER_ERROR);
+        }
     }
 }

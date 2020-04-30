@@ -62,10 +62,31 @@ public class ArticleController {
         return modelMap;
     }
 
+    /**
+     * 通过文章id查询文章记录
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/ugabi", method = RequestMethod.POST)
     public Map getArticleById(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
-
+        String articleId = HttpServletRequestUtil.getString(request, ConstansUtil.ARTICLE_ID);
+        if (articleId != null && !ConstansUtil.EMPTY_STR.equals(articleId)) {
+            Article article = new Article();
+            article.setArticleId(Integer.valueOf(articleId));
+            //调用service层
+            ArticleExecution result = articleService.getArticleById(article);
+            if (result.getState()==0){
+                modelMap.put(ConstansUtil.SUCCESS,true);
+                modelMap.put(ConstansUtil.ARTICLE,result.getArticle());
+            }else{
+                modelMap.put(ConstansUtil.SUCCESS,false);
+                modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+            }
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,"请选择文章");
+        }
         return modelMap;
     }
 

@@ -2,23 +2,20 @@ package com.cdq.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 public class UserInfo {
 
     @Getter
     @Setter
-    private int userId;
+    private String userId;
     @Getter
     @Setter
-    private int blogNum;
+    private Integer articleNum;
     @Getter
     @Setter
-    private int funsNum;
-    @Getter
-    @Setter
-    private int userLookNum;
-    @Getter
-    @Setter
-    private int commentNum;
+    private Integer funsNum;
+
 
 }

@@ -20,7 +20,7 @@ $(function () {
         user.userDesc = $('#intr input').val();
         user.userBirthday = $('#birth input').val();
         user.userEmail = $('#user_email input').val();
-        if (user.userName==null || user.passWord==null){
+        if (user.userName=='' || user.passWord==''){
             $('#uname-tishi').show();
             $('#password-tishi').show();
             return

@@ -38,4 +38,11 @@ public interface UserDao {
      */
     User querySuperAdmin(User user);
 
+    /**
+     * 查询用户文章数量以及粉丝数量
+     * @param user
+     * @return
+     */
+    UserInfo queryArtFunNum (User user);
+
 }

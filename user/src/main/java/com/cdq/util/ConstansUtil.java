@@ -25,4 +25,6 @@ public class ConstansUtil {
     public static String MESSAGE_NUMBER_LIST = "messageNumberList";
     public static String TOKEN= "token";
     public static String FROM_USER_ID = "fromUserId";
+    public static String SM_STR= "smStr";
+    public static String USER_INFO = "userInfo";
 }

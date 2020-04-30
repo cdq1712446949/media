@@ -61,7 +61,6 @@ $(function () {
                     that.adsBox();
                 };
             }
-            ;
             return this;
         },
         // banner广告
@@ -72,7 +71,7 @@ $(function () {
                 + '<img src="https://p0.ssl.qhimg.com/t01cc456dbd8c4fdb8d.png" style="width: 300px;height: 100px;" alt="图片信息"></a></div>';
             document.writeln(html);
         }
-    }
+    };
 
     if (sessionStorage.getItem("isShow") == null) {
         new advert().interstitialAd();

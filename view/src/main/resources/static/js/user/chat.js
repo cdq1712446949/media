@@ -3,6 +3,7 @@ $(function () {
     var historyUrl = 'http://media.com/user/sm/ughm';
     var unMessageUrl = 'http://media.com/user/sm/ugurm';
     var changeMessageUrl = 'http://media.com/user/sm/ucms';
+    var addMessageUrl = 'http://media.com/user/sm/uasm';
 
     var userInfo = JSON.parse(sessionStorage.getItem('media_login_info'));
 
@@ -116,7 +117,57 @@ $(function () {
                 }
             }
         })
-    }
+    };
+
+    initMyMsg = function(content){
+        var userInfo = JSON.parse(sessionStorage.getItem('media_login_info'));
+        var html = ' <li>\n' +
+            '                    <div class="row right-10 mess-common">\n' +
+            '                        <div class=" pull-right">\n' +
+            '                            <img class="yuan-head"\n' +
+            '                                 src="http://media.com/image/images/' + userInfo.userHeadPhoto + '"' +
+            '                                 style=\'width: 2.2rem;\'></div>\n' +
+            '                        <div class="pull-right" style="width: 75%">\n' +
+            '                            <div class="pull-right">' + userInfo.nickName + '</div>\n' +
+            '                            </br>\n' +
+            '                            <div class=" message-green" style="padding: 3px">' + content + '</div>\n' +
+            ' <div class="infinite-scroll-preloader" >\n' +
+            '                        <div class="preloader"></div>\n' +
+            '                    </div>'+
+            '                        </div>\n' +
+            '                    </div>\n' +
+            '                </li>';
+        $('#message_ul').append(html)
+    };
+
+    sendMsg = function () {
+        var msg = {};
+        msg.toUser = {
+            userId:fromUserId
+        };
+        msg.messageContent = $('#msg_content').val();
+        //消除input内容，添加到聊天记录界面，然后发送到后台
+        initMyMsg($('#msg_content').val());
+        $('#msg_content').val('');
+        $.ajax({
+            url:addMessageUrl,
+            type:'POST',
+            data:{
+                token:sessionStorage.getItem('media_token'),
+                smStr:JSON.stringify(msg)
+            },
+            dataType:'JSON',
+            success:function (data) {
+                if (data.success){
+                    $('.infinite-scroll-preloader').remove();
+                    var scrollHeight = $('#scroll_content').prop("scrollHeight");
+                    $('#scroll_content').animate({scrollTop:scrollHeight}, 400);
+                } else {
+                    $.toast('发送失败:'+data.errMsg);
+                }
+            }
+        });
+    };
 
     //每秒执行一次
     setInterval('getUnMessageList()', '1000');

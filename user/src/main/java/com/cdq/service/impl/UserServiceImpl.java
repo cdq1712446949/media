@@ -127,5 +127,25 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 查询用户文章数量以及粉丝数量
+     * @param user
+     * @return
+     */
+    @Override
+    public UserExecution getUserInfo(User user) {
+        //参数校验
+        if (user==null||user.getUserId()==null||ConstansUtil.EMPTY.equals(user.getUserId())){
+            return new UserExecution(UserStateEnum.EMPTY_USER);
+        }
+        //调用dao层
+        UserInfo userInfo = userDao.queryArtFunNum(user);
+        if (userInfo!=null){
+            return new UserExecution(UserStateEnum.SUCCESS,userInfo);
+        }else{
+            return new UserExecution(UserStateEnum.INNER_ERROR);
+        }
+    }
+
 
 }

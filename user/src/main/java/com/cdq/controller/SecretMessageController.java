@@ -45,7 +45,7 @@ public class SecretMessageController {
         secretMessage.setToUser(ObjectUtil.getUserId(request));
         //调用service层
         SecretMessageExecution result = secretMessageService.getSecreMessageNum(secretMessage);
-        resolveResult(result,modelMap,1);
+        resolveResult(result, modelMap, 1);
         return modelMap;
     }
 
@@ -61,7 +61,7 @@ public class SecretMessageController {
         SecretMessage secretMessage = createSM(request);
         //调用service层
         SecretMessageExecution result = secretMessageService.getSMByFromUser(secretMessage);
-        resolveResult(result,modelMap,2);
+        resolveResult(result, modelMap, 2);
         return modelMap;
     }
 
@@ -77,23 +77,49 @@ public class SecretMessageController {
         SecretMessage secretMessage = createSM(request);
         //调用service层
         SecretMessageExecution result = secretMessageService.getHistoryMessage(secretMessage);
-        resolveResult(result,modelMap,2);
+        resolveResult(result, modelMap, 2);
         return modelMap;
     }
 
     /**
      * 批量修改消息状态值
+     *
      * @param request
      * @return
      */
-    @RequestMapping(value = "/ucms" , method = RequestMethod.POST)
-    public Map<String,Object> changeMessageState(HttpServletRequest request){
+    @RequestMapping(value = "/ucms", method = RequestMethod.POST)
+    public Map<String, Object> changeMessageState(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
-        String listStr = HttpServletRequestUtil.getString(request,"listStr");
-        List<Integer> list = (List<Integer>) ObjectUtil.toPojo(listStr,List.class);
+        String listStr = HttpServletRequestUtil.getString(request, "listStr");
+        List<Integer> list = (List<Integer>) ObjectUtil.toPojo(listStr, List.class);
         //调用service层
         SecretMessageExecution result = secretMessageService.changeMessageState(list, (byte) 1);
+        //批量修改消息状态不用返回结果
+        return modelMap;
+    }
 
+    /**
+     * 添加私信记录接口
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/uasm", method = RequestMethod.POST)
+    public Map<String, Object> addSecretMessage(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        //参数装换
+        SecretMessage secretMessage = (SecretMessage) ObjectUtil.toPojo(
+                HttpServletRequestUtil.getString(request, ConstansUtil.SM_STR),
+                SecretMessage.class);
+        //获取token中的userId
+        User fromUser = ObjectUtil.getUserId(request);
+        secretMessage.setFromUser(fromUser);
+        //调用service层
+        SecretMessageExecution result = secretMessageService.addMessage(secretMessage);
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+        }
         return modelMap;
     }
 
@@ -106,13 +132,13 @@ public class SecretMessageController {
         return secretMessage;
     }
 
-    private void resolveResult(SecretMessageExecution result , Map modelMap,int code){
+    private void resolveResult(SecretMessageExecution result, Map modelMap, int code) {
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
-            if (code==1){
+            if (code == 1) {
                 modelMap.put(ConstansUtil.MESSAGE_NUMBER_LIST, result.getMessageNumberList());
             }
-            if (code==2){
+            if (code == 2) {
                 modelMap.put(ConstansUtil.SECRET_MESSAGE_LIST, result.getSecretMessageList());
             }
         } else {

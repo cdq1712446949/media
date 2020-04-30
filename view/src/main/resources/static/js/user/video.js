@@ -118,4 +118,15 @@ $(function () {
         totalPageSize = 0;
         getVideoArticleList();
     });
+
+    var articleDetialUrl = 'http://media.com/media/artideti?articleId=';
+
+    //跳转到文章详情页面
+    addComment = function (that) {
+        var aid = that.dataset.aid;
+        var uid = that.dataset.uid;
+        window.parent.location.href= articleDetialUrl+aid+'&&userId='+uid;
+    };
+
+
 });

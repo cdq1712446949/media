@@ -82,4 +82,23 @@ public class SuperViewController {
         return  "user/chat";
     }
 
+    @RequestMapping(value = "/myArticle" , method = RequestMethod.GET)
+    public String myArticle(){
+        return "user/my_article";
+    }
+
+    @RequestMapping(value = "/myAttention" , method = RequestMethod.GET)
+    public String myAttention(){
+        return "user/my_attention";
+    }
+
+    @RequestMapping(value = "/myCollection" , method = RequestMethod.GET)
+    public String myCollection(){
+        return "user/my_collection";
+    }
+
+    @RequestMapping(value = "/myConfig" , method = RequestMethod.GET)
+    public String myConfig(){
+        return "user/my_config";
+    }
 }

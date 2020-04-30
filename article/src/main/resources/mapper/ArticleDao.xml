@@ -76,11 +76,19 @@
         art.article_type_name,
         art.priority,
         art.article_type_create_time,
-        art.article_type_last_edit_time
+        art.article_type_last_edit_time,
+        c.comment_num,
+        tu.good_num,
+        p.*
         FROM
         article as a
         LEFT JOIN user as u on a.user_id=u.user_id
         LEFT JOIN article_type art on a.article_type_id= art.article_type_id
+        LEFT JOIN photo as p on a.article_id=p.article_id
+        LEFT JOIN (select distinct(article_id),count(article_id) as comment_num from user_comment
+        group by article_id) as c on a.article_id=c.article_id
+        LEFT JOIN (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up
+        group by up_article_id) as tu on a.article_id=tu.up_article_id
         where a.article_id=#{articleId}
     </select>
 

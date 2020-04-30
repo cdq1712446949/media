@@ -2,6 +2,7 @@ package com.cdq.dao;
 
 import com.cdq.model.SecretMessage;
 import com.cdq.model.User;
+import com.cdq.model.UserInfo;
 import com.cdq.util.MessageNumber;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +44,7 @@ public class UserDaoTest extends BaseTest{
         SecretMessage sm = new SecretMessage();
         sm.setToUser(user);
         sm.setFromUser(user1);
-        List<SecretMessage> list = secretMessageDao.querySMByFromUser(sm);
+        List<MessageNumber> list = secretMessageDao.querySecretMessage(sm);
         System.out.println(list.size());
     }
 
@@ -67,6 +68,14 @@ public class UserDaoTest extends BaseTest{
         list.add(2);
         secretMessageDao.updateMessageIsSee(list, (byte) 1);
 
+    }
+
+    @Test
+    public void testQueryUserInfo(){
+        User user = new User();
+        user.setUserId("19980818");
+        UserInfo userInfo = userDao.queryArtFunNum(user);
+        System.out.println(userInfo.toString());
     }
 
 }

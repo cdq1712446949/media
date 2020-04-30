@@ -65,9 +65,9 @@
         <a href="javascript:window.history.back(-1)" class="icon icon-left pull-left"></a>
     </nav>
 
-    <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100" style="margin-bottom: 10%;
+    <div  class="content infinite-scroll infinite-scroll-bottom" data-distance="100" style="margin-bottom: 10%;
 margin-top: -9%">
-        <div class="list-block media-list">
+        <div id="scroll_content" class="list-block media-list">
             <ul class="list-container" id="message_ul">
             </ul>
         </div>
@@ -76,8 +76,8 @@ margin-top: -9%">
     <!-- Icons in standard bar fixed to the bottom of the screen -->
     <div class="bar bar-footer">
         <a class="icon icon-emoji pull-left"></a>
-        <a class="label pull-right" style="margin-top: 10px"> send</a>
-        <input type="text">
+        <a class="label pull-right" style="margin-top: 10px" onclick="sendMsg()"> send</a>
+        <input type="text" id="msg_content">
     </div>
 
 </div>

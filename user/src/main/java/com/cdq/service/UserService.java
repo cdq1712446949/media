@@ -34,4 +34,11 @@ public interface UserService {
      */
     UserExecution register(User user);
 
+    /**
+     * 查询用户信息(粉丝数量以及文章数量)接口
+     * @param user
+     * @return
+     */
+    UserExecution getUserInfo(User user);
+
 }

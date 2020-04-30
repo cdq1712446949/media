@@ -43,4 +43,11 @@ public interface SecretMessageService {
      */
     SecretMessageExecution changeMessageState(List<Integer> list,Byte state);
 
+    /**
+     * 添加私信记录
+     * @param secretMessage
+     * @return
+     */
+    SecretMessageExecution addMessage(SecretMessage secretMessage);
+
 }

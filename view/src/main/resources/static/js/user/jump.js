@@ -49,6 +49,7 @@ $(function () {
                 activeName="me";
                 break;
         }
+        sessionStorage.setItem('active_name',activeName);
         $('#content').html(tempHtml);
     };
 

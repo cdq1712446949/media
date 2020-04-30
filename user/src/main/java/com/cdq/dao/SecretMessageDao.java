@@ -44,4 +44,11 @@ public interface SecretMessageDao {
      * @param list
      */
     void updateMessageIsSee(@Param("list") List<Integer> list,@Param("isSee")Byte isSee);
+
+    /**
+     * 添加私信记录
+     * @param secretMessage
+     * @return
+     */
+    int insertSecretMessage (SecretMessage secretMessage);
 }

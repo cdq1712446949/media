@@ -1,6 +1,8 @@
 /**
  *
  */
+var logoutUrl = 'http://media.com/user/logout';
+
 Date.prototype.Format = function (fmt) {
     var o = {
         "M+": this.getMonth() + 1, // 月份
@@ -45,3 +47,36 @@ function getQueryString(name) {
     }
     return '';
 }
+
+
+back = function(){
+  var activeName  = sessionStorage.getItem('active_name');
+  window.location.href='http://media.com/media/'+activeName;
+};
+
+/**
+ * 退出登录
+ */
+logout = function () {
+    $.ajax({
+        url: logoutUrl,
+        type: "POST",
+        data: {
+            userId:JSON.parse(sessionStorage.getItem("media_login_info")).userId
+        },
+        dataType: "JSON",
+        success: function (data) {
+            if (data.success) {
+                sessionStorage.removeItem('media_login_info');
+                sessionStorage.removeItem('media_token');
+                $.toast("已退出");
+                window.location.reload();
+            } else {
+                sessionStorage.removeItem('media_login_info');
+                sessionStorage.removeItem('media_token');
+                $.toast('已退出');
+                window.location.reload();
+            }
+        }
+    });
+};

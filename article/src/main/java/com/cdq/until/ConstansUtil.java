@@ -45,4 +45,8 @@ public class ConstansUtil {
     public static String INDEX_PAGE = "indexPage";
     public static String ARTICLE_LABLE_LIST = "articleLableList";
 
+    public static String ARTICLE_ID = "articleId";
+    public static String ARTICLE="article";
+
+    public static String COMMENT_LIST = "commentList";
 }

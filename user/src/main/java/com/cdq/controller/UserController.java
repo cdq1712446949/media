@@ -7,18 +7,16 @@ import com.cdq.service.UserService;
 import com.cdq.util.*;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.management.modelmbean.ModelMBean;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,7 +28,6 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 public class UserController {
-
 
 
     @Autowired
@@ -46,6 +43,7 @@ public class UserController {
      * 业务逻辑：
      * 1.查询用户名是否存在，如果存在检查密码是否正确，如果不存在返回提示信息，如果密码错误返回提示信息
      * 2.密码正确后根据用户信息生成token加密后返回给用户，并提示登陆成功
+     *
      * @return
      */
     @RequestMapping(value = "/login")
@@ -83,6 +81,27 @@ public class UserController {
         return modelMap;
     }
 
+
+    /**
+     * 退出登录接口
+     * TODO 添加验证：要退出的账号是否和当前登录账号一致
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Map logout(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String userId = HttpServletRequestUtil.getString(request, "userId");
+        boolean result = redisUtil.del(JwtUtil.TOKEN + userId);
+        if (result){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+        }else {
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put("errMsg","erro");
+        }
+        return modelMap;
+    }
+
     /**
      * 用户注册接口
      * TODO 添加ip重复注册验证机制
@@ -99,33 +118,62 @@ public class UserController {
             }
     )
     public Map<String, Object> register(HttpServletRequest request) {
-        Map<String ,Object> modelMap = new HashMap<>();
+        Map<String, Object> modelMap = new HashMap<>();
         //参数转换
-        String userStr = HttpServletRequestUtil.getString(request,ConstansUtil.USER_STR);
-        User user = (User) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request,ConstansUtil.USER_STR),User.class);
+        String userStr = HttpServletRequestUtil.getString(request, ConstansUtil.USER_STR);
+        User user = (User) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, ConstansUtil.USER_STR), User.class);
         //生成userId
         user.setUserId(UserIdUtil.createUserId());
         //调用service层
         UserExecution result = userService.register(user);
-        if (result.getState()==0){
-            modelMap.put(ConstansUtil.SUCCESS,true);
-            modelMap.put(ConstansUtil.USER_ID,user.getUserId());
-        }else{
-            modelMap.put(ConstansUtil.SUCCESS,false);
-            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+            modelMap.put(ConstansUtil.USER_ID, user.getUserId());
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
+        }
+        return modelMap;
+    }
+
+    /**
+     * 获取用户信息接口
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ugui", method = RequestMethod.POST)
+    public Map getUserInfo(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String userId = HttpServletRequestUtil.getString(request, ConstansUtil.USER_ID);
+        if (userId != null && !ConstansUtil.EMPTY.equals(userId)) {
+            User user = new User();
+            user.setUserId(userId);
+            //调用service层
+            UserExecution result = userService.getUserInfo(user);
+            if (result.getState() == 0) {
+                modelMap.put(ConstansUtil.SUCCESS, true);
+                modelMap.put(ConstansUtil.USER_INFO, result.getUserInfo());
+            } else {
+                modelMap.put(ConstansUtil.SUCCESS, false);
+                modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
+            }
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, "userId不能为空");
         }
         return modelMap;
     }
 
     /**
      * 降级方法访问控制修饰类型，返回类型，参数都要和原方法一致
+     *
      * @param request
      * @return
      */
-    public Map<String,Object> registerErro(HttpServletRequest request) {
-        Map modelMap =new HashMap();
-        modelMap.put(ConstansUtil.SUCCESS,false);
-        modelMap.put(ConstansUtil.ERRMSG,"服务异常，请重试");
+    public Map<String, Object> registerErro(HttpServletRequest request) {
+        Map modelMap = new HashMap();
+        modelMap.put(ConstansUtil.SUCCESS, false);
+        modelMap.put(ConstansUtil.ERRMSG, "服务异常，请重试");
         return modelMap;
     }
 }

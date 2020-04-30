@@ -1,11 +1,14 @@
 package com.cdq.controller;
 
 import com.cdq.Service.UserCommentService;
+import com.cdq.execution.ArticleExecution;
 import com.cdq.execution.UserCommentExecution;
+import com.cdq.model.Article;
 import com.cdq.model.UserComment;
 import com.cdq.until.ConstansUtil;
 import com.cdq.until.HttpServletRequestUtil;
 import com.cdq.until.ObjectUtil;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +31,11 @@ public class UserCommentController {
     @Autowired
     private UserCommentService userCommentService;
 
+    /**
+     * 用户发表评论接口
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/uauc" , method = RequestMethod.POST)
     public Map addUserComment(HttpServletRequest request){
         Map<String,Object> modelMap = new HashMap<>();
@@ -47,6 +55,45 @@ public class UserCommentController {
         }else{
             modelMap.put(ConstansUtil.SUCCESS,false);
             modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        }
+        return modelMap;
+    }
+
+    /**
+     * 通过articleId获取评论列表
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ugucl" , method = RequestMethod.POST)
+    public Map<String,Object> getUserCommentList(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<>();
+        int indexPage = 1;
+        //参数转换
+        String articleId = HttpServletRequestUtil.getString(request,ConstansUtil.ARTICLE_ID);
+        try {
+            indexPage = HttpServletRequestUtil.getInt(request,ConstansUtil.INDEX_PAGE);
+        }catch (Exception e){
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,e.getMessage());
+            return modelMap;
+        }
+        if (articleId!=null&&!ConstansUtil.EMPTY_STR.equals(articleId)){
+            Article article = new Article();
+            article.setArticleId(Integer.valueOf(articleId));
+            UserComment userComment = new UserComment();
+            userComment.setArticle(article);
+            //调用service层
+            UserCommentExecution result = userCommentService.getUserCommentList(userComment,indexPage,100);
+            if (result.getState()==0){
+                modelMap.put(ConstansUtil.SUCCESS,true);
+                modelMap.put(ConstansUtil.COMMENT_LIST,result.getUserCommentList());
+            }else{
+                modelMap.put(ConstansUtil.SUCCESS,false);
+                modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+            }
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,"请选择文章");
         }
         return modelMap;
     }

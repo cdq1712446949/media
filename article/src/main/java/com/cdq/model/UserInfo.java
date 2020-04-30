@@ -9,10 +9,8 @@ import lombok.ToString;
 @ToString
 public class UserInfo {
 
-    private int userId;
-    private int blogNum;
-    private int funsNum;
-    private int userLookNum;
-    private int commentNum;
+    private String userId;
+    private Integer articleNum;
+    private Integer funsNum;
 
 }

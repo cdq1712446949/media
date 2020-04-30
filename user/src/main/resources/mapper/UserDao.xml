@@ -74,4 +74,16 @@
         from user
         where  user_name=#{userName} and pass_word=#{passWord} and user_role=0
     </select>
+
+    <!--查询用户文章数量和粉丝数量-->
+    <select id="queryArtFunNum" parameterType="com.cdq.model.User" resultType="com.cdq.model.UserInfo">
+         select
+         u.user_id,
+         count(distinct a.article_id) as article_num,
+         count(att.attention_id) as funs_num
+         from  user as u
+         left join article as a on u.user_id=a.user_id and a.article_status=0
+         left join attention as att on u.user_id=att.attented_user_id
+         where  u.user_id=#{userId};
+    </select>
 </mapper>
