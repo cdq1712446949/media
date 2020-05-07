@@ -6,6 +6,8 @@ $(function () {
     function advert(config) {
     }
 
+    sessionStorage.setItem('active_name','article');
+
     // var viewId = window.location.hash;
     // if (viewId != null && viewId != ''){
     //     var eml = document.getElementById('ifra_content');

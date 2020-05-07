@@ -9,9 +9,9 @@ $(function () {
 
     addArticle = function () {
         if (isLogin) {
-            window.parent.location.href = 'http://media.com/media/articleEdit';
+            window.location.href = 'http://media.com/media/articleEdit';
         } else {
-            window.parent.location.href = 'http://media.com/media/login';
+            window.location.href = 'http://media.com/media/login';
         }
     };
 

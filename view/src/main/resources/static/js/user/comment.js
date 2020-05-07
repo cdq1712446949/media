@@ -8,7 +8,7 @@ $(function () {
     addComment = function (that) {
         var aid = that.dataset.aid;
         var uid = that.dataset.uid;
-        window.parent.location.href= articleDetialUrl+aid+'&&userId='+uid;
+        window.location.href= articleDetialUrl+aid+'&&userId='+uid;
     };
 
 

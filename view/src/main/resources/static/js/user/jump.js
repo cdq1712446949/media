@@ -3,9 +3,6 @@ $(function () {
     var activeName = 'article';
 
     jumpView =function (viewName) {
-        if (sessionStorage.getItem('media_login_info')==null && viewName=='me'){
-            window.location.href='http://media.com/media/login';
-        }
         //修改页面
         var tempHtml = '<iframe src="http://media.com/media/'
             +viewName

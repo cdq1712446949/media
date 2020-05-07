@@ -76,7 +76,7 @@ $(function () {
                         };
                         localStorage.setItem("user_info_arr", JSON.stringify(user));
                     }
-                    alert("登录成功 ")
+                    alert("登录成功 ");
                     window.location.href = 'http://media.com/media/index';
                 } else {
                     alert(data.errMsg);

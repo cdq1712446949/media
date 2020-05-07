@@ -39,12 +39,12 @@ $(function () {
     };
 
     jumpToChat = function (fromUserId, nickName) {
-        window.parent.location.href = 'http://media.com/media/chat?fromUserId=' + fromUserId + '&&nickName=' + nickName;
+        window.location.href = 'http://media.com/media/chat?fromUserId=' + fromUserId + '&&nickName=' + nickName;
     };
 
     getMessageNumber = function () {
         if (!isLogin) {
-            window.parent.location.href = 'http://media.com/media/login';
+            window.location.href = 'http://media.com/media/login';
         }
         $.ajax({
             url: messageNumUrl,

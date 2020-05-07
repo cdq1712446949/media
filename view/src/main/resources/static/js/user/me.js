@@ -17,7 +17,7 @@ $(function () {
 
     chooseFile = function () {
         document.getElementById("head_change").click();
-    }
+    };
 
     //获取用户信息（文章数量，粉丝数量）
     getUserInfo = function () {
