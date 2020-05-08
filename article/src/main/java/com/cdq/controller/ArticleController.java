@@ -4,6 +4,7 @@ import com.cdq.Service.ArticleService;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
 import com.cdq.model.ArticleType;
+import com.cdq.model.User;
 import com.cdq.until.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,10 +65,11 @@ public class ArticleController {
 
     /**
      * 通过文章id查询文章记录
+     *
      * @param request
      * @return
      */
-    @RequestMapping(value = "/ugabi", method = RequestMethod.POST)
+    @RequestMapping(value = "/ugabi", method = RequestMethod.GET)
     public Map getArticleById(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
         String articleId = HttpServletRequestUtil.getString(request, ConstansUtil.ARTICLE_ID);
@@ -76,16 +78,16 @@ public class ArticleController {
             article.setArticleId(Integer.valueOf(articleId));
             //调用service层
             ArticleExecution result = articleService.getArticleById(article);
-            if (result.getState()==0){
-                modelMap.put(ConstansUtil.SUCCESS,true);
-                modelMap.put(ConstansUtil.ARTICLE,result.getArticle());
-            }else{
-                modelMap.put(ConstansUtil.SUCCESS,false);
-                modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+            if (result.getState() == 0) {
+                modelMap.put(ConstansUtil.SUCCESS, true);
+                modelMap.put(ConstansUtil.ARTICLE, result.getArticle());
+            } else {
+                modelMap.put(ConstansUtil.SUCCESS, false);
+                modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
             }
-        }else{
-            modelMap.put(ConstansUtil.SUCCESS,false);
-            modelMap.put(ConstansUtil.ERRMSG,"请选择文章");
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, "请选择文章");
         }
         return modelMap;
     }
@@ -169,6 +171,39 @@ public class ArticleController {
         return modelMap;
     }
 
+    /**
+     * 用户查询自己发布的文章
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ugmal", method = RequestMethod.POST)
+    public Map getMyArticleList(HttpServletRequest request, int indexPage) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String userId = ObjectUtil.getUserId(request).getUserId();
+        if (ConstansUtil.EMPTY_STR.equals(userId)) {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, "当前登录已过期，请重新登录");
+            modelMap.put(ConstansUtil.ERR_CODE, ConstansUtil.CODE_LOGIN_TIME_OUT);
+            return modelMap;
+        }
+        User user = new User();
+        user.setUserId(userId);
+        Article article = new Article();
+        article.setUser(user);
+        article.setArticleStatus((byte) 0);
+        //调用service层
+        ArticleExecution result = articleService.getArticleList(article, indexPage, 10);
+        resolveResult(result, modelMap);
+        return modelMap;
+    }
+
+    /**
+     * 查询视频文章
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/ugval", method = RequestMethod.POST)
     public Map getVideoArticle(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
@@ -192,6 +227,26 @@ public class ArticleController {
         return modelMap;
     }
 
+    @RequestMapping(value = "/delArticle", method = RequestMethod.POST)
+    public Map delArticle(HttpServletRequest request) {
+        Map modelMap = new HashMap();
+        //校验当前登录用户和要删除的文章的作者
+        String loginUserId = ObjectUtil.getUserId(request).getUserId();
+        if (ConstansUtil.EMPTY_STR.equals(loginUserId)) {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, "当前登录已过期，请重新登录");
+            modelMap.put(ConstansUtil.ERR_CODE, ConstansUtil.CODE_LOGIN_TIME_OUT);
+            return modelMap;
+        }
+        //调用service层
+        ArticleExecution result = articleService.deleteArticle(HttpServletRequestUtil.getInt(request, "articleId"), loginUserId);
+        if (result .getState()==0) {
+            modelMap.put(ConstansUtil.SUCCESS,true);
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+        }
+        return modelMap;
+    }
 
     private String addThumils(Article article, CommonsMultipartFile multipartFile) throws IOException {
         ImageHolder imageHolder = new ImageHolder(multipartFile.getFileItem().getName(), multipartFile.getInputStream());
@@ -204,7 +259,8 @@ public class ArticleController {
             modelMap.put(ConstansUtil.SUCCESS, true);
             modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
             modelMap.put(ConstansUtil.TOTAL_SIZE, result.getCount());
-            modelMap.put(ConstansUtil.TOTAL_PAGE, Math.ceil(result.getCount() / 10));
+            double temp = ((double) result.getCount()) / 10;
+            modelMap.put(ConstansUtil.TOTAL_PAGE, Math.ceil(temp));
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());

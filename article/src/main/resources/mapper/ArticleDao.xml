@@ -110,7 +110,11 @@
         c.comment_num,
         tu.good_num,
         p.*
-        FROM(select * from article limit #{rowIndex},#{pageSize}) as a
+        FROM(select * from article
+        <where>
+            <if test="article.user != null and article.user.userId!=null">and user_id=#{article.user.userId}</if>
+        </where>
+        limit #{rowIndex},#{pageSize}) as a
         LEFT JOIN user as u on a.user_id=u.user_id
         LEFT JOIN (select * from article_type
         <where>
@@ -145,6 +149,7 @@
                 and a.article_content like '%${article.articleContent}%'
             </if>
             <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
+
             and art.article_type_id is not null
         </where>
         order by look_num desc
@@ -218,7 +223,11 @@
         SELECT
         count(a.article_id)
         FROM
-        article as a
+        (select * from article
+        <where>
+            <if test="article.user != null and article.user.userId!=null">and user_id=#{article.user.userId}</if>
+        </where>
+        ) as a
         LEFT JOIN user as u on a.user_id=u.user_id
         LEFT JOIN (select * from article_type
         <where>
@@ -290,4 +299,8 @@
         set article_status=#{articleStatus}
         where article_id = #{articleId}
     </update>
+    <!--删除文章-->
+    <delete id="delArticle" parameterType="com.cdq.model.Article">
+        delete from article where article_id=#{articleId}
+    </delete>
 </mapper>

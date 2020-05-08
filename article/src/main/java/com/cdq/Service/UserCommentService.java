@@ -25,4 +25,11 @@ public interface UserCommentService {
      */
     UserCommentExecution addUserComment(UserComment userComment);
 
+    /**
+     * 删除评论记录接口
+     * @param userCommentId
+     * @return
+     */
+    UserCommentExecution delUserComment(Integer userCommentId);
+
 }

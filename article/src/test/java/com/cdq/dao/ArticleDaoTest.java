@@ -22,18 +22,12 @@ public class ArticleDaoTest extends BaseTest {
     @Test
     public void testQueryArticleList(){
         Article article=new Article();
-        article.setArticleStatus((byte) 0);
-//        ArticleType articleType=new ArticleType();
-//        articleType.setArticleTypeId((short) 12);
-//        article.setArticleType(articleType);
-//        article.setArticleStatus((byte) 0);
-        ArticleType articleType=new ArticleType();
-//        ArticleType parentArticleType=new ArticleType();
-//        parentArticleType.setArticleTypeId((short) 7);
-//        articleType.setParentArticleType(parentArticleType);
-//        article.setArticleType(articleType);
+        User user = new User();
+        user.setUserId("19980818");
+        article.setUser(user);
         List<Article> articles=articleDao.queryArticleList(article,
                 0,10);
+        int count = articleDao.queryArticleCount(article);
         System.out.println(String.valueOf(articles.size()));
     }
 

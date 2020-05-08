@@ -7,7 +7,7 @@ $(function () {
     var articleId = getQueryString("articleId");
     //根据是否有productId选择执行函数
     //文章信息获取地址
-    var initPriductUrl = '/article/getArticleById?articleId=' + articleId;
+    var initPriductUrl = '/article/ugabi?articleId=' + articleId;
     //文章发布url
     var addArticleUrl = '/article/addArticle';
     //x修改文章url
@@ -17,6 +17,7 @@ $(function () {
     var mediaToken = 'media_token';
     var isEdit = false;
     if (articleId) {
+        getArticleTypeList();
         getArticleInfo();
         isEdit = true;
     } else {
@@ -27,16 +28,10 @@ $(function () {
     function getArticleInfo() {
         $.getJSON(initPriductUrl, function (data) {
             if (data.success) {
-                var product = data.product;
-                $('#product-name').val(product.productName);
-                $('#product-desc').val(product.productDesc);
-                $('#product-priority').val(product.priority);
-                $('#product-normal-price').val(product.normalPrice);
-                $('#product-now-price').val(product.promotionPrice);
-                var optionSelected = product.productCategory.productCategoryId;
-                initArticleType(optionSelected);
+                var article = data.article;
+                $('#article-content').val(article.articleContent);
             } else {
-                $.toast("获取商品信息失败" + data.errMsg);
+                $.toast("获取文章信息失败:" + data.errMsg);
             }
         });
     }
@@ -71,35 +66,35 @@ $(function () {
     }
 
     $('#product-category').change(function () {
-       var cId = $('#product-category').find('option').not(
-           function () {
-               return !this.selected;
-           }).data('value');
-       $.ajax({
-           url:getCategoryListUrl,
-           type:"GET",
-           data:{
-               parentId:cId
-           },
-           dataType:"JSON",
-           success:function (data) {
-               data = JSON.parse(data);
-               if (data.success){
-                   var productCategoryList = data.firstLevelList;
-                   var optionHtml = '';
-                   for (var i = 0; i < productCategoryList.length; i++) {
-                       var item = productCategoryList[i];
-                       optionHtml += '<option data-value="'
-                           + item.articleTypeId + '">'
-                           + item.articleTypeName + '</option>';
-                   }
-                   ;
-                   $('#two-category').html(optionHtml);
-               } else {
-                   alert(data.errMsg);
-               }
-           }
-       })
+        var cId = $('#product-category').find('option').not(
+            function () {
+                return !this.selected;
+            }).data('value');
+        $.ajax({
+            url: getCategoryListUrl,
+            type: "GET",
+            data: {
+                parentId: cId
+            },
+            dataType: "JSON",
+            success: function (data) {
+                data = JSON.parse(data);
+                if (data.success) {
+                    var productCategoryList = data.firstLevelList;
+                    var optionHtml = '';
+                    for (var i = 0; i < productCategoryList.length; i++) {
+                        var item = productCategoryList[i];
+                        optionHtml += '<option data-value="'
+                            + item.articleTypeId + '">'
+                            + item.articleTypeName + '</option>';
+                    }
+                    ;
+                    $('#two-category').html(optionHtml);
+                } else {
+                    alert(data.errMsg);
+                }
+            }
+        })
     });
 
     function getArticleTypeList() {
@@ -148,7 +143,7 @@ $(function () {
                     }
                 });
             formData.append('productStr', JSON.stringify(article));
-            formData.append('token',sessionStorage.getItem(mediaToken));
+            formData.append('token', sessionStorage.getItem(mediaToken));
             $.ajax({
                 url: isEdit ? modifyArticleUrl : addArticleUrl,
                 type: 'POST',
@@ -164,6 +159,9 @@ $(function () {
                         window.history.back(-1);
                         $.toast('发布失败！' + data.errMsg);
                     }
+                },
+                erro: function (code) {
+                    $.toast(code);
                 }
             });
         });

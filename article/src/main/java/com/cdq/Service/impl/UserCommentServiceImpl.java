@@ -20,42 +20,68 @@ public class UserCommentServiceImpl implements UserCommentService {
     /**
      * 获取用户评论列表
      * 1.校验参数(article.articleId)
+     *
      * @param userComment 为article.articleId赋值
      * @return
      */
     @Override
     public UserCommentExecution getUserCommentList(UserComment userComment, int pageIndex, int pageSize) {
         //校验参数
-        if (userComment.getArticle()==null){
+        if (userComment.getArticle() == null) {
             return new UserCommentExecution(UserCommentStateEnum.EMPTY_ARTICLEID);
         }
-        if (userComment.getArticle().getArticleId()==null||userComment.getArticle().getArticleId()==0){
+        if (userComment.getArticle().getArticleId() == null || userComment.getArticle().getArticleId() == 0) {
             return new UserCommentExecution(UserCommentStateEnum.EMPTY_ARTICLEID);
         }
         //调用dao层接口获取数据
         try {
             //把页码转化为行数索引
-            int rowIndex=PageUtil.pageToRowIndex(pageIndex,pageSize);
-            List<UserComment> userComments=userCommentDao.queryUserCommentList(userComment,rowIndex,pageSize);
-            return new UserCommentExecution(UserCommentStateEnum.SUCCESS,userComments);
-        }catch (Exception e){
+            int rowIndex = PageUtil.pageToRowIndex(pageIndex, pageSize);
+            List<UserComment> userComments = userCommentDao.queryUserCommentList(userComment, rowIndex, pageSize);
+            return new UserCommentExecution(UserCommentStateEnum.SUCCESS, userComments);
+        } catch (Exception e) {
             return new UserCommentExecution(UserCommentStateEnum.INNER_ERROR);
         }
     }
 
     /**
      * TODO 参数校验
+     *
      * @param userComment
      * @return
      */
     @Override
     public UserCommentExecution addUserComment(UserComment userComment) {
         int result = userCommentDao.insertUserComment(userComment);
-        if (result == 0){
+        if (result == 0) {
             return new UserCommentExecution(UserCommentStateEnum.INNER_ERROR);
-        }else {
+        } else {
             return new UserCommentExecution(UserCommentStateEnum.SUCCESS);
         }
 
+    }
+
+    /**
+     * 删除接口
+     *
+     * @param userCommentId
+     * @return
+     */
+    @Override
+    public UserCommentExecution delUserComment(Integer userCommentId) {
+        //参数校验
+        if (userCommentId == null) {
+            return new UserCommentExecution(UserCommentStateEnum.EMPTY_ARTICLEID);
+        }
+        //组合参数
+        UserComment userComment = new UserComment();
+        userComment.setUserCommentId(userCommentId);
+        //调用dao层
+        int result = userCommentDao.delUserComment(userComment);
+        if (result != 0) {
+            return new UserCommentExecution(UserCommentStateEnum.SUCCESS);
+        }else{
+            return new UserCommentExecution(UserCommentStateEnum.INNER_ERROR);
+        }
     }
 }

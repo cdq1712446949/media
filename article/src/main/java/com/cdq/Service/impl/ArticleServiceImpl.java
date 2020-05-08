@@ -256,6 +256,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * 获取视频文章列表
+     *
      * @param article
      * @param indexPage
      * @param pageSize
@@ -264,16 +265,38 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleExecution getVideoArticle(Article article, int indexPage, int pageSize) {
         try {
-            List<Article> result = articleDao.queryVideoArticle(article,PageUtil.pageToRowIndex(indexPage,pageSize),pageSize);
+            List<Article> result = articleDao.queryVideoArticle(article, PageUtil.pageToRowIndex(indexPage, pageSize), pageSize);
             int count = articleDao.queryVideoArticleCount();
             if (result != null) {
                 ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS, result);
                 articleExecution.setCount(count);
                 return articleExecution;
-            }else {
+            } else {
                 return new ArticleExecution(BaseStateEnum.INNER_ERROR);
             }
         } catch (Exception e) {
+            return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
+
+    /**
+     * 删除文章记录接口
+     *
+     * @return
+     */
+    @Override
+    public ArticleExecution deleteArticle(Integer articleId,String userId) {
+        //校验参数
+        if (articleId == null ) {
+            return new ArticleExecution(BaseStateEnum.EMPTY_ID);
+        }
+        Article article = new Article();
+        article.setArticleId(articleId);
+        //调用dao层
+        int result = articleDao.delArticle(article);
+        if (result!=0){
+            return new ArticleExecution(BaseStateEnum.SUCCESS);
+        }else {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
         }
     }

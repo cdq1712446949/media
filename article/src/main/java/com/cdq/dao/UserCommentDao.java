@@ -26,4 +26,11 @@ public interface UserCommentDao {
      */
     int insertUserComment(UserComment userComment);
 
+    /**
+     * 删除用户评论记录
+     * @param userComment
+     * @return
+     */
+    int delUserComment(UserComment userComment);
+
 }

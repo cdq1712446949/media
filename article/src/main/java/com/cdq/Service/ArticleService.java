@@ -65,4 +65,12 @@ public interface ArticleService {
      */
     ArticleExecution getVideoArticle(Article article,int indexPage,int pageSize);
 
+    /**
+     * 删除文章记录
+     * @param articleId
+     * @param userId
+     * @return
+     */
+    ArticleExecution deleteArticle(Integer articleId,String userId);
+
 }

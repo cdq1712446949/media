@@ -77,4 +77,8 @@
         </if>
         )
     </insert>
+    <!--删除评论记录-->
+    <delete id="delUserComment" parameterType="com.cdq.model.UserComment">
+        delete from user_comment where user_comment_id=#{userCommentId}
+    </delete>
 </mapper>

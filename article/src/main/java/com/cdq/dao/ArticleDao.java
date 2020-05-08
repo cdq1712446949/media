@@ -108,4 +108,9 @@ public interface ArticleDao {
      */
     int queryVideoArticleCount();
 
+    /**
+     * 删除文章记录
+     */
+    int delArticle(Article article);
+
 }

@@ -49,4 +49,5 @@ public class ConstansUtil {
     public static String ARTICLE="article";
 
     public static String COMMENT_LIST = "commentList";
+    public static String ATTENTION_LIST = "attentionList";
 }
