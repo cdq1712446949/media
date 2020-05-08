@@ -41,4 +41,11 @@ public interface UserService {
      */
     UserExecution getUserInfo(User user);
 
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    UserExecution changeUserInfo(User user);
+
 }

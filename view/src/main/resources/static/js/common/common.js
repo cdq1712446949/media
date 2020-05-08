@@ -39,7 +39,7 @@ function getQueryString(name) {
         for (var i = 0; i < arr2.length; i++) {
             var tempArr = arr2[i].split('=');
             if (tempArr.length == 2) {
-                if (tempArr[0]==name){
+                if (tempArr[0] == name) {
                     return tempArr[1];
                 }
             }
@@ -49,9 +49,9 @@ function getQueryString(name) {
 }
 
 
-back = function(){
-  var activeName  = sessionStorage.getItem('active_name');
-  window.location.href='http://media.com/media/'+activeName;
+back = function () {
+    var activeName = sessionStorage.getItem('active_name');
+    window.location.href = 'http://media.com/media/' + activeName;
 };
 
 /**
@@ -62,7 +62,7 @@ logout = function () {
         url: logoutUrl,
         type: "POST",
         data: {
-            userId:JSON.parse(sessionStorage.getItem("media_login_info")).userId
+            userId: JSON.parse(sessionStorage.getItem("media_login_info")).userId
         },
         dataType: "JSON",
         success: function (data) {
@@ -80,3 +80,22 @@ logout = function () {
         }
     });
 };
+
+/**
+ * 处理token过期方法
+ */
+checkData = function (data) {
+    var reSend = false;
+    var stateCode = data.stateCode;
+    var redirect = data.redirect;
+    if (redirect != null && redirect != '') {
+        window.location.href = redirect;
+    }
+    if (stateCode == 201) {
+        sessionStorage.setItem('media_token',data.token);
+        reSend = true;
+    }
+    return reSend;
+};
+
+

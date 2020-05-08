@@ -78,4 +78,14 @@ public class UserDaoTest extends BaseTest{
         System.out.println(userInfo.toString());
     }
 
+    @Test
+    public void testChange(){
+        User user = new User();
+        user.setUserId("19980818");
+        user.setNickName("test");
+        user.setUserRole((byte) 2);
+        int result = userDao.updateUserInfo(user);
+        System.out.println(result);
+    }
+
 }

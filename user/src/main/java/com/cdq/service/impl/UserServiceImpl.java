@@ -147,5 +147,25 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserExecution changeUserInfo(User user) {
+        //校验参数
+        if (user.getUserId()==null||ConstansUtil.EMPTY.equals(user.getUserId())){
+            return new UserExecution(UserStateEnum.EMPTY_USER);
+        }
+        if (user.getUserSex()!=null&&!ConstansUtil.EMPTY.equals(user.getUserSex())){
+            if (!ConstansUtil.MAN.equals(user.getUserSex())&&!ConstansUtil.WOMAN.equals(user.getUserSex())){
+                return new UserExecution(UserStateEnum.ILLEGAL_PARAMETER);
+            }
+        }
+        //调用dao层
+        int result = userDao.updateUserInfo(user);
+        if (result!=0){
+            return new UserExecution(UserStateEnum.SUCCESS);
+        }else{
+            return new UserExecution(UserStateEnum.INNER_ERROR);
+        }
+    }
+
 
 }

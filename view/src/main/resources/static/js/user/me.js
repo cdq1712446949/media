@@ -26,10 +26,16 @@ $(function () {
             url: userInfoUrl,
             type: 'POST',
             data: {
-                userId: userId
+                userId: userId,
+                token:sessionStorage.getItem('media_token')
             },
             dataType: 'JSON',
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getUserInfo();
+                    return;
+                }
                 if (data.success) {
                     var userInfo1 = data.userInfo;
                     artiNum = userInfo1.articleNum;

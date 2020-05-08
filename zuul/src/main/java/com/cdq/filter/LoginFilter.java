@@ -1,6 +1,8 @@
 package com.cdq.filter;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdq.util.ConstansUtil;
+import com.cdq.util.HttpServletRequestUtil;
 import com.cdq.util.MyHttpResponse;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -11,6 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,10 +41,11 @@ public class LoginFilter extends ZuulFilter {
 
     //表示不用拦截的url
     private static String[] INVOKE_USER_URL = new String[]{
-            "login"
+            "login","register"
     };
     private static String[] INVOKE_ARTICLE_URL = new String[]{
-            "alat"
+            "alat","aflat","getArticle","ugabi","ugucl",
+            "firstarticletypelist","artideti","ugall","ugval"
     };
     private static String[] INVOKE_VIDEO_URL = new String[]{
 
@@ -77,7 +84,7 @@ public class LoginFilter extends ZuulFilter {
             return null;
         }
         //获取token转发到鉴权中心
-        String token = request.getHeader(ConstansUtil.HEAD_KEY);
+        String token = HttpServletRequestUtil.getString(request,ConstansUtil.TOKEN);
         if (token==null||token.equals("")){
             return new MyHttpResponse(HttpStatus.BAD_REQUEST);
         }
@@ -85,7 +92,23 @@ public class LoginFilter extends ZuulFilter {
         if ((boolean)resultMap.get("result")){
             return null;
         }else {
-            return resultMap;
+            requestContext.setSendZuulResponse(false);
+            HttpServletResponse response = requestContext.getResponse();
+            JSONObject jsonObject = new JSONObject(resultMap);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+            PrintWriter out = null;
+            try {
+                out = response.getWriter();
+                out.append(jsonObject.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+            }
+            return null;
         }
     }
 

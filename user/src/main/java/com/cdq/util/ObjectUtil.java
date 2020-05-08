@@ -43,7 +43,7 @@ public class ObjectUtil {
         User user = new User();
         try {
             if (JwtUtil.parseJWT(token) == null) {
-                user.setUserId("");
+                user.setUserId(ConstansUtil.EMPTY);
             } else {
                 user.setUserId(JwtUtil.parseJWT(token).getId());
             }

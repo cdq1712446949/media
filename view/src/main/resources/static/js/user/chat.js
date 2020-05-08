@@ -22,6 +22,11 @@ $(function () {
             },
             dataType: "JSON",
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getHistoryMessage();
+                    return;
+                }
                 if (data.success) {
                     var secretMessageList = data.secretMessageList;
                     $.each(secretMessageList, function (index, item) {
@@ -45,7 +50,7 @@ $(function () {
             '                        <div class="pull-left "><img class="yuan-head"\n' +
             '                                                     src="http://media.com/image/images/' + fromUser.userHeadPhoto + '"\n' +
             '                                                     style=\'width: 2.2rem;\'></div>\n' +
-            '                        <div class="pull-left " style="width: 75%">\n' +
+            '                        <div class="pull-left " style="max-width: 75%">\n' +
             '                            <div class="item-title-row">\n' +
             '                                <div class="item-title">' + fromUser.nickName + '</div>\n' +
             '                            </div>\n' +
@@ -63,10 +68,10 @@ $(function () {
             '                            <img class="yuan-head"\n' +
             '                                 src="http://media.com/image/images/' + userInfo.userHeadPhoto + '"' +
             '                                 style=\'width: 2.2rem;\'></div>\n' +
-            '                        <div class="pull-right" style="width: 75%">\n' +
+            '                        <div class="pull-right" style="max-width: 75%">\n' +
             '                            <div class="pull-right">' + userInfo.nickName + '</div>\n' +
             '                            </br>\n' +
-            '                            <div class=" message-green" style="padding: 3px">' + sm.messageContent + '</div>\n' +
+            '                            <div class=" message-green" style="padding: 3px;text-align: right">' + sm.messageContent + '</div>\n' +
             '                        </div>\n' +
             '                    </div>\n' +
             '                </li>';
@@ -85,6 +90,11 @@ $(function () {
             },
             dataType: "JSON",
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getUnMessageList();
+                    return;
+                }
                 if (data.success) {
                     var secretMessageList = data.secretMessageList;
                     var idList = [];
@@ -106,11 +116,17 @@ $(function () {
             url: changeMessageUrl,
             type: "POST",
             data: {
-                listStr: JSON.stringify(idList)
+                listStr: JSON.stringify(idList),
+                token: sessionStorage.getItem('media_token')
             },
             async: false,
             dataType: "JSON",
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    changeMessage(idList);
+                    return;
+                }
                 if (data.success) {
 
                 } else {
@@ -127,10 +143,10 @@ $(function () {
             '                            <img class="yuan-head"\n' +
             '                                 src="http://media.com/image/images/' + userInfo.userHeadPhoto + '"' +
             '                                 style=\'width: 2.2rem;\'></div>\n' +
-            '                        <div class="pull-right" style="width: 75%">\n' +
+            '                        <div class="pull-right" style="max-width: 75%">\n' +
             '                            <div class="pull-right">' + userInfo.nickName + '</div>\n' +
             '                            </br>\n' +
-            '                            <div class=" message-green" style="padding: 3px">' + content + '</div>\n' +
+            '                            <div class=" message-green" style="padding: 3px;text-align: right;">' + content + '</div>\n' +
             ' <div class="infinite-scroll-preloader" >\n' +
             '                        <div class="preloader"></div>\n' +
             '                    </div>'+
@@ -158,6 +174,11 @@ $(function () {
             },
             dataType:'JSON',
             success:function (data) {
+                var result = checkData(data);
+                if (result){
+                    sendMsg();
+                    return;
+                }
                 if (data.success){
                     $('.infinite-scroll-preloader').remove();
                     var scrollHeight = $('#scroll_content').prop("scrollHeight");

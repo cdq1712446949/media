@@ -86,4 +86,15 @@
          left join attention as att on u.user_id=att.attented_user_id
          where  u.user_id=#{userId};
     </select>
+
+    <update id="updateUserInfo" parameterType="com.cdq.model.User">
+        update user
+        <set>
+            <if test="nickName != null">nick_name = #{nickName}</if>
+            <if test="userDesc != null">user_desc = #{userDesc}</if>
+            <if test="userSex != null">user_sex = #{userSex}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
 </mapper>

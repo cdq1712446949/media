@@ -27,4 +27,8 @@ public class ConstansUtil {
     public static String FROM_USER_ID = "fromUserId";
     public static String SM_STR= "smStr";
     public static String USER_INFO = "userInfo";
+
+    public static String MAN="男";
+    public static String WOMAN="女";
+
 }

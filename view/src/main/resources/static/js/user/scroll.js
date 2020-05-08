@@ -30,6 +30,11 @@ $(function () {
             },
             dataType: 'JSON',
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getAnnList();
+                    return;
+                }
                 if (data.success) {
                     var articleList = data.articleList;
                     var tempHtml = '';

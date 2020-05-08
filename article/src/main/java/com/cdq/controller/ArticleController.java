@@ -69,7 +69,7 @@ public class ArticleController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/ugabi", method = RequestMethod.GET)
+    @RequestMapping(value = "/ugabi")
     public Map getArticleById(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
         String articleId = HttpServletRequestUtil.getString(request, ConstansUtil.ARTICLE_ID);

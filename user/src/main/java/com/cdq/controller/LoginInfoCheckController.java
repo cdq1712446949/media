@@ -4,13 +4,16 @@ import com.cdq.service.UserService;
 import com.cdq.util.JwtUtil;
 import com.cdq.util.RedisUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author ：ヅてＤＱ
@@ -47,22 +50,20 @@ public class LoginInfoCheckController {
             String id = claims.getId();
             String redisToken = (String) redisUtil.get(JwtUtil.TOKEN + id);
             if (redisToken != null) {
+                //判断当前登录用户和redis中的用户token是否相同
                 if (redisToken.equals(token)) {
                     //判断是否需要刷新token
                     long localTime = System.currentTimeMillis();
-                    long exp = Long.getLong((String) claims.get("exp"));
-                    if (localTime >= exp) {
+                    Date exp = claims.getExpiration();
+                    if (localTime >= exp.getTime()) {
                         //刷新token
-                        String jwt = JwtUtil.createJWT(id, (String) claims.get("sub"), 1200 * 1000);
-                        redisUtil.set(JwtUtil.TOKEN + id, jwt);
-                        modelMap.put("token", jwt);
-                        modelMap.put("result", false);
-                        modelMap.put("stateCode", JwtUtil.RESEND);
+
                     } else {
                         modelMap.put("result", true);
                     }
                 } else {
-                    redisUtil.del(id);
+                    //TODO 向用户发送系统通知
+                    redisUtil.del(JwtUtil.TOKEN + id);
                     modelMap.put("result", false);
                     modelMap.put("redirect", "/user/login");
                     modelMap.put("stateCode", JwtUtil.RELOGIN);
@@ -72,10 +73,17 @@ public class LoginInfoCheckController {
                 modelMap.put("result", false);
                 modelMap.put("redirect", "/user/login");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ExpiredJwtException e) {
+            Claims claims = e.getClaims();
+            String id = claims.getId();
+            String jwt = JwtUtil.createJWT(id, (String) claims.get("sub"), 1200 * 1000);
+            redisUtil.set(JwtUtil.TOKEN + id, jwt, 3600 * 1, TimeUnit.SECONDS);
+            modelMap.put("token", jwt);
+            modelMap.put("result", false);
+            modelMap.put("stateCode", JwtUtil.RESEND);
+        }finally {
+            return modelMap;
         }
-        return modelMap;
     }
 
 }

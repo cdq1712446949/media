@@ -176,4 +176,27 @@ public class UserController {
         modelMap.put(ConstansUtil.ERRMSG, "服务异常，请重试");
         return modelMap;
     }
+
+    /**
+     * 修改用户信息接口
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ueui")
+    public Map<String,Object> editUserInfo(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<>();
+        //接收参数
+        User user = (User)ObjectUtil.toPojo(HttpServletRequestUtil.getString(request,"userStr"),User.class);
+        //根据token获取userId
+        user.setUserId(ObjectUtil.getUserId(request).getUserId());
+        UserExecution result = userService.changeUserInfo(user);
+        if (result.getState()==0){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        }
+        return modelMap;
+    }
+
 }

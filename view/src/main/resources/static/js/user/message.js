@@ -54,6 +54,11 @@ $(function () {
             },
             dataType: "JSON",
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getMessageNumber();
+                    return;
+                }
                 if (data.success) {
                     initMessageNumList(data.messageNumberList);
                 } else {

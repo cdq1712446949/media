@@ -36,6 +36,11 @@ $(function () {
             },
             dataType:'JSON',
             success:function (data) {
+                var result = checkData(data);
+                if (result){
+                    delArticle(aid);
+                    return;
+                }
                 if (data.success){
                     $.toast('删除成功');
                 } else {
@@ -91,6 +96,11 @@ $(function () {
             },
             dataType: 'JSON',
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getMyArticle(isAppend);
+                    return;
+                }
                 if (data.success) {
                     initArticleList(data, isAppend);
                 } else {
