@@ -8,7 +8,8 @@
     </resultMap>
     <!--查重使用-->
     <select id="selectThumbsUp" resultType="com.cdq.model.ThumbsUp">
-        select thumbs_up_id from thumbs_up where up_user_id=#{user.userId} and up_article_id=#{article.articleId}
+        select thumbs_up_id from thumbs_up
+        where up_user_id=#{user.userId} and up_article_id=#{article.articleId}
     </select>
     <insert id="insertThumbsUp" parameterType="com.cdq.model.ThumbsUp">
         insert into thumbs_up(
@@ -18,6 +19,7 @@
         )
     </insert>
     <update id="updateThumbsUp" parameterType="com.cdq.model.ThumbsUp">
-        UPDATE  thumbs_up set up_status=#{upStatus} where up_user_id=#{user.userId} and up_article_id=#{article.articleId};
+        UPDATE  thumbs_up set up_status=#{upStatus}
+        where up_user_id=#{user.userId} and up_article_id=#{article.articleId};
     </update>
 </mapper>

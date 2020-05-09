@@ -9,10 +9,11 @@
     <script src='http://media.com/media/js/jquery-3.3.1.js'></script>
 </head>
 <style>
-    .yuan-head{
+    .yuan-head {
         width: 3.2rem;
-        border-radius:5rem;
+        border-radius: 5rem;
     }
+
     .white-sty {
         background-color: white;
     }
@@ -26,7 +27,7 @@
         <a class="searchbar-cancel">取消</a>
         <div class="search-input">
             <label class="icon icon-search" for="search"></label>
-            <input type="search" id='search' placeholder='输入关键字...'/>
+            <input type="search" id='search' oninput="searchChange(this)" placeholder='输入关键字...'/>
         </div>
     </div>
 </div>

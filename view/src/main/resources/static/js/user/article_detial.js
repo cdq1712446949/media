@@ -8,12 +8,14 @@ $(function () {
         var reportUrl = 'http://media.com/media/report?articleId=';
         var articleUrl = 'http://media.com/article/ugabi';
         var commentListUrl = 'http://media.com/article/ugucl';
+        var addCommentUrl = 'http://media.com/article/uauc';
 
         var articleId = getQueryString('articleId');
         var userId = getQueryString('userId');
 
-        var commListUrl = 'http://media.com/';
-
+        //发表评论用的数据
+        var commentId = '';
+        var toUserId = '';
 
         getArticleById = function () {
             $.ajax({
@@ -76,9 +78,9 @@ $(function () {
             }
             h2 += '</div>';
             var h3 = '<div class="card-footer no-border">\n' +
-                '     <a href="#" data-aid="' + article.articleId + '" class="link">赞(' + article.goodNum + ')</a>\n' +
+                '     <a onclick="sendComment(this)" data-aid="' + article.articleId + '" class="link">赞(' + article.goodNum + ')</a>\n' +
                 '        <a onclick="addComment()" data-uid="' + userInfo.userId + '" data-aid="' + article.articleId + '" class="link">评论(' + article.commentNum + ')</a>\n' +
-                '        <a href="#" data-aid="' + article.articleId + '" class="link">分享</a>\n' +
+                '        <a href="#" data-aid="' + article.articleId + '" class="link">收藏</a>\n' +
                 '     </div>  ';
             html = h1 + h2 + h3;
             $('#article_content').html(html);
@@ -109,38 +111,38 @@ $(function () {
                 var childList = item.userCommentList;
                 var fromUser = item.fromUser;
                 html += '                <li>\n' +
-                    '                    <div class="card comment">\n' +
+                    '                    <div class="card comment" data-cid="' + item.userCommentId + '" data-tid="' + fromUser.userId + '">\n' +
                     '                        <div class="card-header no-border">\n' +
                     '                            <div class="facebook-avatar">\n' +
-                    '                                <img class="yuan-head" src="http://media.com/image/images/'+fromUser.userHeadPhoto+'"\n' +
+                    '                                <img class="yuan-head" src="http://media.com/image/images/' + fromUser.userHeadPhoto + '"\n' +
                     '                                    >\n' +
                     '                            </div>\n' +
-                    '                            <div class="nick_name" style="float: left">'+fromUser.nickName+'</div>\n' +
+                    '                            <div class="nick_name" style="float: left">' + fromUser.nickName + '</div>\n' +
                     '                        </div>\n' +
                     '                        <div class="card-content">\n' +
-                    '                            <div class="card-content-inner comment_content">'+item.userCommentContent+'</div>\n' +
+                    '                            <div class="card-content-inner comment_content">' + item.userCommentContent + '</div>\n' +
                     '                        </div>\n' +
                     '                    </div>\n';
-                if (childList.length>0){
-                    html+='<ul style="list-style-type: none">';
-                    $.each(childList,function (ind,ite) {
+                html += '<ul style="list-style-type: none">';
+                if (childList.length > 0) {
+                    $.each(childList, function (ind, ite) {
                         var fUser = ite.fromUser;
                         html += '                <li>\n' +
-                            '                    <div class="card comment">\n' +
+                            '                    <div class="card comment" data-cid="' + ite.userCommentId + '" data-tid="' + fUser.userId + '">\n' +
                             '                        <div class="card-header no-border">\n' +
                             '                            <div class="facebook-avatar">\n' +
-                            '                                <img class="yuan-head" src="http://media.com/image/images/'+fUser.userHeadPhoto+'"\n' +
+                            '                                <img class="yuan-head" src="http://media.com/image/images/' + fUser.userHeadPhoto + '"\n' +
                             '                                     >\n' +
                             '                            </div>\n' +
-                            '                            <div class="nick_name" style="float: left">'+fUser.nickName+'</div>\n' +
+                            '                            <div class="nick_name" style="float: left">' + fUser.nickName + '</div>\n' +
                             '                        </div>\n' +
                             '                        <div class="card-content">\n' +
-                            '                            <div class="card-content-inner comment_content">'+ite.userCommentContent+'</div>\n' +
+                            '                            <div class="card-content-inner comment_content">' + ite.userCommentContent + '</div>\n' +
                             '                        </div>\n' +
                             '                    </div> </li>';
                     });
-                    html+='</ul>';
                 }
+                html += '</ul>';
                 html += '                </li>\n';
             });
             html += '        </div>        </ul>';
@@ -150,13 +152,69 @@ $(function () {
         addComment = function (that) {
             $('#footer_comment').show();
             $('#btn_send').show();
+            $('#btn_cancle').show();
         };
+
+        $('#btn_cancle').click(function () {
+            $('#footer_comment').hide();
+            $('#btn_send').hide();
+            $('#btn_cancle').hide();
+        });
 
         $(document).on('click', '#action_icon', function () {
             var buttons1 = [
                 {
                     text: '请选择',
                     label: true
+                },
+                {
+                    text: '刷新',
+                    bold: true,
+                    onClick: function () {
+                        window.location.reload();
+                    }
+                },
+                {
+                    text: '举报',
+                        bold
+                :
+                    true,
+                        color
+                :
+                    'danger',
+                        onClick
+                :
+
+                    function () {
+                        window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                    }
+                }
+        ]
+            ;
+            var buttons2 = [
+                {
+                    text: '取消',
+                    bg: 'danger'
+                }
+            ];
+            var groups = [buttons1, buttons2];
+            $.actions(groups);
+        });
+
+        $(document).on('click', '.comment', function () {
+            commentId = this.dataset.cid;
+            toUserId = this.dataset.tid;
+            var buttons1 = [
+                {
+                    text: '请选择',
+                    label: true
+                },
+                {
+                    text: '回复',
+                    bold: true,
+                    onClick: function () {
+                        addComment();
+                    }
                 },
                 {
                     text: '举报',
@@ -177,40 +235,66 @@ $(function () {
             $.actions(groups);
         });
 
-    $(document).on('click', '.comment', function () {
-        var buttons1 = [
-            {
-                text: '请选择',
-                label: true
-            },
-            {
-                text: '回复',
-                bold: true,
-                onClick: function () {
-                    window.location.href = reportUrl + articleId + '&&userId=' + userId;
-                }
-            },
-            {
-                text: '举报',
-                bold: true,
-                color: 'danger',
-                onClick: function () {
-                    window.location.href = reportUrl + articleId + '&&userId=' + userId;
-                }
+        comment1 = function () {
+            var content = $('#input_comment').val();
+            if (content == '') {
+                $.toast('评论内容不能为空');
+                return;
             }
-        ];
-        var buttons2 = [
-            {
-                text: '取消',
-                bg: 'danger'
+            var article = {
+                articleId: articleId
+            };
+            var commentStr = {
+                article: article,
+                userCommentContent: content
+            };
+            if (commentId != '') {
+                var userComment = {
+                    userCommentId: commentId
+                };
+                commentStr.userComment = userComment;
             }
-        ];
-        var groups = [buttons1, buttons2];
-        $.actions(groups);
-    });
+            ;
+            if (toUserId != '') {
+                var toUser = {
+                    userId: toUserId
+                };
+                commentStr.toUser = toUser;
+            }
+            sendComment(commentStr);
+            toUserId = '';
+            commentId = '';
+        };
 
+        //发送评论
+        sendComment = function (commentStr) {
+            $.ajax({
+                url: addCommentUrl,
+                type: 'POST',
+                data: {
+                    token: sessionStorage.getItem('media_token'),
+                    userCommentStr: JSON.stringify(commentStr)
+                },
+                dataType: 'JSON',
+                success: function (data) {
+                    var result = checkData(data);
+                    if (result) {
+                        sendComment(commentStr);
+                        return;
+                    }
+                    if (data.success) {
+                        $.toast('发表成功');
+                        $('#btn_cancle').click();
+                    } else {
+                        $.toast('发表失败' + data.errMsg);
+                    }
+                }
+            });
+        };
 
-    //初始化界面
+        $()
+
+        //初始化界面
         initView = function () {
             //获取文章信息
             getArticleById();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdq.dao.PersonInfoDao">
+
+    <!--通过userId查询用户配置信息-->
+  <select id="queryPersonInfo" parameterType="com.cdq.model.PersonInfo" resultType="com.cdq.model.PersonInfo">
+      select *
+      from person_info
+      WHERE user_id = #{userId}
+  </select>
+
+    <!--修改用户配置信息-->
+    <update id="updatePersonInfo" parameterType="com.cdq.model.PersonInfo" >
+        update person_info
+        <set>
+            <if test="secretStatus!=null">secret_status = #{secretStatus}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <insert id="insertPersonInfo" parameterType="com.cdq.model.PersonInfo">
+        insert into person_info(user_id) values (#{userId})
+    </insert>
+
+</mapper>

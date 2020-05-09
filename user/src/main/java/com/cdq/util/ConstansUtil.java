@@ -31,4 +31,7 @@ public class ConstansUtil {
     public static String MAN="男";
     public static String WOMAN="女";
 
+    public static String PERSON_INFO = "personInfo";
+    public static String PERSON_INFO_STR = "personInfoStr";
+
 }

@@ -48,4 +48,11 @@ public interface UserService {
      */
     UserExecution changeUserInfo(User user);
 
+    /**
+     * 获取用户信息
+     * @param user
+     * @return
+     */
+    UserExecution selectInfo(User user);
+
 }

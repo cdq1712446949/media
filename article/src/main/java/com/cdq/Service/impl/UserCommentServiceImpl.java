@@ -5,10 +5,12 @@ import com.cdq.dao.UserCommentDao;
 import com.cdq.enums.UserCommentStateEnum;
 import com.cdq.execution.UserCommentExecution;
 import com.cdq.model.UserComment;
+import com.cdq.until.ConstansUtil;
 import com.cdq.until.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,13 +47,23 @@ public class UserCommentServiceImpl implements UserCommentService {
     }
 
     /**
-     * TODO 参数校验
-     *
+     *发表评论接口
      * @param userComment
      * @return
      */
     @Override
     public UserCommentExecution addUserComment(UserComment userComment) {
+        //参数校验
+        if (userComment.getFromUser()==null||userComment.getFromUser().getUserId()==null){
+            return new UserCommentExecution(UserCommentStateEnum.EMPTY_FROM_USER);
+        }
+        if (userComment.getArticle()==null||userComment.getArticle().getArticleId()==null){
+            return new UserCommentExecution(UserCommentStateEnum.EMPTY_ARTICLEID);
+        }
+        if (userComment.getUserCommentContent()==null||userComment.getUserCommentContent().equals(ConstansUtil.EMPTY_STR)){
+            return new UserCommentExecution(UserCommentStateEnum.EMPTY_COMMENT_CONTENT);
+        }
+        userComment.setUserCommentCreateTime(new Date());
         int result = userCommentDao.insertUserComment(userComment);
         if (result == 0) {
             return new UserCommentExecution(UserCommentStateEnum.INNER_ERROR);

@@ -1,14 +1,18 @@
 package com.cdq.controller;
 
-import com.cdq.Service.AttentionService;
+import com.cdq.Service.UserCollectionService;
 import com.cdq.execution.AttentionExecution;
+import com.cdq.execution.UserCollectionExecution;
+import com.cdq.model.Article;
 import com.cdq.model.Attention;
 import com.cdq.model.User;
+import com.cdq.model.UserCollection;
 import com.cdq.until.ConstansUtil;
 import com.cdq.until.HttpServletRequestUtil;
 import com.cdq.until.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,36 +21,35 @@ import java.util.Map;
 
 /**
  * @author ：ヅてＤＱ
- * @date ：Created in 2020/5/8 15:44
+ * @date ：Created in 2020/5/8 22:13
  * @description：
  * @modified By：
  * @version: 1.0.1
  */
 @RestController
-@RequestMapping("/atten")
-public class AttentionController {
+@RequestMapping("/coll")
+public class UserCollectionController {
 
     @Autowired
-    private AttentionService attentionService;
+    private UserCollectionService userCollectionService;
 
     /**
-     * 用户通过id获取关注列表
-     *
+     * 通过userId过去收藏列表
      * @param request
      * @return
      */
-    @RequestMapping(value = "/ugalbu")
-    public Map<String, Object> getAttentionList(HttpServletRequest request) {
+    @RequestMapping(value="/ugcl",method = RequestMethod.POST)
+    public Map getCollectionList(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
         User user = ObjectUtil.getUserId(request);
-        Attention attention = new Attention();
-        attention.setAttentionUser(user);
+        UserCollection userCollection = new UserCollection();
+        userCollection.setUser(user);
         //调用service层
-        AttentionExecution result = attentionService.getAttentionListByUser(attention,
+        UserCollectionExecution result = userCollectionService.getCollectionList(userCollection,
                 HttpServletRequestUtil.getInt(request, "indexPage"), 10);
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
-            modelMap.put(ConstansUtil.ATTENTION_LIST, result.getAttentionList());
+            modelMap.put(ConstansUtil.ATTENTION_LIST, result.getUserCollectionList());
             modelMap.put(ConstansUtil.TOTAL_SIZE,result.getCount());
             modelMap.put(ConstansUtil.TOTAL_PAGE,Math.ceil((double)result.getCount()/10));
         } else {
@@ -57,23 +60,22 @@ public class AttentionController {
     }
 
     /**
-     * 添加关注记录
-     *
+     * 添加收藏记录
      * @param request
      * @return
      */
-    @RequestMapping(value = "/uaatten")
-    public Map<String, Object> addAttention(HttpServletRequest request) {
+    @RequestMapping(value = "/uacoll" , method = RequestMethod.POST)
+    public Map addCollection(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
-        String uid1 = HttpServletRequestUtil.getString(request, "attentionUserId");
-        User user1 = ObjectUtil.getUserId(request);
-        Attention attention = new Attention();
-        User user = new User();
-        user.setUserId(uid1);
-        attention.setAttentionUser(user);
-        attention.setAttentedUser(user1);
+        String articleId = HttpServletRequestUtil.getString(request, "articleId");
+        User user = ObjectUtil.getUserId(request);
+        Article article =new Article();
+        article.setArticleId(Integer.valueOf(articleId));
+        UserCollection userCollection = new UserCollection();
+        userCollection.setUser(user);
+        userCollection.setArticle(article);
         //调用service层
-        AttentionExecution result = attentionService.addAttention(attention);
+        UserCollectionExecution result = userCollectionService.userCollectionManage(userCollection);
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
         } else {
@@ -84,21 +86,20 @@ public class AttentionController {
     }
 
     /**
-     * 通过userId删除关注记录
-     *
+     * 删除收藏记录接口
      * @param request
      * @return
      */
-    @RequestMapping(value = "/udelatten")
-    public Map<String, Object> deleteAttention(HttpServletRequest request) {
+    @RequestMapping(value = "/udcoll" , method = RequestMethod.POST)
+    public Map delCollection(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
         User user = ObjectUtil.getUserId(request);
-        String attentionId = HttpServletRequestUtil.getString(request, "attentionId");
-        Attention attention = new Attention();
-        attention.setAttentionUser(user);
-        attention.setAttentionId(Integer.valueOf(attentionId));
+        String collectionId = HttpServletRequestUtil.getString(request, "collectionId");
+        UserCollection userCollection = new UserCollection();
+        userCollection.setCollectionId(Integer.valueOf(collectionId));
+        userCollection.setUser(user);
         //调用service层
-        AttentionExecution result = attentionService.delAttention(attention);
+        UserCollectionExecution result = userCollectionService.delCollection(userCollection);
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
         } else {
@@ -109,4 +110,3 @@ public class AttentionController {
     }
 
 }
-

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>个人中心</title>
@@ -50,21 +50,21 @@
                             <div class="item-media"><i class="icon icon-f7"></i></div>
                             <div class="item-inner">
                                 <div class="item-title">昵称</div>
-                                <div class="item-after">{{nickName}}</div>
+                                <div class="item-after"><a v-on:click="nameAction">{{nickName}}</a></div>
                             </div>
                         </li>
                         <li class="item-content">
                             <div class="item-media"><i class="icon icon-f7"></i></div>
                             <div class="item-inner">
                                 <div class="item-title">签名</div>
-                                <div class="item-after">{{userDesc}}</div>
+                                <div class="item-after"><a v-on:click="descAction">{{userDesc}}</a> </div>
                             </div>
                         </li>
                         <li class="item-content">
                             <div class="item-media"><i class="icon icon-f7"></i></div>
                             <div class="item-inner">
                                 <div class="item-title">性别</div>
-                                <div class="item-after">{{userSex}}</div>
+                                <div class="item-after"><a v-on:click="sexAction">{{userSex}}</a></div>
                             </div>
                         </li>
                     </ul>

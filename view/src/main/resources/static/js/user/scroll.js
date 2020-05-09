@@ -69,7 +69,7 @@ $(function () {
                         var t3 = ' <div class="card-footer no-border">\n' +
                             '                    <a href="#" data-aid="" class="link">赞(' + item.goodNum + ')</a>\n' +
                             '                    <a href="http://media.com/media/artideti?articleId='+item.articleId+'" '+'data-aid="" class="link">评论(' + item.commentNum + ')</a>\n' +
-                            '                    <a href="#" data-aid="" class="link">分享</a>\n' +
+                            '                    <a href="#" data-aid="" class="link">收藏</a>\n' +
                             '                </div>  </div>';
                         var t = '<li>' + t1 + t4 + t2 + t3 + '</li>';
                         tempHtml += t;

@@ -1,5 +1,6 @@
 package com.cdq.dao;
 
+import com.cdq.model.PersonInfo;
 import com.cdq.model.SecretMessage;
 import com.cdq.model.User;
 import com.cdq.model.UserInfo;
@@ -25,6 +26,8 @@ public class UserDaoTest extends BaseTest{
     private UserDao userDao;
     @Autowired
     private SecretMessageDao secretMessageDao;
+    @Autowired
+    private PersonInfoDao personInfoDao;
 
     @Test
     public void testLogin(){
@@ -33,6 +36,14 @@ public class UserDaoTest extends BaseTest{
         user.setPassWord("980814");
         User u1 = userDao.queryUserByUserName(user);
         System.out.println(u1.getUserId());
+    }
+
+    @Test
+    public void testPersonInfo(){
+        PersonInfo personInfo = new PersonInfo();
+        personInfo.setUserId("19980818");
+        PersonInfo p=personInfoDao.queryPersonInfo(personInfo);
+        System.out.println(p.getUserId());
     }
 
     @Test

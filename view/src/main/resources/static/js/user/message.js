@@ -4,6 +4,7 @@ $(function () {
 
     //根据sessionStorge中的存储信息判断用户是否登录
     var userInfo = sessionStorage.getItem("media_login_info");
+    sessionStorage.setItem('message_number', '');
     var isLogin = false;
     if (userInfo == null) {
         isLogin = false;
@@ -55,12 +56,15 @@ $(function () {
             dataType: "JSON",
             success: function (data) {
                 var result = checkData(data);
-                if (result){
+                if (result) {
                     getMessageNumber();
                     return;
                 }
                 if (data.success) {
+                    // if (JSON.stringify(data.messageNumberList) != sessionStorage.getItem('message_number')) {
                     initMessageNumList(data.messageNumberList);
+                    // sessionStorage.setItem('message_number',JSON.stringify(data.messageNumberList));
+                    // }
                 } else {
                     alert("获取未读消息列表失败:" + data.errMsg);
                 }
@@ -71,5 +75,13 @@ $(function () {
     getMessageNumber();
 
     setInterval('getMessageNumber()', '1000');
+
+    searchChange = function (that) {
+        var str = that.value;
+        $.each($('.item-title'), function (index, item) {
+            var itemStr = item.innerHTML;
+
+        });
+    }
 
 });

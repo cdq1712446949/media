@@ -6,6 +6,7 @@
         <result column="ucc_user_comment_create_time" property="userCommentCreateTime"></result>
         <result column="ucc_user_comment_content" property="userCommentContent"></result>
         <association property="fromUser" column="from_user_id" javaType="com.cdq.model.User">
+            <id column="fuu_user_id" property="userId"></id>
             <result property="nickName" column="fuu_nick_name"></result>
             <result property="userHeadPhoto" column="fuu_user_head_photo"></result>
         </association>
@@ -45,7 +46,8 @@
         ucc.user_comment_create_time as ucc_user_comment_create_time,
         ucc.user_comment_content as ucc_user_comment_content,
         fuu.nick_name as fuu_nick_name,
-        fuu.user_head_photo as fuu_user_head_photo
+        fuu.user_head_photo as fuu_user_head_photo,
+        fuu.user_id as fuu_user_id
         from user_comment as ucc
         left join user as fuu on ucc.from_user_id=fuu.user_id
         where ucc.user_comment_status=0

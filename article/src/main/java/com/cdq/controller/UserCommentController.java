@@ -4,6 +4,7 @@ import com.cdq.Service.UserCommentService;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.execution.UserCommentExecution;
 import com.cdq.model.Article;
+import com.cdq.model.User;
 import com.cdq.model.UserComment;
 import com.cdq.until.ConstansUtil;
 import com.cdq.until.HttpServletRequestUtil;
@@ -40,14 +41,11 @@ public class UserCommentController {
     public Map addUserComment(HttpServletRequest request){
         Map<String,Object> modelMap = new HashMap<>();
         //前端接收参数
-        UserComment userComment = (UserComment) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request,ConstansUtil.USER_COMMENT_STR),UserComment.class);
+        UserComment userComment = (UserComment) ObjectUtil.toPojo(
+                HttpServletRequestUtil.getString(request,ConstansUtil.USER_COMMENT_STR),UserComment.class);
         //通过token获取用户id
-        String userId = ObjectUtil.getUserId(request).getUserId();
-        if (ConstansUtil.EMPTY_STR.equals(userId)){
-            modelMap.put(ConstansUtil.SUCCESS,false);
-            modelMap.put(ConstansUtil.ERRMSG,"当前登录已过期，请重新登录");
-            return modelMap;
-        }
+        User user = ObjectUtil.getUserId(request);
+        userComment.setFromUser(user);
         //调用service层
         UserCommentExecution result = userCommentService.addUserComment(userComment);
         if (result.getState() == 0){

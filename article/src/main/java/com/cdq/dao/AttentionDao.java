@@ -45,4 +45,11 @@ public interface AttentionDao {
      */
     List<Attention> checkRepeat(Attention attention);
 
+    /**
+     * 查询关注列表数量
+     * @param attention
+     * @return
+     */
+    int queryAttenCount(Attention attention);
+
 }

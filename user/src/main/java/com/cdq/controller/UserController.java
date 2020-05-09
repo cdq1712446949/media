@@ -199,4 +199,26 @@ public class UserController {
         return modelMap;
     }
 
+
+    /**
+     * 获取user表信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ufuinfo" , method = RequestMethod.POST)
+    public Map<String,Object> getInfo(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<>();
+        //接收参数
+        User user = ObjectUtil.getUserId(request);
+        UserExecution result = userService.selectInfo(user);
+        if (result.getState()==0){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+            modelMap.put(ConstansUtil.USER_INFO,result.getUser());
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        }
+        return modelMap;
+    }
+
 }

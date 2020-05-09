@@ -52,4 +52,11 @@ public interface UserDao {
      */
     int updateUserInfo(User user);
 
+    /**
+     * 查询用户信息
+     * @param user
+     * @return
+     */
+    User queryInfo(User user);
+
 }

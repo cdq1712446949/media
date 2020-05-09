@@ -44,7 +44,9 @@ public class AttentionServiceImpl implements AttentionService {
         List<Attention> result = attentionDao.selectAttention(attention,
                 PageUtil.pageToRowIndex(indexPage,pageSize),10);
         if (result!=null){
-            return new AttentionExecution(BaseStateEnum.SUCCESS,result);
+            AttentionExecution attentionExecution = new AttentionExecution(BaseStateEnum.SUCCESS,result);
+            attentionExecution.setCount(attentionDao.queryAttenCount(attention));
+            return attentionExecution;
         }else{
             return new AttentionExecution(BaseStateEnum.INNER_ERROR);
         }
@@ -99,7 +101,8 @@ public class AttentionServiceImpl implements AttentionService {
         //调用dao层删除关注记录
         int result = attentionDao.delAttention(attention);
         if (result!=0){
-            return new AttentionExecution(BaseStateEnum.SUCCESS);
+            AttentionExecution attentionExecution = new AttentionExecution(BaseStateEnum.SUCCESS);
+            return attentionExecution;
         }else{
             return new AttentionExecution(BaseStateEnum.INNER_ERROR);
         }

@@ -3,9 +3,16 @@ package com.cdq.execution;
 
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.model.UserCollection;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Getter
+@Setter
+@ToString
 public class UserCollectionExecution {
 
 
@@ -40,39 +47,5 @@ public class UserCollectionExecution {
         this.userCollectionList = userCollectionList;
     }
 
-    public int getState() {
-        return state;
-    }
 
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public String getStateInfo() {
-        return stateInfo;
-    }
-
-    public void setStateInfo(String stateInfo) {
-        this.stateInfo = stateInfo;
-    }
-
-    public int getCount() {
-        return this.userCollectionList.size();
-    }
-
-    public UserCollection getUserCollection() {
-        return userCollection;
-    }
-
-    public void setUserCollection(UserCollection userCollection) {
-        this.userCollection = userCollection;
-    }
-
-    public List<UserCollection> getUserCollectionList() {
-        return userCollectionList;
-    }
-
-    public void setUserCollectionList(List<UserCollection> userCollectionList) {
-        this.userCollectionList = userCollectionList;
-    }
 }

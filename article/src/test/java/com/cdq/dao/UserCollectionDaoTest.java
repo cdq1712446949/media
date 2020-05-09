@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserCollectionDaoTest extends BaseTest {
 
@@ -16,7 +17,12 @@ public class UserCollectionDaoTest extends BaseTest {
 
     @Test
     public void testSelectUserCollection(){
-
+        UserCollection userCollection=new UserCollection();
+        User user=new User();
+        user.setUserId("19980818");
+        userCollection.setUser(user);
+        List<UserCollection> list = userCollectionDao.selectUserCollection(userCollection,0,10);
+        System.out.println(list.size());
     }
 
     @Test
@@ -53,7 +59,6 @@ public class UserCollectionDaoTest extends BaseTest {
         article.setArticleId(4);
         userCollection.setUser(user);
         userCollection.setArticle(article);
-        userCollection.setCollectionStatus((byte) -1);
         int result= userCollectionDao.updateUserCollection(userCollection);
     }
 

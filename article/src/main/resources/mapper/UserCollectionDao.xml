@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdq.dao.UserCollectionDao">
+    <resultMap id="collectionMap" type="com.cdq.model.UserCollection">
+        <id column="collection_id" property="collectionId"></id>
+        <association property="user" column="user_id" javaType="com.cdq.model.User">
+            <id property="userId" column="user_id"></id>
+            <result property="nickName" column="nick_name"></result>
+            <result property="userHeadPhoto" column="user_head_photo"></result>
+        </association>
+        <association property="article" column="article_id" javaType="com.cdq.model.Article">
+            <id property="articleId" column="article_id"></id>
+            <result property="articleContent" column="article_content"></result>
+        </association>
+    </resultMap>
     <select id="duplicateCheck" resultType="com.cdq.model.UserCollection">
         select
         collection_id
         from user_collection
         where user_id=#{user.userId} and article_id=#{article.articleId}
+    </select>
+    <select id="selectUserCollection" parameterType="com.cdq.model.UserCollection" resultMap="collectionMap">
+        select
+        uc.collection_id,uc.collection_create_time,
+        a.article_id,a.article_content,
+        u.user_id,u.user_head_photo,u.nick_name
+        from (select * from user_collection where user_id=#{userCollection.user.userId} limit  #{rowIndex},#{pageSize}) as uc
+        left join (select * from article where article_status=0) as a on uc.article_id=a.article_id
+        left join user as u on a.user_id=u.user_id
+        order by uc.collection_create_time
+    </select>
+    <select id="querCount" parameterType="com.cdq.model.UserCollection" resultType="java.lang.Integer">
+        select
+        count(uc.collection_id)
+        from (select * from user_collection where user_id=#{userCollection.user.userId} ) as uc
+        left join (select * from article where article_status=0) as a on uc.article_id=a.article_id
+        left join user as u on a.user_id=u.user_id
     </select>
     <insert id="insertUserCollection" parameterType="com.cdq.model.UserCollection">
         insert into user_collection(
@@ -19,4 +48,7 @@
         set collection_status=#{collectionStatus}
         where user_id=#{user.userId} and article_id=#{article.articleId}
     </update>
+    <delete id="delCollection" parameterType="com.cdq.model.UserCollection" >
+        delete from user_collection where collection_id=#{collectionId} and user_id=#{user.userId}
+    </delete>
 </mapper>

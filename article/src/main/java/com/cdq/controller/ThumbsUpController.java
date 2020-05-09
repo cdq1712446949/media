@@ -5,6 +5,7 @@ import com.cdq.execution.ThumbsUpExecution;
 import com.cdq.model.Article;
 import com.cdq.model.ThumbsUp;
 import com.cdq.model.User;
+import com.cdq.until.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,21 +28,19 @@ public class ThumbsUpController {
 
     /**
      * 点赞管理
-     * 注册登录拦截器(点赞需要登录)
      *
      * @param userId
      * @param articleId
      * @param status
      * @return
      */
-    @RequestMapping(value = "/thumbsupmanage", method = RequestMethod.GET)
+    @RequestMapping(value = "/thumbsupmanage", method = RequestMethod.POST)
     public Map<String, Object> thumbsUpManage(HttpServletRequest request, String userId, String articleId, Byte status) {
         Map<String, Object> modelMap = new HashMap<>();
         //前端参数处理
         ThumbsUp thumbsUp = new ThumbsUp();
-        User user = new User();
+        User user = ObjectUtil.getUserId(request);
         Article article = new Article();
-        user.setUserId(userId);
         article.setArticleId(Integer.valueOf(articleId));
         thumbsUp.setUser(user);
         thumbsUp.setArticle(article);

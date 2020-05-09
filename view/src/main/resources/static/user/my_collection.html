@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <script src='http://media.com/media/js/jquery-3.3.1.js'></script>
 </head>
+<style>
+    .yuan-head {
+        width: 3.2rem;
+        border-radius: 5rem;
+        margin: 0 0 0 0;
+    }
+</style>
 <body>
 <header class="bar bar-nav">
     <a href="javascript:window.location.href='http://media.com/media/me'" class="icon icon-left pull-left"></a>
@@ -15,12 +22,26 @@
     <h1 class="title">我的收藏</h1>
 </header>
 <div class="content">
+    <div class="page-current">
+        <!-- 添加 class infinite-scroll 和 data-distance  向下无限滚动可不加infinite-scroll-bottom类，这里加上是为了和下面的向上无限滚动区分-->
+        <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100"
+             style="height: 100%;" id="collection_content">
+            <div class="list-block media-list">
+                <ul id="ul_collection">
 
-    <div class="page-current"></div>
+                </ul>
+            </div>
+            <!-- 加载提示符 -->
+            <div class="infinite-scroll-preloader" id="tishifu">
+                <div class="preloader"></div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type='text/javascript' src='http://media.com/media/js/user/my_collection.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/common.js' charset='utf-8'></script>
 </body>
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>

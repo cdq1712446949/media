@@ -76,7 +76,7 @@ $(function () {
                 +' <div class="card-footer no-border">\n' +
                 '                    <a href="#" data-aid="' + item.articleId + '" class="link">赞(' + item.goodNum + ')</a>\n' +
                 '                    <a onclick="addComment(this)" data-uid="' + userInfo.userId + '" data-aid="' + item.articleId + '" class="link">评论(' + item.commentNum + ')</a>\n' +
-                '                    <a href="#" data-aid="' + item.articleId + '" class="link">分享</a>\n' +
+                '                    <a href="#" data-aid="' + item.articleId + '" class="link">收藏</a>\n' +
                 '                </div>  </div></li>';
         });
         // 添加新条目

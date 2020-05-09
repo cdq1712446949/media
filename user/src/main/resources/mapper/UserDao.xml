@@ -44,6 +44,24 @@
         and pass_word=#{passWord}
         <if test="userRole != null">and user_role = #{userRole}</if>
     </select>
+
+    <select id="queryInfo" resultType="com.cdq.model.User">
+        SELECT
+        user_id,
+        nick_name,
+        user_sex,
+        user_role,
+        user_exprience,
+        user_email,
+        user_birthday,
+        user_head_photo,
+        user_desc,
+        user_status
+        from user
+        where user_id=#{userId}
+        <if test="userRole != null">and user_role = 2</if>
+    </select>
+
     <!--查询-->
     <select id="queryUserInfo" resultType="com.cdq.model.UserInfo">
        select

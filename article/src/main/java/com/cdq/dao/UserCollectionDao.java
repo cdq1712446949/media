@@ -1,6 +1,7 @@
 package com.cdq.dao;
 
 import com.cdq.model.UserCollection;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +14,8 @@ public interface UserCollectionDao {
      * @param userCollection
      * @return
      */
-    List<UserCollection> selectUserCollection(UserCollection userCollection);
+    List<UserCollection> selectUserCollection(@Param("userCollection") UserCollection userCollection,
+                                              @Param("rowIndex")int rowIndex,@Param("pageSize")int pageSize);
 
     /**
      * 查重使用接口
@@ -35,5 +37,19 @@ public interface UserCollectionDao {
      * @return
      */
     int updateUserCollection(UserCollection userCollection);
+
+    /**
+     * 删除收藏记录
+     * @param userCollection
+     * @return
+     */
+    int delCollection(UserCollection userCollection);
+
+    /**
+     * 查询收藏列表数量
+     * @param userCollection
+     * @return
+     */
+    int querCount(UserCollection userCollection);
 
 }

@@ -11,16 +11,42 @@
 <body>
 <header class="bar bar-nav">
     <a href="javascript:window.location.href='http://media.com/media/me'" class="icon icon-left pull-left"></a>
-    <a onclick="addArticle()" class="icon icon-edit pull-right"></a>
+    <a onclick="addArticle()" class="icon icon-menu pull-right"></a>
     <h1 class="title">账号设置</h1>
 </header>
 <div class="content">
+<div class="page-current"></div>
+    <div class="list-block">
+        <ul>
+            <!-- Switch (Checkbox) -->
+            <li>
+                <div class="item-content">
+                    <div class="item-media"><i class="icon icon-form-toggle"></i></div>
+                    <div class="item-inner">
+                        <div class="item-title label">是否接收私信</div>
+                        <div class="item-input">
+                            <label class="label-switch pull-right">
+                                <input id="input_sm" type="checkbox" value="0">
+                                <div id="div_sm" class="checkbox"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </li>
 
-    <div class="page-current"></div>
+        </ul>
+    </div>
+    <div class="content-block">
+        <div class="row">
+            <div class="col-50"><a href="#" class="button button-big button-fill button-danger">取消</a></div>
+            <div class="col-50"><a href="#" class="button button-big button-fill button-success">提交</a></div>
+        </div>
+    </div>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type='text/javascript' src='http://media.com/media/js/user/my_config.js' charset='utf-8'></script>
 <script type='text/javascript' src='http://media.com/media/js/common/common.js' charset='utf-8'></script>
 </body>
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
