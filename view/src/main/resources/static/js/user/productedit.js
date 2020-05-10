@@ -16,14 +16,6 @@ $(function () {
     var getCategoryListUrl = '/article/aflat';
     var mediaToken = 'media_token';
     var isEdit = false;
-    if (articleId) {
-        getArticleTypeList();
-        getArticleInfo();
-        isEdit = true;
-    } else {
-        getArticleTypeList();
-        isEdit = false;
-    }
 
     getArticleInfo = function () {
         $.getJSON(initPriductUrl, function (data) {
@@ -39,6 +31,19 @@ $(function () {
                 $.toast("获取文章信息失败:" + data.errMsg);
             }
         });
+    };
+
+    if (articleId) {
+        getArticleTypeList();
+        getArticleInfo();
+        isEdit = true;
+        $('#li_first').hide();
+        $('#li_two').hide();
+        $('#li_image').hide();
+        $('#li_vido').hide();
+    } else {
+        getArticleTypeList();
+        isEdit = false;
     }
 
     initArticleType = function (optionSelected) {
@@ -70,7 +75,7 @@ $(function () {
                 }
                 $('#product-category').html(optionHtml);
             } else {
-                $.toast("获取商品类别失败" + data.errMsg);
+                $.toast("获取文章类别失败" + data.errMsg);
             }
         });
     };
@@ -98,7 +103,6 @@ $(function () {
                             + item.articleTypeId + '">'
                             + item.articleTypeName + '</option>';
                     }
-                    ;
                     $('#two-category').html(optionHtml);
                 } else {
                     alert(data.errMsg);
@@ -132,70 +136,73 @@ $(function () {
         }
     });
 
-    $('#submit').click(
-        function () {
-            var formData = new FormData();
-            var article = {};
-            article.articleContent = $('#article-content').val();
+    $('#submit').click(function () {
+        var formData = new FormData();
+        var article = {};
+        article.articleContent = $('#article-content').val();
+        if (!isEdit) {
             article.articleType = {
                 articleTypeId: $('#two-category').find('option').not(
                     function () {
                         return !this.selected;
                     }).data('value')
             };
-            article.articleId = articleId;
-
-            $('.detail-img').map(
-                function (index, item) {
-                    if ($('.detail-img')[index].files.length > 0) {
-                        formData.append('productImg' + index,
-                            $('.detail-img')[index].files[0]);
-                    }
-                });
-            formData.append('productStr', JSON.stringify(article));
-            formData.append('token', sessionStorage.getItem(mediaToken));
-            $.ajax({
-                url: isEdit ? modifyArticleUrl : addArticleUrl,
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                cache: false,
-                success: function (data) {
-                    var result = checkData(data);
-                    if (result) {
-                        $.ajax({
-                            url: isEdit ? modifyArticleUrl : addArticleUrl,
-                            type: 'POST',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            cache: false,
-                            success: function (data) {
-                                if (data.success) {
-                                    window.history.back(-1);
-                                    $.toast('发布成功！');
-                                } else {
-                                    window.history.back(-1);
-                                    $.toast('发布失败！' + data.errMsg);
-                                }
-                            },
-                            erro: function (code) {
-                                $.toast(code);
-                            }
-                        });
-                    }
-                    if (data.success) {
-                        window.history.back(-1);
-                        $.toast('发布成功！');
-                    } else {
-                        window.history.back(-1);
-                        $.toast('发布失败！' + data.errMsg);
-                    }
-                },
-                erro: function (code) {
-                    $.toast(code);
+            $('.detail-img').map(function (index, item) {
+                if (index>2) {
+                    $.toast('图片数量不能超过三张,只会选取前三张上传');
+                    return;
+                }
+                if ($('.detail-img')[index].files.length > 0) {
+                    formData.append('productImg' + index,
+                        $('.detail-img')[index].files[0]);
                 }
             });
+        }
+        article.articleId = articleId;
+        formData.append('productStr', JSON.stringify(article));
+        var token = sessionStorage.getItem('media_token');
+        $.ajax({
+            url: isEdit ? modifyArticleUrl+'?token='+token : addArticleUrl+'?token='+token ,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (data) {
+                var result = checkData(data);
+                if (result) {
+                    $.ajax({
+                        url: isEdit ? modifyArticleUrl : addArticleUrl,
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        success: function (data) {
+                            if (data.success) {
+                                window.history.back(-1);
+                                $.toast('发布成功！');
+                            } else {
+                                window.history.back(-1);
+                                $.toast('发布失败！' + data.errMsg);
+                            }
+                        },
+                        erro: function (code) {
+                            $.toast(code);
+                        }
+                    });
+                }
+                if (data.success) {
+                    window.history.back(-1);
+                    $.toast('发布成功！');
+                } else {
+                    window.history.back(-1);
+                    $.toast('发布失败！' + data.errMsg);
+                }
+            },
+            erro: function (code) {
+                $.toast(code);
+            }
         });
+    });
 });

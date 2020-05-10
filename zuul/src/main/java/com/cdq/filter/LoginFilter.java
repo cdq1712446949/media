@@ -3,12 +3,10 @@ package com.cdq.filter;
 import com.alibaba.fastjson.JSONObject;
 import com.cdq.util.ConstansUtil;
 import com.cdq.util.HttpServletRequestUtil;
-import com.cdq.util.MyHttpResponse;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,6 +31,7 @@ public class LoginFilter extends ZuulFilter {
     public static String USER = "user";
     public static String VIDEO = "video";
     public static String ARTICLE = "article";
+    public static String IMAGE = "image";
 
     private static String USER_URL = "http://SERVER-USER/";
 
@@ -41,11 +40,11 @@ public class LoginFilter extends ZuulFilter {
 
     //表示不用拦截的url
     private static String[] INVOKE_USER_URL = new String[]{
-            "login","register"
+            "login", "register"
     };
     private static String[] INVOKE_ARTICLE_URL = new String[]{
-            "alat","aflat","getArticle","ugabi","ugucl",
-            "firstarticletypelist","artideti","ugall","ugval"
+            "alat", "aflat", "getArticle", "ugabi", "ugucl",
+            "firstarticletypelist", "artideti", "ugall", "ugval"
     };
     private static String[] INVOKE_VIDEO_URL = new String[]{
 
@@ -79,19 +78,40 @@ public class LoginFilter extends ZuulFilter {
         System.out.println(request.getRequestURL());
         String[] tempUrls = request.getRequestURL().toString().split("\\/");
         System.out.println(tempUrls.toString());
+
         //拦截规则
         if (!checkIsFilter(tempUrls)) {
             return null;
         }
         //获取token转发到鉴权中心
-        String token = HttpServletRequestUtil.getString(request,ConstansUtil.TOKEN);
-        if (token==null||token.equals("")){
-            return new MyHttpResponse(HttpStatus.BAD_REQUEST);
+        String token = HttpServletRequestUtil.getString(request, ConstansUtil.TOKEN);
+        if (token == null || token.equals("")) {
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("stateCode", 401);
+            resultMap.put("result", false);
+            resultMap.put("redirect", "http://media.com/media/login");
+            requestContext.setSendZuulResponse(false);
+            HttpServletResponse response = requestContext.getResponse();
+            JSONObject jsonObject = new JSONObject(resultMap);
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+            PrintWriter out = null;
+            try {
+                out = response.getWriter();
+                out.append(jsonObject.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+            }
+            return null;
         }
         Map resultMap = restTemplate.getForObject(USER_URL + "checkLoginInfo?token=" + token, Map.class);
-        if ((boolean)resultMap.get("result")){
+        if ((boolean) resultMap.get("result")) {
             return null;
-        }else {
+        } else {
             requestContext.setSendZuulResponse(false);
             HttpServletResponse response = requestContext.getResponse();
             JSONObject jsonObject = new JSONObject(resultMap);
@@ -122,13 +142,28 @@ public class LoginFilter extends ZuulFilter {
         if (tempUrls[3].equals(MEDIA)) {
             return false;
         }
+        if (tempUrls[3].equals(IMAGE)) {
+            return false;
+        }
+        if (tempUrls[3].equals(VIDEO)) {
+            return false;
+        }
+        //    /admin/login  /admin/adminlogin放行
         if (tempUrls[3].equals(USER)) {
+            if (tempUrls[4].equals("admin")){
+                if (tempUrls.length>5){
+                    if (tempUrls[5].equals("login")||tempUrls[5].equals("adminLogin")){
+                        return false;
+                    }
+                }
+            }
             for (String url : INVOKE_USER_URL) {
                 if (url.equals(tempUrls[4])) {
                     return false;
                 }
             }
         }
+
         if (tempUrls[3].equals(ARTICLE)) {
             for (String url : INVOKE_ARTICLE_URL) {
                 if (url.equals(tempUrls[4])) {
@@ -136,13 +171,7 @@ public class LoginFilter extends ZuulFilter {
                 }
             }
         }
-        if (tempUrls[3].equals(VIDEO)) {
-            for (String url : INVOKE_VIDEO_URL) {
-                if (url.equals(tempUrls[4])) {
-                    return false;
-                }
-            }
-        }
+
         return true;
     }
 

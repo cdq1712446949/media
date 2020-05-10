@@ -96,6 +96,7 @@ $(function () {
                 }
                 if (data.success) {
                     getInfo();
+                    $.toast('信息修改成功')
                 } else {
                     $.toast('修改信息失败：' + data.errMsg);
                 }

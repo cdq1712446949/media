@@ -68,12 +68,14 @@ public class UserCollectionController {
     public Map addCollection(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
         String articleId = HttpServletRequestUtil.getString(request, "articleId");
+        byte status = Byte.parseByte(HttpServletRequestUtil.getString(request,"status"));
         User user = ObjectUtil.getUserId(request);
         Article article =new Article();
         article.setArticleId(Integer.valueOf(articleId));
         UserCollection userCollection = new UserCollection();
         userCollection.setUser(user);
         userCollection.setArticle(article);
+        userCollection.setCollectionStatus(status);
         //调用service层
         UserCollectionExecution result = userCollectionService.userCollectionManage(userCollection);
         if (result.getState() == 0) {

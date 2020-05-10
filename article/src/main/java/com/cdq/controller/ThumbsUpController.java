@@ -29,13 +29,12 @@ public class ThumbsUpController {
     /**
      * 点赞管理
      *
-     * @param userId
      * @param articleId
      * @param status
      * @return
      */
     @RequestMapping(value = "/thumbsupmanage", method = RequestMethod.POST)
-    public Map<String, Object> thumbsUpManage(HttpServletRequest request, String userId, String articleId, Byte status) {
+    public Map<String, Object> thumbsUpManage(HttpServletRequest request, String articleId, Byte status) {
         Map<String, Object> modelMap = new HashMap<>();
         //前端参数处理
         ThumbsUp thumbsUp = new ThumbsUp();

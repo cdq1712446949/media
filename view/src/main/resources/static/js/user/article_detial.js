@@ -78,9 +78,9 @@ $(function () {
             }
             h2 += '</div>';
             var h3 = '<div class="card-footer no-border">\n' +
-                '     <a onclick="sendComment(this)" data-aid="' + article.articleId + '" class="link">赞(' + article.goodNum + ')</a>\n' +
+                '     <a onclick="thumbsUpAction(this)" data-aid="' + article.articleId + '" class="link">赞(' + article.goodNum + ')</a>\n' +
                 '        <a onclick="addComment()" data-uid="' + userInfo.userId + '" data-aid="' + article.articleId + '" class="link">评论(' + article.commentNum + ')</a>\n' +
-                '        <a href="#" data-aid="' + article.articleId + '" class="link">收藏</a>\n' +
+                '        <a onclick="collectionAction(this)" data-aid="' + article.articleId + '" class="link">收藏</a>\n' +
                 '     </div>  ';
             html = h1 + h2 + h3;
             $('#article_content').html(html);

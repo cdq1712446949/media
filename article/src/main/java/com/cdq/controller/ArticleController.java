@@ -155,6 +155,12 @@ public class ArticleController {
         return modelMap;
     }
 
+    /**
+     * 查询关注文章列表
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/ugaal", method = RequestMethod.POST)
     public Map getAttArticle(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
@@ -180,15 +186,7 @@ public class ArticleController {
     @RequestMapping(value = "/ugmal", method = RequestMethod.POST)
     public Map getMyArticleList(HttpServletRequest request, int indexPage) {
         Map<String, Object> modelMap = new HashMap<>();
-        String userId = ObjectUtil.getUserId(request).getUserId();
-        if (ConstansUtil.EMPTY_STR.equals(userId)) {
-            modelMap.put(ConstansUtil.SUCCESS, false);
-            modelMap.put(ConstansUtil.ERRMSG, "当前登录已过期，请重新登录");
-            modelMap.put(ConstansUtil.ERR_CODE, ConstansUtil.CODE_LOGIN_TIME_OUT);
-            return modelMap;
-        }
-        User user = new User();
-        user.setUserId(userId);
+        User user = ObjectUtil.getUserId(request);
         Article article = new Article();
         article.setUser(user);
         article.setArticleStatus((byte) 0);
@@ -221,9 +219,25 @@ public class ArticleController {
      * @return 结果
      */
     @RequestMapping(value = "/modifyArticle", method = RequestMethod.POST)
-    public Map modifyArticle(HttpServletRequest request) {
+    public Map modifyArticle(HttpServletRequest request) throws JsonProcessingException {
         Map<String, Object> modelMap = new HashMap<>();
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        String productStr = HttpServletRequestUtil.getString(request, "productStr");
+        if (productStr != null || !ConstansUtil.EMPTY_STR.equals(productStr)) {
+            Article article = objectMapper.readValue(productStr, Article.class);
+            User user = ObjectUtil.getUserId(request);
+            article.setUser(user);
+            ArticleExecution result = articleService.changeArticle(article);
+            if (result.getState()==0){
+                modelMap.put(ConstansUtil.SUCCESS,true);
+            }else{
+                modelMap.put(ConstansUtil.SUCCESS,false);
+                modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+            }
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put("errMsg", "信息不全");
+        }
         return modelMap;
     }
 
@@ -240,10 +254,10 @@ public class ArticleController {
         }
         //调用service层
         ArticleExecution result = articleService.deleteArticle(HttpServletRequestUtil.getInt(request, "articleId"), loginUserId);
-        if (result .getState()==0) {
-            modelMap.put(ConstansUtil.SUCCESS,true);
-        }else{
-            modelMap.put(ConstansUtil.SUCCESS,false);
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
         }
         return modelMap;
     }

@@ -54,6 +54,11 @@ public class UserCollectionServiceImpl implements UserCollectionService {
         if (userCollection.getArticle().getArticleId() == null || userCollection.getArticle().getArticleId() == 0) {
             return new UserCollectionExecution(BaseStateEnum.EMPTY_INFO);
         }
+        //collectionStatus不能为空
+        if (userCollection.getCollectionStatus() != UserCollection.BAN_STATUS &&
+                userCollection.getCollectionStatus() != UserCollection.NORMAL_STATUS) {
+            return new UserCollectionExecution(BaseStateEnum.ILLEGAL_PARAMETER);
+        }
         //根据userId和articleId查询该记录是否存在
         UserCollection temp = userCollectionDao.duplicateCheck(userCollection);
         if (temp != null) {

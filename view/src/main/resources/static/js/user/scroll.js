@@ -67,7 +67,7 @@ $(function () {
                         });
                         t2 = '<div class="row" style="padding:20px">' + t2 + '</div>';
                         var t3 = ' <div class="card-footer no-border">\n' +
-                            '                    <a href="#" data-aid="" class="link">赞(' + item.goodNum + ')</a>\n' +
+                            '                    <a onclick="thumbsUpAction(this)" data-aid="" class="link">赞(' + item.goodNum + ')</a>\n' +
                             '                    <a href="http://media.com/media/artideti?articleId='+item.articleId+'" '+'data-aid="" class="link">评论(' + item.commentNum + ')</a>\n' +
                             '                    <a href="#" data-aid="" class="link">收藏</a>\n' +
                             '                </div>  </div>';

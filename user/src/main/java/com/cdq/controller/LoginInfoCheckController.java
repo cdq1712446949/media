@@ -71,7 +71,7 @@ public class LoginInfoCheckController {
             } else {
                 modelMap.put("stateCode", JwtUtil.RELOGIN);
                 modelMap.put("result", false);
-                modelMap.put("redirect", "/user/login");
+                modelMap.put("redirect", "http://media.com/media/login");
             }
         } catch (ExpiredJwtException e) {
             Claims claims = e.getClaims();
