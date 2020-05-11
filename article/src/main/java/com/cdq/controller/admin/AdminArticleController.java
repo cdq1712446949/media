@@ -8,6 +8,7 @@ import com.cdq.until.HttpServletRequestUtil;
 import com.cdq.until.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,10 +53,24 @@ public class AdminArticleController {
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
             modelMap.put("articleList", result.getArticleList());
-            modelMap.put("size",result.getCount());
+            modelMap.put("size", result.getCount());
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put("errMsg", result.getStateInfo());
+        }
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/agnan", method = RequestMethod.POST)
+    public Map getNewArticleNum(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        ArticleExecution result = articleService.getNewArticleNum(new Article());
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+            modelMap.put(ConstansUtil.ARTICLE_NUMBER, result.getCount());
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
         }
         return modelMap;
     }

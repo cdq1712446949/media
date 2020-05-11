@@ -9,6 +9,7 @@ package com.cdq.until;
  */
 public class ConstansUtil {
 
+    public static final String ARTICLE_NUMBER = "articleNumber";
     //空字符串
     public static String EMPTY_STR = "";
 

@@ -92,7 +92,7 @@ checkData = function (data) {
         window.location.href = redirect;
     }
     if (stateCode == 201) {
-        sessionStorage.setItem('media_token',data.token);
+        sessionStorage.setItem('media_token', data.token);
         reSend = true;
     }
     return reSend;

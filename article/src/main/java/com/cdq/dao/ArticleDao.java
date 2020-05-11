@@ -113,4 +113,10 @@ public interface ArticleDao {
      */
     int delArticle(Article article);
 
+    /**
+     * 查询今日新增文章数量
+     * @return
+     */
+    Integer newArticleNum(Article article);
+
 }

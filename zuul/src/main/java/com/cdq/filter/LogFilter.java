@@ -20,6 +20,7 @@ public class LogFilter extends ZuulFilter {
 
     /**
      * 返回拦截类型
+     *
      * @return
      */
     @Override
@@ -29,15 +30,17 @@ public class LogFilter extends ZuulFilter {
 
     /**
      * 返回当前拦截器级别，数字越小级别越大，最大是0
+     *
      * @return
      */
     @Override
     public int filterOrder() {
-        return FilterConstants.PRE_DECORATION_FILTER_ORDER+1;
+        return FilterConstants.PRE_DECORATION_FILTER_ORDER + 1;
     }
 
     /**
      * 表示是否启动当前拦截器
+     *
      * @return
      */
     @Override
@@ -47,6 +50,7 @@ public class LogFilter extends ZuulFilter {
 
     /**
      * 拦截器执行逻辑
+     *
      * @return
      * @throws ZuulException
      */

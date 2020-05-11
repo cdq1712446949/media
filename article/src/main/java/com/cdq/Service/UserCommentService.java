@@ -2,6 +2,7 @@ package com.cdq.Service;
 
 
 import com.cdq.execution.UserCommentExecution;
+import com.cdq.model.User;
 import com.cdq.model.UserComment;
 
 /**
@@ -30,6 +31,6 @@ public interface UserCommentService {
      * @param userCommentId
      * @return
      */
-    UserCommentExecution delUserComment(Integer userCommentId);
+    UserCommentExecution delUserComment(Integer userCommentId, User user);
 
 }

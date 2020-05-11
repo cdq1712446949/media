@@ -3,7 +3,8 @@ $(function () {
     var myArticleUrl = 'http://media.com/article/ugmal';
     //删除文章接口地址
     var delArticleUrl = 'http://media.com/article/delArticle';
-
+    //文章详情页面
+    var articleDetialUrl = 'http://media.com/media/artideti?articleId=';
     var loading = false;
     //页数
     var indexPage = 1;
@@ -112,13 +113,20 @@ $(function () {
 
     getMyArticle();
 
+    addComment = function (that) {
+        var aid = that.dataset.aid;
+        var uid = that.dataset.uid;
+        window.location.href= articleDetialUrl+aid+'&&userId='+uid;
+    };
+
+
     initArticleList = function (data, isAppend) {
         var articleList = data.articleList;
         totalPageSize = data.totalPage;
         var tempHtml = '';
         if (articleList.length == 0) {
-            $('#tab1_tishifu').hide();
-            $.toast('没有更多内容');
+            $('#tishifu').hide();
+            $.toast('没有更多内容了')
         }
         if (articleList.length < 10) {
             $('#tab1_tishifu').hide();
@@ -164,7 +172,7 @@ $(function () {
             $('#list_article').html(tempHtml);
         }
     };
-
+    $('#tishifu').hide();
     // 注册'infinite'事件处理函数
     $(document).on('infinite', '#tab1_cont', function () {
         if (loading) return;

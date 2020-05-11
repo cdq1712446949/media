@@ -37,6 +37,9 @@ $(function () {
                 }
                 if (data.success) {
                     var articleList = data.articleList;
+                    if (articleList.length<10){
+                        $('#tab2_tishifu').hide();
+                    }
                     var tempHtml = '';
                     attTotal = data.totalSize;
                     totalPageSize = data.totalPage;

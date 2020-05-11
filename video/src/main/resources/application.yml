@@ -8,7 +8,10 @@ spring:
       suffix: .html
   application:
     name: server-video #此实例注册到eureka服务端的name
-
+  servlet:
+      multipart:
+        max-file-size: 3MB
+        max-request-size: 20MB
 eureka:
   client:
     serviceUrl:

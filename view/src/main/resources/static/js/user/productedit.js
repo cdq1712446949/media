@@ -122,7 +122,6 @@ $(function () {
                         + item.articleTypeId + '">'
                         + item.articleTypeName + '</option>';
                 }
-                ;
                 $('#product-category').html(optionHtml);
             } else {
                 $.toast("获取商品类别失败" + data.errMsg);
@@ -131,10 +130,17 @@ $(function () {
     }
 
     $('.detail-img-div').on('change', '.detail-img:last-child', function () {
-        if ($('.detail-img').length < 6) {
+        $('#li_vido').hide();
+        if ($('.detail-img').length < 3) {
             $('#detail-img').append('<input type="file" class="detail-img">');
         }
     });
+
+    $('#video-art').change(function () {
+        $('#li_image').hide();
+    });
+
+
 
     $('#submit').click(function () {
         var formData = new FormData();
@@ -147,22 +153,29 @@ $(function () {
                         return !this.selected;
                     }).data('value')
             };
-            $('.detail-img').map(function (index, item) {
-                if (index>2) {
-                    $.toast('图片数量不能超过三张,只会选取前三张上传');
-                    return;
+            if ($('#video-art').val() == '' || $('#video-art').val() == null) {
+                $('.detail-img').map(function (index, item) {
+                    if (index > 2) {
+                        $.toast('图片数量不能超过三张,只会选取前三张上传');
+                        return;
+                    }
+                    if ($('.detail-img')[index].files.length > 0) {
+                        formData.append('productImg' + index,
+                            $('.detail-img')[index].files[0]);
+                    }
+                });
+            } else {
+                var tempFile = document.getElementById('video-art')
+                if (tempFile.files.length>0) {
+                    formData.append('articleVideo', tempFile.files[0]);
                 }
-                if ($('.detail-img')[index].files.length > 0) {
-                    formData.append('productImg' + index,
-                        $('.detail-img')[index].files[0]);
-                }
-            });
+            }
         }
         article.articleId = articleId;
         formData.append('productStr', JSON.stringify(article));
         var token = sessionStorage.getItem('media_token');
         $.ajax({
-            url: isEdit ? modifyArticleUrl+'?token='+token : addArticleUrl+'?token='+token ,
+            url: isEdit ? modifyArticleUrl + '?token=' + token : addArticleUrl + '?token=' + token,
             type: 'POST',
             data: formData,
             contentType: false,

@@ -83,4 +83,24 @@
     <delete id="delUserComment" parameterType="com.cdq.model.UserComment">
         delete from user_comment where user_comment_id=#{userCommentId}
     </delete>
+
+    <select id="qeruyUserRole" parameterType="java.lang.String" resultType="com.cdq.model.User">
+        select user_role from user where user_id=#{userId}
+    </select>
+
+    <select id="queryIsMyComment" parameterType="com.cdq.model.UserComment" resultType="com.cdq.model.UserComment">
+        select user_comment_id from user_comment
+        where user_comment_id=#{userCommentId} and from_user_id=#{fromUser.userId}
+    </select>
+
+    <select id="queryIsCanDel" parameterType="com.cdq.model.UserComment" resultType="com.cdq.model.UserComment">
+        select uc.user_comment_id
+        from (select *  from user_comment where user_comment_id=#{userCommentId} ) as uc
+        left join (
+        select ar.article_id,u.user_id
+        from (select user_id from user where user_id=#{fromUser.userId}) as u
+        left join article as ar on u.user_id = ar.user_id
+        ) as a on a.article_id=uc.article_id
+    </select>
+
 </mapper>

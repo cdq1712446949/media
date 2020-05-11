@@ -4,6 +4,7 @@ package com.cdq.Service.impl;
 import com.cdq.Service.ArticleService;
 import com.cdq.dao.ArticleDao;
 import com.cdq.dao.ArticleTypeDao;
+import com.cdq.enums.ArticleStateEnum;
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
@@ -296,6 +297,19 @@ public class ArticleServiceImpl implements ArticleService {
         int result = articleDao.delArticle(article);
         if (result!=0){
             return new ArticleExecution(BaseStateEnum.SUCCESS);
+        }else {
+            return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public ArticleExecution getNewArticleNum(Article article) {
+        article.setArticleCreateTime(new Date());
+        Integer result = articleDao.newArticleNum(article);
+        if (result!=null){
+            ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS);
+            articleExecution.setCount(result);
+            return articleExecution;
         }else {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
         }

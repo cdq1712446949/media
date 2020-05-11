@@ -1,7 +1,15 @@
 $(function () {
 
     var logoutUrl = 'http://media.com/user/admin/logout';
+    var articleNumUrl = 'http://media.com/article/admin/agnan';
     var i, j;
+
+    var articleNum = 0;
+    var userNum = 0;
+    var imageNum = 0;
+    var reportNum = 0;
+
+    vue
 
     loadInner = function (sId) {
         var sId = window.location.hash;

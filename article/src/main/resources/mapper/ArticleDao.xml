@@ -278,8 +278,10 @@
         insert into
         article(
         user_id,article_type_id,article_content,article_create_time
+        <if test="videoSrc!=null">,video_src</if>
         ) values (
         #{user.userId},#{articleType.articleTypeId},#{articleContent},#{articleCreateTime}
+        <if test="videoSrc!=null">,#{videoSrc}</if>
         )
     </insert>
     <!--修改文章记录-->
@@ -303,4 +305,10 @@
     <delete id="delArticle" parameterType="com.cdq.model.Article">
         delete from article where article_id=#{articleId}
     </delete>
+    <select id="newArticleNum" parameterType="com.cdq.model.Article" resultType="java.lang.Integer">
+        select count (article_id)
+        from article
+        where  year(article_create_time)=year(#{articleCreateTime})
+                and month(article_create_time)= month(#{articleCreateTime})
+    </select>
 </mapper>

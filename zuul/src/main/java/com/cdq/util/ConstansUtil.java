@@ -11,5 +11,6 @@ public class ConstansUtil {
 
     public static final String HEAD_KEY = "media_header";
     public static String TOKEN = "token";
+    public static String EMPTY = "";
 
 }

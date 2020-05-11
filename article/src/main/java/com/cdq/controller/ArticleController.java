@@ -9,10 +9,12 @@ import com.cdq.until.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -101,7 +103,7 @@ public class ArticleController {
      * @return 结果
      */
     @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
-    public Map addArticle(HttpServletRequest request) throws JsonProcessingException {
+    public Map addArticle(HttpServletRequest request) throws Exception {
         Map<String, Object> modelMap = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
         String productStr = HttpServletRequestUtil.getString(request, "productStr");
@@ -109,26 +111,36 @@ public class ArticleController {
             Article article = objectMapper.readValue(productStr, Article.class);
             //获取文章发布者信息
             article.setUser(ObjectUtil.getUserId(request));
-            //添加文章记录
-            ArticleExecution articleExecution = articleService.addArticle(article);
-            if (articleExecution.getState() != 0) {
-                modelMap.put(ConstansUtil.SUCCESS, false);
-                modelMap.put("errMsg", articleExecution.getStateInfo());
-                return modelMap;
-            }
             MultipartHttpServletRequest multipartRequest = null;
             List<String> productImgs = new ArrayList<>();
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
             try {
                 if (multipartResolver.isMultipart(request)) {
                     multipartRequest = (MultipartHttpServletRequest) request;
+                    CommonsMultipartFile articleVideo =(CommonsMultipartFile) multipartRequest.getFile("articleVideo");
+                    if (articleVideo!=null){
+                        //处理视频文件
+                        String videoSrc = VideoUtil.uploadFile(articleVideo,ConstansUtil.ARTICLE);
+                        article.setVideoSrc(videoSrc);
+                    }
+                    //添加文章记录
+                    ArticleExecution articleExecution = articleService.addArticle(article);
+                    if (articleExecution.getState() != 0) {
+                        modelMap.put(ConstansUtil.SUCCESS, false);
+                        modelMap.put("errMsg", articleExecution.getStateInfo());
+                        return modelMap;
+                    }
+                    //处理图片文件
                     for (int i = 0; i < ConstansUtil.IMAGEMAXCOUNT; i++) {
                         CommonsMultipartFile productImg = (CommonsMultipartFile) multipartRequest
                                 .getFile("productImg" + i);
                         if (productImg != null) {
                             productImgs.add(addThumils(article, productImg));
+                        }else{
+                            break;
                         }
                     }
+                    //访问图片服务，添加图片记录
                     HashMap result = restTemplate.getForObject(ConstansUtil.IMAGE_URL + "/imgHouse/article?pojoId=" + article.getArticleId() + "&imgSrcs=" + objectMapper.writeValueAsString(productImgs),
                             HashMap.class);
                     //对结果进行处理

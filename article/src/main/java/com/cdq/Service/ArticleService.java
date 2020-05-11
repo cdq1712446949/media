@@ -73,4 +73,11 @@ public interface ArticleService {
      */
     ArticleExecution deleteArticle(Integer articleId,String userId);
 
+    /**
+     * 查询今日新增文章数量
+     * @param article
+     * @return
+     */
+    ArticleExecution getNewArticleNum(Article article);
+
 }

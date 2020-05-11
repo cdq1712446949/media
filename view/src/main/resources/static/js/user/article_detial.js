@@ -9,6 +9,7 @@ $(function () {
         var articleUrl = 'http://media.com/article/ugabi';
         var commentListUrl = 'http://media.com/article/ugucl';
         var addCommentUrl = 'http://media.com/article/uauc';
+        var deleteCommentUrl = 'http://media.com/article/uducomm';
 
         var articleId = getQueryString('articleId');
         var userId = getQueryString('userId');
@@ -16,6 +17,8 @@ $(function () {
         //发表评论用的数据
         var commentId = '';
         var toUserId = '';
+
+        var isMyArticle = false;
 
         getArticleById = function () {
             $.ajax({
@@ -37,6 +40,9 @@ $(function () {
 
         initArticleView = function (article) {
             var userInfo = article.user;
+            if (userInfo.userId == JSON.parse(sessionStorage.getItem('media_login_info')).userId) {
+                isMyArticle = true;
+            }
             var videoSrc = article.videoSrc;
             var html = '';
             var h1 = '<div class="card-header no-border">\n' +
@@ -86,6 +92,7 @@ $(function () {
             $('#article_content').html(html);
         };
 
+
         getCommListByAid = function () {
             $.ajax({
                 url: commentListUrl,
@@ -104,6 +111,30 @@ $(function () {
             });
         };
 
+        deleteComment = function (cid, that) {
+            $.ajax({
+                url: deleteCommentUrl,
+                type: 'POST',
+                data: {
+                    token: sessionStorage.getItem('media_token'),
+                    commentId: cid
+                },
+                dataType: 'JSON',
+                success: function (data) {
+                    var result = checkData(data);
+                    if (result) {
+                        deleteComment(cid,id);
+                        return;
+                    }
+                    if (data.success) {
+                        that.parentNode.removeChild(that);
+                    }else{
+                        $.toast('删除评论失败:'+data.errMsg);
+                    }
+                }
+            });
+        };
+
         initCommentList = function (list) {
             var html = ' <div style="height:60%;width:100%;overflow:auto;background:white;">\n' +
                 '            <ul  style="list-style-type: none;margin: 10px 5px; padding: 1px">\n';
@@ -117,7 +148,9 @@ $(function () {
                     '                                <img class="yuan-head" src="http://media.com/image/images/' + fromUser.userHeadPhoto + '"\n' +
                     '                                    >\n' +
                     '                            </div>\n' +
-                    '                            <div class="nick_name" style="float: left">' + fromUser.nickName + '</div>\n' +
+                    '                            <div class="nick_name" style="float: left">' + fromUser.nickName + '</div>\n '
+
+                html +=
                     '                        </div>\n' +
                     '                        <div class="card-content">\n' +
                     '                            <div class="card-content-inner comment_content">' + item.userCommentContent + '</div>\n' +
@@ -134,8 +167,9 @@ $(function () {
                             '                                <img class="yuan-head" src="http://media.com/image/images/' + fUser.userHeadPhoto + '"\n' +
                             '                                     >\n' +
                             '                            </div>\n' +
-                            '                            <div class="nick_name" style="float: left">' + fUser.nickName + '</div>\n' +
-                            '                        </div>\n' +
+                            '                            <div class="nick_name" style="float: left">' + fUser.nickName + '</div>\n ';
+
+                        html += '                        </div>\n' +
                             '                        <div class="card-content">\n' +
                             '                            <div class="card-content-inner comment_content">' + ite.userCommentContent + '</div>\n' +
                             '                        </div>\n' +
@@ -163,33 +197,30 @@ $(function () {
 
         $(document).on('click', '#action_icon', function () {
             var buttons1 = [
-                {
-                    text: '请选择',
-                    label: true
-                },
-                {
-                    text: '刷新',
-                    bold: true,
-                    onClick: function () {
-                        window.location.reload();
-                    }
-                },
-                {
-                    text: '举报',
-                        bold
-                :
-                    true,
-                        color
-                :
-                    'danger',
-                        onClick
-                :
+                    {
+                        text: '请选择',
+                        label: true
+                    },
+                    {
+                        text: '刷新',
+                        bold: true,
+                        onClick: function () {
+                            window.location.reload();
+                        }
+                    },
+                    {
+                        text: '举报',
+                        bold:
+                            true,
+                        color:
+                            'danger',
+                        onClick:
 
-                    function () {
-                        window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                            function () {
+                                window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                            }
                     }
-                }
-        ]
+                ]
             ;
             var buttons2 = [
                 {
@@ -204,6 +235,7 @@ $(function () {
         $(document).on('click', '.comment', function () {
             commentId = this.dataset.cid;
             toUserId = this.dataset.tid;
+            var that = this;
             var buttons1 = [
                 {
                     text: '请选择',
@@ -231,7 +263,37 @@ $(function () {
                     bg: 'danger'
                 }
             ];
+            var buttons3 = [{
+                text: '请选择',
+                label: true
+            },
+                {
+                    text: '回复',
+                    bold: true,
+                    onClick: function () {
+                        addComment();
+                    }
+                },
+                {
+                    text: '举报',
+                    bold: true,
+                    color: 'danger',
+                    onClick: function () {
+                        window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                    }
+                },
+                {
+                    text: '删除',
+                    color: 'danger',
+                    blod: true,
+                    onClick: function () {
+                        deleteComment(commentId, that);
+                    }
+                }];
             var groups = [buttons1, buttons2];
+            if (isMyArticle) {
+                groups = [buttons3, buttons2];
+            }
             $.actions(groups);
         });
 
@@ -254,7 +316,6 @@ $(function () {
                 };
                 commentStr.userComment = userComment;
             }
-            ;
             if (toUserId != '') {
                 var toUser = {
                     userId: toUserId
@@ -292,7 +353,6 @@ $(function () {
             });
         };
 
-        $()
 
         //初始化界面
         initView = function () {

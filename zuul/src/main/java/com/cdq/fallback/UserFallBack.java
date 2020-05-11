@@ -66,7 +66,7 @@ public class UserFallBack implements FallbackProvider {
             @Override
             public InputStream getBody() throws IOException {
                 //吧降级信息响应回前端
-                return new ByteArrayInputStream("降级信息".getBytes());
+                return new ByteArrayInputStream("系统错误".getBytes());
             }
 
             @Override

@@ -85,7 +85,7 @@ public class LoginFilter extends ZuulFilter {
         }
         //获取token转发到鉴权中心
         String token = HttpServletRequestUtil.getString(request, ConstansUtil.TOKEN);
-        if (token == null || token.equals("")) {
+        if (token == null || ConstansUtil.EMPTY.equals(token)) {
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("stateCode", 401);
             resultMap.put("result", false);
@@ -108,7 +108,12 @@ public class LoginFilter extends ZuulFilter {
             }
             return null;
         }
-        Map resultMap = restTemplate.getForObject(USER_URL + "checkLoginInfo?token=" + token, Map.class);
+        Map resultMap = null;
+        if (tempUrls[4].equals("admin")) {
+            resultMap= restTemplate.getForObject(USER_URL + "adminLoginCheck?token=" + token, Map.class);
+        } else {
+            resultMap = restTemplate.getForObject(USER_URL + "checkLoginInfo?token=" + token, Map.class);
+        }
         if ((boolean) resultMap.get("result")) {
             return null;
         } else {
@@ -150,9 +155,9 @@ public class LoginFilter extends ZuulFilter {
         }
         //    /admin/login  /admin/adminlogin放行
         if (tempUrls[3].equals(USER)) {
-            if (tempUrls[4].equals("admin")){
-                if (tempUrls.length>5){
-                    if (tempUrls[5].equals("login")||tempUrls[5].equals("adminLogin")){
+            if (tempUrls[4].equals("admin")) {
+                if (tempUrls.length > 5) {
+                    if (tempUrls[5].equals("login") || tempUrls[5].equals("adminLogin")) {
                         return false;
                     }
                 }

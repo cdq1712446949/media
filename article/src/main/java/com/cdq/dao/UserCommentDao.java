@@ -1,5 +1,6 @@
 package com.cdq.dao;
 
+import com.cdq.model.User;
 import com.cdq.model.UserComment;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -32,5 +33,26 @@ public interface UserCommentDao {
      * @return
      */
     int delUserComment(UserComment userComment);
+
+    /**
+     * 查询用户角色
+     * @param userId
+     * @return
+     */
+    User qeruyUserRole(String userId);
+
+    /**
+     * 查询该评论是否属于该用户
+     * @param userComment
+     * @return
+     */
+    UserComment queryIsMyComment(UserComment userComment);
+
+    /**
+     * 查询该用户是否能删除该评论
+     * @param userComment
+     * @return
+     */
+    UserComment queryIsCanDel(UserComment userComment);
 
 }

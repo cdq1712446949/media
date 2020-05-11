@@ -23,15 +23,18 @@ public class ConstansUtil {
     public static String ERRMSG = "errMsg";
     public static String SECRET_MESSAGE_LIST = "secretMessageList";
     public static String MESSAGE_NUMBER_LIST = "messageNumberList";
-    public static String TOKEN= "token";
+    public static String TOKEN = "token";
     public static String FROM_USER_ID = "fromUserId";
-    public static String SM_STR= "smStr";
+    public static String SM_STR = "smStr";
     public static String USER_INFO = "userInfo";
 
-    public static String MAN="男";
-    public static String WOMAN="女";
+    public static String MAN = "男";
+    public static String WOMAN = "女";
 
     public static String PERSON_INFO = "personInfo";
     public static String PERSON_INFO_STR = "personInfoStr";
 
+    public static String RESULT = "result";
+    public static String REDIRECT="redirect";
+    public static String STATE_CODE="stateCode";
 }
