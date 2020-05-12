@@ -3,6 +3,7 @@ package com.cdq.execution;
 
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.model.Article;
+import com.cdq.model.IndexNumber;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,10 +37,20 @@ public class ArticleExecution {
     @Setter
     private List<Article> articleList;
 
+    @Getter
+    @Setter
+    private IndexNumber indexNumber;
+
     //失败时使用的构造器
     public ArticleExecution(BaseStateEnum baseStateEnum) {
         this.state = baseStateEnum.getState();
         this.stateInfo = baseStateEnum.getStateInfo();
+    }
+
+    public ArticleExecution(BaseStateEnum baseStateEnum, IndexNumber indexNumber) {
+        this.state = baseStateEnum.getState();
+        this.stateInfo = baseStateEnum.getStateInfo();
+        this.indexNumber = indexNumber;
     }
 
     //操作成功时使用的构造器

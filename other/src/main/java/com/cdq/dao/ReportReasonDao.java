@@ -1,6 +1,10 @@
 package com.cdq.dao;
 
+import com.cdq.model.ReportReason;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author ：ヅてＤＱ
@@ -9,6 +13,11 @@ import org.springframework.stereotype.Component;
  * @modified By：
  * @version: $
  */
-@Component
+@Repository
 public interface ReportReasonDao {
+
+    List<ReportReason> queryParentList();
+
+    List<ReportReason> queryChildList(ReportReason reportReason);
+
 }

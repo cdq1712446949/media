@@ -2,11 +2,11 @@ package com.cdq.dao;
 
 import com.cdq.model.Advertisement;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component("advertismentDao")
+@Repository
 public interface AdvertisementDao {
 
     /**

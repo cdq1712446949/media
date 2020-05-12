@@ -17,6 +17,10 @@ public class ArticleDaoTest extends BaseTest {
 
     @Test
     public void testQueryVideo(){
+        Article article = new Article();
+        article.setArticleCreateTime(new Date());
+        int result = articleDao.newUserNum(article);
+        System.out.println(result);
     }
 
     @Test

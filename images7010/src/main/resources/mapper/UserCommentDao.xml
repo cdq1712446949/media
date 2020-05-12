@@ -10,7 +10,7 @@
             <result property="userHeadPhoto" column="fuu_user_head_photo"></result>
         </association>
         <collection property="userCommentList" column="ucc_user_comment_id" ofType="com.cdq.model.UserComment"
-                    select="com.cdq.dao.UserCommentDao.selectUserCommentById"></collection>
+                    select="com.cdq.dao.dao.UserCommentDao.selectUserCommentById"></collection>
     </resultMap>
     <resultMap id="toUserCommentMap" type="com.cdq.model.UserComment">
         <id column="uc_user_comment_id" property="userCommentId"></id>

@@ -19,4 +19,12 @@ public class ConstansUtil {
 
     public static String PEX_ADVER = "adver";
     public static String PEX_NOTICE = "notice";
+
+    public static String REPORT_STR = "reportStr";
+    public static String TOKEN="token";
+    public static String SUCCESS="success";
+    public static String ERRMSG="errMsg";
+    public static String REASON_LIST = "reasonList";
+    public static String PARENT_ID="parentId";
+    public static String IMAGE_URL = "http://SERVER-IMAGE";
 }

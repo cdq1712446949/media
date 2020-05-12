@@ -40,8 +40,10 @@ $(function () {
 
         initArticleView = function (article) {
             var userInfo = article.user;
-            if (userInfo.userId == JSON.parse(sessionStorage.getItem('media_login_info')).userId) {
-                isMyArticle = true;
+            if (sessionStorage.getItem('media_login_info') != null && sessionStorage.getItem('media_login_info') != '') {
+                if (userInfo.userId == JSON.parse(sessionStorage.getItem('media_login_info')).userId) {
+                    isMyArticle = true;
+                }
             }
             var videoSrc = article.videoSrc;
             var html = '';
@@ -123,13 +125,13 @@ $(function () {
                 success: function (data) {
                     var result = checkData(data);
                     if (result) {
-                        deleteComment(cid,id);
+                        deleteComment(cid, id);
                         return;
                     }
                     if (data.success) {
                         that.parentNode.removeChild(that);
-                    }else{
-                        $.toast('删除评论失败:'+data.errMsg);
+                    } else {
+                        $.toast('删除评论失败:' + data.errMsg);
                     }
                 }
             });
@@ -215,9 +217,12 @@ $(function () {
                         color:
                             'danger',
                         onClick:
-
                             function () {
-                                window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                                if (sessionStorage.getItem('media_token')!=null){
+                                    window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                                } else{
+                                    window.location.href = 'http://media.com/media/login';
+                                }
                             }
                     }
                 ]
@@ -327,7 +332,7 @@ $(function () {
             commentId = '';
         };
 
-        //发送评论
+//发送评论
         sendComment = function (commentStr) {
             $.ajax({
                 url: addCommentUrl,
@@ -354,7 +359,7 @@ $(function () {
         };
 
 
-        //初始化界面
+//初始化界面
         initView = function () {
             //获取文章信息
             getArticleById();
@@ -364,4 +369,5 @@ $(function () {
 
         initView();
     }
-);
+)
+;

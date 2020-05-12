@@ -1,6 +1,6 @@
 package com.cdq.dao;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author ：ヅてＤＱ
@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
  * @modified By：
  * @version: $
  */
-@Component
+@Repository
 public interface ReportResultDao {
 }

@@ -124,7 +124,7 @@ $(function () {
                 }
                 $('#product-category').html(optionHtml);
             } else {
-                $.toast("获取商品类别失败" + data.errMsg);
+                $.toast("获取文章类别失败" + data.errMsg);
             }
         });
     }

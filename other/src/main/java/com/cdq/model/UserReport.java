@@ -1,7 +1,14 @@
 package com.cdq.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Date;
 
+@Getter
+@Setter
+@ToString
 public class UserReport {
     private Integer userReportId;
     //举报人
@@ -20,86 +27,4 @@ public class UserReport {
     private Byte userReportStatus;
 
     private Date userReportCreateTime;
-
-    private Date userReportHandleTime;
-
-    public Integer getUserReportId() {
-        return userReportId;
-    }
-
-    public void setUserReportId(Integer userReportId) {
-        this.userReportId = userReportId;
-    }
-
-    public User getReportUser() {
-        return reportUser;
-    }
-
-    public void setReportUser(User reportUser) {
-        this.reportUser = reportUser;
-    }
-
-    public User getReprotedUser() {
-        return reprotedUser;
-    }
-
-    public void setReprotedUser(User reprotedUser) {
-        this.reprotedUser = reprotedUser;
-    }
-
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
-    }
-
-    public UserComment getUserComment() {
-        return userComment;
-    }
-
-    public void setUserComment(UserComment userComment) {
-        this.userComment = userComment;
-    }
-
-    public ReportReason getReportReason() {
-        return reportReason;
-    }
-
-    public void setReportReason(ReportReason reportReason) {
-        this.reportReason = reportReason;
-    }
-
-    public String getUserReportContent() {
-        return userReportContent;
-    }
-
-    public void setUserReportContent(String userReportContent) {
-        this.userReportContent = userReportContent == null ? null : userReportContent.trim();
-    }
-
-    public Byte getUserReportStatus() {
-        return userReportStatus;
-    }
-
-    public void setUserReportStatus(Byte userReportStatus) {
-        this.userReportStatus = userReportStatus;
-    }
-
-    public Date getUserReportCreateTime() {
-        return userReportCreateTime;
-    }
-
-    public void setUserReportCreateTime(Date userReportCreateTime) {
-        this.userReportCreateTime = userReportCreateTime;
-    }
-
-    public Date getUserReportHandleTime() {
-        return userReportHandleTime;
-    }
-
-    public void setUserReportHandleTime(Date userReportHandleTime) {
-        this.userReportHandleTime = userReportHandleTime;
-    }
 }

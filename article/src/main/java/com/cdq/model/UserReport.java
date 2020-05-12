@@ -39,9 +39,7 @@ public class UserReport {
     @Getter
     @Setter
     private Date userReportCreateTime;
-    @Getter
-    @Setter
-    private Date userReportHandleTime;
+
 
 
 }

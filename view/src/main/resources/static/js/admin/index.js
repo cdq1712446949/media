@@ -1,7 +1,7 @@
 $(function () {
 
     var logoutUrl = 'http://media.com/user/admin/logout';
-    var articleNumUrl = 'http://media.com/article/admin/agnan';
+    var indexNumUrl = 'http://media.com/article/admin/agin';
     var i, j;
 
     var articleNum = 0;
@@ -9,46 +9,144 @@ $(function () {
     var imageNum = 0;
     var reportNum = 0;
 
-    vue
+    /**
+     * 检查sessionStorge中是否有用户信息
+     */
+    initInfo = function () {
+        var info = sessionStorage.getItem('admin_user_info');
+        if (info != null && info != '') {
+            var userJson = JSON.parse(sessionStorage.getItem("admin_user_info"));
+            //右上角展示用户信息
+            var tempHtml = ' <a href="javascript:void(0)" data-toggle="dropdown">\n' +
+                '                                <img class="img-avatar img-avatar-48 m-r-10"\n' +
+                '                                     src="'
+                + 'http://media.com/image/images/' + userJson.userHeadPhoto
+                + '" alt="' + userJson.nickName
+                + '"/>\n' +
+                '                                <span>'
+                + userJson.nickName
+                + ' <span class="caret"></span></span>\n' +
+                '                            </a>\n' +
+                '                            <ul class="dropdown-menu dropdown-menu-right">\n' +
+                '                                <li><a onclick="logout()"><i class="mdi mdi-logout-variant"></i> 退出登录</a>\n' +
+                '                                </li>\n' +
+                '                            </ul>';
+            $('#info').html(tempHtml);
+        } else {
+            window.location.href = 'http://media.com/media/admin/login';
+        }
+    };
+    initInfo();
+    /**
+     * 检查sessionStorge中是否有用户信息
+     */
+    initInfo = function () {
+        var info = sessionStorage.getItem('admin_user_info');
+        if (info != null && info != '') {
+            var userJson = JSON.parse(sessionStorage.getItem("admin_user_info"));
+            //右上角展示用户信息
+            var tempHtml = ' <a href="javascript:void(0)" data-toggle="dropdown">\n' +
+                '   <img class="img-avatar img-avatar-48 m-r-10"\n' + ' src="'
+                + 'http://media.com/image/images/' + userJson.userHeadPhoto
+                + '" alt="' + userJson.nickName
+                + '"/>\n' + ' <span>' + userJson.nickName
+                + ' <span class="caret"></span></span>\n' + ' </a>\n' +
+                '  <ul class="dropdown-menu dropdown-menu-right">\n' +
+                '  <li><a onclick="logout()"><i class="mdi mdi-logout-variant"></i> 退出登录</a>\n' +
+                '   </li>\n' + '</ul>';
+            $('#info').html(tempHtml);
+        } else {
+            window.location.href = 'http://media.com/media/admin/login';
+        }
+    };
+    initInfo();
+
+    getIndexNum = function () {
+        $.ajax({
+            url: indexNumUrl,
+            type: 'POST',
+            data: {
+                token: sessionStorage.getItem('admin_user_token')
+            },
+            dataType:'JSON',
+            success:function (data) {
+                var result = checkData(data);
+                if (result){
+                    getIndexNum();
+                    return;
+                }
+                if (data.success){
+                    var indexNumber = data.indexNumber;
+                    var indexNum = new Vue({
+                        el: '#indexNum',
+                        data: {
+                            articleNum: indexNumber.newArticleNumber,
+                            userNum: indexNumber.newUserNumber,
+                            imageNum: indexNumber.newImageNumber,
+                            reportNum: indexNumber.newReportNumber
+                        },
+                        methods: {}
+                    });
+                }else{
+
+                }
+            }
+        });
+    };
+
+    getIndexNum();
+
+  initIndexNum = function(){
+      var indexNum = new Vue({
+          el: '#indexNum',
+          data: {
+              articleNum: articleNum,
+              userNum: userNum,
+              imageNum: imageNum,
+              reportNum: reportNum
+          },
+          methods: {}
+      });
+  };
 
     loadInner = function (sId) {
         var sId = window.location.hash;
-        var pathn ;
+        var pathn;
         //取消高亮
-        var temp = '#'+i+'-'+j;
+        var temp = '#' + i + '-' + j;
         switch (temp) {
             case "#1-1":
-                var clazz1 = $('#1-1').attr('class','');
+                var clazz1 = $('#1-1').attr('class', '');
                 break;
             case "#1-2":
-                var clazz1 = $('#1-2').attr('class','');
+                var clazz1 = $('#1-2').attr('class', '');
                 break;
             case "#2-1":
-                var clazz1 = $('#2-1').attr('class','');
+                var clazz1 = $('#2-1').attr('class', '');
                 break;
             case "#2-2":
-                var clazz1 = $('#2-2').attr('class','');
+                var clazz1 = $('#2-2').attr('class', '');
                 break;
             case "#2-3":
-                var clazz1 = $('#2-3').attr('class','');
+                var clazz1 = $('#2-3').attr('class', '');
                 break;
             case "#3-1":
-                var clazz1 = $('#3-1').attr('class','');
+                var clazz1 = $('#3-1').attr('class', '');
                 break;
             case "#3-2":
-                var clazz1 = $('#3-2').attr('class','');
+                var clazz1 = $('#3-2').attr('class', '');
                 break;
             case "#4-1":
-                var clazz1 = $('#4-1').attr('class','');
+                var clazz1 = $('#4-1').attr('class', '');
                 break;
             case "#4-2":
-                var clazz1 = $('#4-2').attr('class','');
+                var clazz1 = $('#4-2').attr('class', '');
                 break;
             case "#4-3":
-                var clazz1 = $('#4-3').attr('class','');
+                var clazz1 = $('#4-3').attr('class', '');
                 break;
             case "#4-4":
-                var clazz1 = $('#4-4').attr('class','');
+                var clazz1 = $('#4-4').attr('class', '');
                 break;
         }
         switch (sId) {
@@ -169,7 +267,8 @@ $(function () {
             url: logoutUrl,
             type: "POST",
             data: {
-                userId:JSON.parse(sessionStorage.getItem("admin_user_info")).userId
+                userId: JSON.parse(sessionStorage.getItem("admin_user_info")).userId,
+                token: sessionStorage.getItem('admin_user_token')
             },
             dataType: "JSON",
             success: function (data) {
@@ -188,32 +287,5 @@ $(function () {
         });
     };
 
-    /**
-     * 检查sessionStorge中是否有用户信息
-     */
-    initInfo = function () {
-        var info = sessionStorage.getItem('admin_user_info');
-        if (info != null && info != '') {
-            var userJson = JSON.parse(sessionStorage.getItem("admin_user_info"));
-            //右上角展示用户信息
-            var tempHtml = ' <a href="javascript:void(0)" data-toggle="dropdown">\n' +
-                '                                <img class="img-avatar img-avatar-48 m-r-10"\n' +
-                '                                     src="'
-                + 'http://media.com/image/images/' + userJson.userHeadPhoto
-                + '" alt="' + userJson.nickName
-                + '"/>\n' +
-                '                                <span>'
-                + userJson.nickName
-                + ' <span class="caret"></span></span>\n' +
-                '                            </a>\n' +
-                '                            <ul class="dropdown-menu dropdown-menu-right">\n' +
-                '                                <li><a onclick="logout()"><i class="mdi mdi-logout-variant"></i> 退出登录</a>\n' +
-                '                                </li>\n' +
-                '                            </ul>';
-            $('#info').html(tempHtml);
-        } else {
-            window.location.href = 'http://media.com/media/admin/login';
-        }
-    };
-    initInfo();
+
 });

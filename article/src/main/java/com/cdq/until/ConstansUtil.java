@@ -51,4 +51,7 @@ public class ConstansUtil {
 
     public static String COMMENT_LIST = "commentList";
     public static String ATTENTION_LIST = "attentionList";
+
+    public static String INDEX_NUMBER = "indexNumber";
+
 }

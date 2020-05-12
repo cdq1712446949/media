@@ -119,4 +119,25 @@ public interface ArticleDao {
      */
     Integer newArticleNum(Article article);
 
+    /**
+     * 查询新增用户数量
+     * @return
+     */
+    Integer newUserNum(Article article);
+
+
+    /**
+     * 查询新增图片数量
+     * @return
+     */
+    Integer newImageNum(Article article);
+
+
+    /**
+     * 查询新增举报数量
+     * @return
+     */
+    Integer newReportNum(Article article);
+
+
 }

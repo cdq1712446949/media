@@ -105,19 +105,6 @@ public class ImageUtil {
         basePath = URLDecoder.decode(basePath, "utf-8");
         System.out.println(basePath);
 
-//        System.out.println("-------basePath------->"+basePath);
-        /**
-         * 错误：javax.imageio.IIOException: Can't read input file!
-         * 原因：·文件路径中的某个文件名带有空格
-         *        ·路径中带有  “.”
-         * 解决方法： · basePath=URLDecoder.decode(basePath,"utf-8");
-         *             ·替换带有.的路径名
-         */
-//        Thumbnails.of(new File("D:\\iamge\\cat.jpg"))
-//                .size(200, 200)
-//                .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File("E:\\Java web Project\\o2o\\src\\main\\resources\\cat.jpg")), 0.75f)
-//                .outputQuality(0.8f).toFile("D:\\iamge\\cat.jpg");
-
     }
 
     public static String generateNormalImg(ImageHolder productImgHolder, String dest) {

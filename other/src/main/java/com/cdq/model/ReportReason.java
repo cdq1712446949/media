@@ -1,9 +1,18 @@
 package com.cdq.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.util.Date;
 
+@Getter
+@Setter
+@ToString
 public class ReportReason {
     private Byte reportReasonId;
+
+    private ReportReason parentReason;
 
     private String reportReasonName;
 
@@ -11,35 +20,4 @@ public class ReportReason {
 
     private Date reportReasonLastEditTime;
 
-    public Byte getReportReasonId() {
-        return reportReasonId;
-    }
-
-    public void setReportReasonId(Byte reportReasonId) {
-        this.reportReasonId = reportReasonId;
-    }
-
-    public String getReportReasonName() {
-        return reportReasonName;
-    }
-
-    public void setReportReasonName(String reportReasonName) {
-        this.reportReasonName = reportReasonName == null ? null : reportReasonName.trim();
-    }
-
-    public Date getReportReasonCreateTime() {
-        return reportReasonCreateTime;
-    }
-
-    public void setReportReasonCreateTime(Date reportReasonCreateTime) {
-        this.reportReasonCreateTime = reportReasonCreateTime;
-    }
-
-    public Date getReportReasonLastEditTime() {
-        return reportReasonLastEditTime;
-    }
-
-    public void setReportReasonLastEditTime(Date reportReasonLastEditTime) {
-        this.reportReasonLastEditTime = reportReasonLastEditTime;
-    }
 }

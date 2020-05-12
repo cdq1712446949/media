@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cdq.dao.UserLevelDao">
+<mapper namespace="com.cdq.dao.ReportReasonDao">
+
+    <resultMap id="reportMap" type="com.cdq.model.ReportReason">
+        <id column="report_reason_id" property="reportReasonId"></id>
+        <result column="report_reason_name" property="reportReasonName"></result>
+        <result column="report_reason_create_time" property="reportReasonCreateTime"></result>
+        <result column="report_reason_last_edit_time" property="reportReasonLastEditTime"></result>
+        <association property="parentReason" javaType="com.cdq.model.ReportReason">
+            <id property="reportReasonId" column="parent_id"></id>
+        </association>
+    </resultMap>
+
+    <select id="queryParentList" resultMap="reportMap">
+        select * from report_reason where parent_id is null
+    </select>
+
+    <select id="queryChildList" parameterType="com.cdq.model.ReportReason" resultMap="reportMap">
+           select * from report_reason where parent_id=#{parentReason.reportReasonId}
+    </select>
 
 </mapper>

@@ -32,6 +32,7 @@ public class LoginFilter extends ZuulFilter {
     public static String VIDEO = "video";
     public static String ARTICLE = "article";
     public static String IMAGE = "image";
+    public static String OTHER = "other";
 
     private static String USER_URL = "http://SERVER-USER/";
 
@@ -46,8 +47,8 @@ public class LoginFilter extends ZuulFilter {
             "alat", "aflat", "getArticle", "ugabi", "ugucl",
             "firstarticletypelist", "artideti", "ugall", "ugval"
     };
-    private static String[] INVOKE_VIDEO_URL = new String[]{
-
+    private static String[] INVOKE_OTHER_URL = new String[]{
+            "ugprl", "ugcrl"
     };
 
     @Override
@@ -78,7 +79,6 @@ public class LoginFilter extends ZuulFilter {
         System.out.println(request.getRequestURL());
         String[] tempUrls = request.getRequestURL().toString().split("\\/");
         System.out.println(tempUrls.toString());
-
         //拦截规则
         if (!checkIsFilter(tempUrls)) {
             return null;
@@ -168,7 +168,6 @@ public class LoginFilter extends ZuulFilter {
                 }
             }
         }
-
         if (tempUrls[3].equals(ARTICLE)) {
             for (String url : INVOKE_ARTICLE_URL) {
                 if (url.equals(tempUrls[4])) {
@@ -176,7 +175,13 @@ public class LoginFilter extends ZuulFilter {
                 }
             }
         }
-
+        if (tempUrls[3].equals(OTHER)) {
+            for (String url : INVOKE_OTHER_URL) {
+                if (url.equals(tempUrls[4])) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 

@@ -4,6 +4,7 @@ import com.cdq.dto.ImageExecution;
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.model.Article;
 import com.cdq.model.Photo;
+import com.cdq.model.UserReport;
 import com.cdq.service.ImageService;
 import com.cdq.util.HttpServletRequestUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -71,31 +72,42 @@ public class ImageController {
     }
 
     /**
-     * 根据参数判断传入的值类型
+     * 接收图片文件，保存在本地并且向数据库添加图片记录
      *
      * @param request
-     * @param typeStr
-     * @return
+     * @return modelMap :图片引用地址
      */
-    public Map commonMeth(HttpServletRequest request, String typeStr) {
+    @RequestMapping(value = "/report")
+    public Map reportimg(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        String pojoStr = HttpServletRequestUtil.getString(request, typeStr);
+        String idStr = HttpServletRequestUtil.getString(request, "pojoId");
         String imgListStr = HttpServletRequestUtil.getString(request, "imgSrcs");
         try {
-            Object pojo = null;
-            switch (typeStr) {
-                case "article":
-                    pojo = objectMapper.readValue(pojoStr, Article.class);
-                    break;
+            short temp = 1;
+            String[] imgsrcs = objectMapper.readValue(imgListStr, String[].class);
+            for (String src : imgsrcs){
+                Photo photo = new Photo();
+                UserReport userReport = new UserReport();
+                userReport.setUserReportId(Integer.valueOf(idStr));
+                photo.setUserReport(userReport);
+                photo.setPhotoAddr(src);
+                photo.setPhotoNum(temp++);
+                ImageExecution result = imageService.addImage(photo);
+                if (result.getState() != 0){
+                    modelMap.put("success",false);
+                    modelMap.put("errMsg",result.getStateInfo());
+                    return modelMap;
+                }
             }
-            List<String> imgsrcs = objectMapper.readValue(imgListStr, List.class);
-
-        } catch (JsonProcessingException e) {
+            modelMap.put("success",true);
+        } catch (Exception e) {
+            e.printStackTrace();
             modelMap.put("success", false);
             modelMap.put("errMsg", "String转POJO失败:" + e.getMessage());
         }
         return modelMap;
     }
+
 
 }

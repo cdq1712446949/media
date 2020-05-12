@@ -7,7 +7,7 @@ public class ImageHolder {
     private String imgName;
     private InputStream inputStream;
 
-    public ImageHolder(String imgName, InputStream inputStream){
+    public ImageHolder(String imgName,InputStream inputStream){
         this.imgName=imgName;
         this.inputStream=inputStream;
     }

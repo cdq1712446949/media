@@ -2,11 +2,11 @@ package com.cdq.dao;
 
 import com.cdq.model.Notice;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component("noticeDao")
+@Repository
 public interface NoticeDao {
 
     /**

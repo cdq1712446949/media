@@ -9,6 +9,7 @@ import com.cdq.enums.BaseStateEnum;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
 import com.cdq.model.ArticleType;
+import com.cdq.model.IndexNumber;
 import com.cdq.until.ConstansUtil;
 import com.cdq.until.DateUtil;
 import com.cdq.until.PageUtil;
@@ -303,12 +304,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleExecution getNewArticleNum(Article article) {
+    public ArticleExecution getIndexNumber(Article article) {
         article.setArticleCreateTime(new Date());
-        Integer result = articleDao.newArticleNum(article);
-        if (result!=null){
-            ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS);
-            articleExecution.setCount(result);
+        int articleNum = articleDao.newArticleNum(article);
+        int userNum = articleDao.newUserNum(article);
+        int imageNum = articleDao.newImageNum(article);
+        int reportNum = articleDao.newReportNum(article);
+        IndexNumber indexNumber = new IndexNumber(userNum,articleNum,imageNum,reportNum);
+        if (indexNumber!=null){
+            ArticleExecution articleExecution = new ArticleExecution(BaseStateEnum.SUCCESS,indexNumber);
             return articleExecution;
         }else {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);

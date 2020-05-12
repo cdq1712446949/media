@@ -1,6 +1,6 @@
 $(function () {
 
-    var addAdverUrl = "http://media.com/other/addAdver";
+    var addAdverUrl = "http://media.com/other/admin/addAdver";
 
     $('#img-1').hide();
 
@@ -41,23 +41,28 @@ $(function () {
         var eml = document.getElementById("input-img");
         formData.append("adverImg",eml.files[0]);
         $.ajax({
-            url: addAdverUrl,
+            url: addAdverUrl+'?token='+sessionStorage.getItem('admin_user_token'),
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
             cache: false,
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    addAdverList();
+                    return;
+                }
                 if (data.success) {
                     $.confirm({
                         title: '成功',
-                        content: '获取广告列表成功',
+                        content: '添加广告成功',
                         type: 'green',
                         buttons: {
                             close: {
                                 text: '关闭',
                                 action:function () {
-                                    window.location.href = 'http://media.com/media/admin/addAdver';
+                                    window.location.reload();
                                 }
                             }
                         }
@@ -65,7 +70,7 @@ $(function () {
                 } else {
                     $.confirm({
                         title: '错误提示',
-                        content: '获取广告列表失败'+data.errMsg,
+                        content: '添加广告失败'+data.errMsg,
                         type: 'red',
                         typeAnimated: true,
                         buttons: {

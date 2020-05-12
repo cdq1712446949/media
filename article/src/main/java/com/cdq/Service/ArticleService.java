@@ -78,6 +78,6 @@ public interface ArticleService {
      * @param article
      * @return
      */
-    ArticleExecution getNewArticleNum(Article article);
+    ArticleExecution getIndexNumber(Article article);
 
 }

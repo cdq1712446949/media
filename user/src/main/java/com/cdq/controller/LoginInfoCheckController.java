@@ -94,7 +94,7 @@ public class LoginInfoCheckController {
      * @return
      */
     @RequestMapping("/adminLoginCheck")
-    public Map<String, Object> adminCheckLoginInfo(String token) {
+    public Map<String, Object> adminLoginCheck(String token) {
         Map<String, Object> modelMap = new HashMap<>();
         //验证token是否被篡改
         //1.获取token中的id,检查缓存中是否存在该记录
@@ -102,6 +102,7 @@ public class LoginInfoCheckController {
             Claims claims = JwtUtil.parseJWT(token);
             String id = claims.getId();
             User user = new User();
+            user.setUserId(id);
             //检查该user的角色值
             int role = userService.selectInfo(user).getUser().getUserRole();
             if (role != 0 && role != 1) {
@@ -134,6 +135,7 @@ public class LoginInfoCheckController {
                 modelMap.put(ConstansUtil.REDIRECT, "http://media.com/media/admin/login");
             }
         } catch (ExpiredJwtException e) {
+            e.printStackTrace();
             Claims claims = e.getClaims();
             String id = claims.getId();
             String jwt = JwtUtil.createJWT(id, (String) claims.get("sub"), 1200 * 1000);

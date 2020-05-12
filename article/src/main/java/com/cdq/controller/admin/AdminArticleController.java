@@ -50,29 +50,36 @@ public class AdminArticleController {
         Article article = (Article) ObjectUtil.toPojo(artiStr, Article.class);
         int indexPage = HttpServletRequestUtil.getInt(request, "indexPage");
         ArticleExecution result = articleService.getArticleList(article, indexPage, 10);
-        if (result.getState() == 0) {
-            modelMap.put(ConstansUtil.SUCCESS, true);
-            modelMap.put("articleList", result.getArticleList());
-            modelMap.put("size", result.getCount());
-        } else {
-            modelMap.put(ConstansUtil.SUCCESS, false);
-            modelMap.put("errMsg", result.getStateInfo());
-        }
+        resolveResult(result,modelMap);
         return modelMap;
     }
 
-    @RequestMapping(value = "/agnan", method = RequestMethod.POST)
-    public Map getNewArticleNum(HttpServletRequest request) {
+    @RequestMapping(value = "/agin", method = RequestMethod.POST)
+    public Map getIndexNumber(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
-        ArticleExecution result = articleService.getNewArticleNum(new Article());
+        ArticleExecution result = articleService.getIndexNumber(new Article());
         if (result.getState() == 0) {
             modelMap.put(ConstansUtil.SUCCESS, true);
-            modelMap.put(ConstansUtil.ARTICLE_NUMBER, result.getCount());
+            modelMap.put(ConstansUtil.INDEX_NUMBER, result.getIndexNumber());
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
             modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
         }
         return modelMap;
     }
+
+    private void resolveResult(ArticleExecution result, Map modelMap) {
+        if (result.getState() == 0) {
+            modelMap.put(ConstansUtil.SUCCESS, true);
+            modelMap.put(ConstansUtil.ARTICLE_LIST, result.getArticleList());
+            modelMap.put(ConstansUtil.TOTAL_SIZE, result.getCount());
+            double temp = ((double) result.getCount()) / 10;
+            modelMap.put(ConstansUtil.TOTAL_PAGE, Math.ceil(temp));
+        } else {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, result.getStateInfo());
+        }
+    }
+
 
 }
