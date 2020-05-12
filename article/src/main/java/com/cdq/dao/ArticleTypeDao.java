@@ -47,5 +47,18 @@ public interface ArticleTypeDao {
      */
     List<ArticleType> queryTwoLevelArticleTypeByParent(ArticleType articleType);
 
+    /**
+     * 添加文章类型记录
+     * @param articleType
+     * @return
+     */
+    int insertArticleType(ArticleType articleType);
+
+    /**
+     * 批量删除记录
+     * @param list
+     * @return
+     */
+    int deleteArticleType(List<Byte> list);
 
 }

@@ -31,6 +31,11 @@ $(function () {
             async: false,
             dataType: 'JSON',
             success: function (data) {
+                var result = checkData(data);
+                if (result){
+                    getArticleList(isReCheck);
+                    return;
+                }
                 if (data.success) {
                     totalPageSize = data.totalPage;
                     checkPageNum();

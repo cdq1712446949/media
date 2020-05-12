@@ -47,7 +47,7 @@ public class ArticleTypeController {
         }
         //根据条件选择service方法
         if (isHave) {
-            result = articleTypeService.getArticleTypeList(articleType);
+            result = articleTypeService.getArticleTypeList(articleType,true);
         }else {
             result = articleTypeService.getFirstArticleTypeList();
         }

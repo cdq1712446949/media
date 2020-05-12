@@ -5,7 +5,7 @@ import com.cdq.dao.ArticleTypeDao;
 import com.cdq.enums.ArticleTypeStateEnum;
 import com.cdq.execution.ArticleTypeExecution;
 import com.cdq.model.ArticleType;
-import com.cdq.until.PageUtil;
+import com.cdq.until.ConstansUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,9 +28,9 @@ public class ArticleTypeServiceImpl implements ArticleTypeService {
     private ArticleTypeDao articleTypeDao;
 
     @Override
-    public ArticleTypeExecution getArticleTypeList(ArticleType articleType) {
+    public ArticleTypeExecution getArticleTypeList(ArticleType articleType, boolean isFirst) {
         //校验属性信息
-        if (articleType.getParentArticleType() == null) {
+        if (articleType.getParentArticleType() == null && isFirst) {
             //添加parentArticle属性值
             articleType.setParentArticleType(new ArticleType());
         }
@@ -99,10 +99,51 @@ public class ArticleTypeServiceImpl implements ArticleTypeService {
     @Override
     public ArticleTypeExecution getArticleTypeTwoLevel() {
         List<ArticleType> result = articleTypeDao.queryAllTwoLevelArticleType();
-        if (result==null){
+        if (result == null) {
             return new ArticleTypeExecution(ArticleTypeStateEnum.INNER_ERROR);
-        }else {
-            return new ArticleTypeExecution(ArticleTypeStateEnum.SUCCESS,result);
+        } else {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.SUCCESS, result);
+        }
+    }
+
+    @Override
+    public ArticleTypeExecution addArticleType(ArticleType articleType) {
+        //参数校验
+        if (articleType == null) {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.EMPTY_ID);
+        }
+        if (articleType.getArticleTypeName() == null || ConstansUtil.EMPTY_STR.equals(articleType.getArticleTypeName())) {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.EMPTY_RESULT);
+        }
+        if (articleType.getPriority() == null || articleType.getPriority() == 0) {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.EMPTY_ID);
+        }
+        //添加创建时间
+        articleType.setArticleTypeCreateTime(new Date());
+        //调用dao层
+        try {
+            int result = articleTypeDao.insertArticleType(articleType);
+            if (result != 0) {
+                return new ArticleTypeExecution(ArticleTypeStateEnum.SUCCESS);
+            } else {
+                return new ArticleTypeExecution(ArticleTypeStateEnum.INNER_ERROR);
+            }
+        } catch (Exception e) {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public ArticleTypeExecution delArticleType(List<Byte> list) {
+        if (list == null || list.size() < 1) {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.EMPTY_ID);
+        }
+        //调用dao层
+        int result = articleTypeDao.deleteArticleType(list);
+        if (result != 0) {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.SUCCESS);
+        } else {
+            return new ArticleTypeExecution(ArticleTypeStateEnum.INNER_ERROR);
         }
     }
 

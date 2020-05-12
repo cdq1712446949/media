@@ -3,6 +3,8 @@ package com.cdq.Service;
 import com.cdq.execution.ArticleTypeExecution;
 import com.cdq.model.ArticleType;
 
+import java.util.List;
+
 /**
  * @author ：ヅてＤＱ
  * @date ：Created in 2020/4/9 18:48
@@ -17,7 +19,7 @@ public interface ArticleTypeService {
      * @param articleType
      * @return
      */
-    ArticleTypeExecution getArticleTypeList(ArticleType articleType);
+    ArticleTypeExecution getArticleTypeList(ArticleType articleType,boolean isFirst);
 
     /**
      * 修改文章类型
@@ -41,9 +43,22 @@ public interface ArticleTypeService {
 
     /**
      *
-     * @param articleType
      * @return
      */
     ArticleTypeExecution getArticleTypeTwoLevel();
+
+    /**
+     * 添加文章类型记录
+     * @param articleType
+     * @return
+     */
+    ArticleTypeExecution addArticleType(ArticleType articleType);
+
+    /**
+     * 批量删除文章类型记录
+     * @param list
+     * @return
+     */
+    ArticleTypeExecution delArticleType(List<Byte> list);
 
 }

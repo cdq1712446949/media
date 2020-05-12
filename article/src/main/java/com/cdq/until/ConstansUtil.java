@@ -54,4 +54,5 @@ public class ConstansUtil {
 
     public static String INDEX_NUMBER = "indexNumber";
     public static String ARTICLE_IDS = "articleIds";
+    public static String ARTICLE_TYPE_LIST = "articleTypeList";
 }

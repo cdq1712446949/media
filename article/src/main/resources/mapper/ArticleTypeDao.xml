@@ -83,4 +83,20 @@
         where article_type_id = #{articleType.articleTypeId}
     </update>
 
+    <insert id="insertArticleType" parameterType="com.cdq.model.ArticleType">
+        insert into article_type(
+        article_type_name,priority,article_type_create_time
+        <if test="parentArticleType!=null and parentArticleType.articleTypeId!=null">,parent_id</if>
+        ) values (
+        #{articleTypeName},#{priority},#{articleTypeCreateTime}
+        <if test="parentArticleType!=null and parentArticleType.articleTypeId!=null">,#{parentArticleType.articleTypeId}</if>
+        )
+    </insert>
+
+    <delete id="deleteArticleType" parameterType="java.util.List">
+        <foreach collection="list" separator=" " item="item">
+            delete from article_type where article_type_id=#{item};
+        </foreach>
+    </delete>
+
 </mapper>
