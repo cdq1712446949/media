@@ -139,5 +139,18 @@ public interface ArticleDao {
      */
     Integer newReportNum(Article article);
 
+    /**
+     * 批量修改文章属性
+     * @param list
+     * @return
+     */
+    int updateArticles(@Param("list") List<Integer> list,@Param("status") byte status);
+
+    /**
+     * 批量删除记录
+     * @param list
+     * @return
+     */
+    int deleteArticles(List<Integer> list);
 
 }

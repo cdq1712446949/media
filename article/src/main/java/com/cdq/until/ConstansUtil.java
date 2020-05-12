@@ -36,22 +36,22 @@ public class ConstansUtil {
     public static String ARTICLE_LIST = "articleList";
     public static String TOTAL_SIZE = "totalSize";
     public static String TOTAL_PAGE = "totalPage";
-    public static String ERR_CODE ="errCode";
+    public static String ERR_CODE = "errCode";
 
     public static String USER_COMMENT_STR = "userCommentStr";
 
     //登录过期返回值
-    public static String CODE_LOGIN_TIME_OUT =  "600";
+    public static String CODE_LOGIN_TIME_OUT = "600";
 
     public static String INDEX_PAGE = "indexPage";
     public static String ARTICLE_LABLE_LIST = "articleLableList";
 
     public static String ARTICLE_ID = "articleId";
-    public static String ARTICLE="article";
+    public static String ARTICLE = "article";
 
     public static String COMMENT_LIST = "commentList";
     public static String ATTENTION_LIST = "attentionList";
 
     public static String INDEX_NUMBER = "indexNumber";
-
+    public static String ARTICLE_IDS = "articleIds";
 }

@@ -7,6 +7,7 @@ import com.cdq.model.User;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,15 @@ public class ArticleDaoTest extends BaseTest {
         Article article = new Article();
         article.setArticleCreateTime(new Date());
         int result = articleDao.newUserNum(article);
+        System.out.println(result);
+    }
+
+    @Test
+    public void testUpdate(){
+        List<Integer> list = new ArrayList<>();
+        list.add(22);
+        list.add(23);
+        int result = articleDao.deleteArticles(list);
         System.out.println(result);
     }
 

@@ -58,7 +58,7 @@ public class MybatisConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setPassword("980814");
         dataSource.setUsername("root");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/media?serverTimezone=UTC&SSL=true&characterEncoding=utf8");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/media?serverTimezone=UTC&SSL=true&characterEncoding=utf8&allowMultiQueries=true");
         return dataSource;
     }
 

@@ -4,6 +4,8 @@ package com.cdq.Service;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
 
+import java.util.List;
+
 public interface ArticleService {
 
     /**
@@ -79,5 +81,20 @@ public interface ArticleService {
      * @return
      */
     ArticleExecution getIndexNumber(Article article);
+
+    /**
+     * 批量修改文章记录状态值
+     * @param list
+     * @param status
+     * @return
+     */
+    ArticleExecution changeSatatuses(List<Integer> list,byte status);
+
+    /**
+     * 批量删除文章记录
+     * @param list
+     * @return
+     */
+    ArticleExecution delArticles(List<Integer> list);
 
 }

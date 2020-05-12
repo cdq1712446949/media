@@ -2,11 +2,19 @@ $(function () {
 
     //获取文章地址
     var articleListUrl = 'http://media.com/article/admin/agal';
-
+    //批量屏蔽文章地址
+    var banArticlesUrl = 'http://media.com/article/admin/abas';
+    //批量屏蔽文章地址
+    var delArticlesUrl = 'http://media.com/article/admin/adas';
     var indexPage = 1;
-    var totalPageSize = 0;
+    var totalPageSize = 1;
+    var aidArr = new Array();
 
-    getArticleList = function () {
+    getArticleList = function (isReCheck) {
+        if (isReCheck) {
+            rootPage();
+        }
+        // console.log(indexPage)
         var article = {};
         article.startTime = $('#startTime').val();
         article.endTime = $('#endTime').val();
@@ -18,9 +26,9 @@ $(function () {
             data: {
                 artiStr: JSON.stringify(article),
                 token: sessionStorage.getItem('admin_user_token'),
-                indexPage:indexPage
+                indexPage: indexPage
             },
-            async:false,
+            async: false,
             dataType: 'JSON',
             success: function (data) {
                 if (data.success) {
@@ -39,7 +47,7 @@ $(function () {
                         tempHtml += '<tr>\n' +
                             '                                        <td>\n' +
                             '                                            <label class="lyear-checkbox checkbox-primary">\n' +
-                            '                                                <input type="checkbox" name="ids[]" value="1"><span></span>\n' +
+                            '   <input type="checkbox" name="ids[]" value="1"><span data-aid="' + item.articleId + '" class="box_aid" onclick="addArticleId(this)"></span>\n' +
                             '                                            </label>\n' +
                             '                                        </td>\n' +
                             '                                        <td>' + item.articleId + '</td>\n' +
@@ -63,7 +71,6 @@ $(function () {
         })
     };
 
-    getArticleList();
 
     checkPageNum = function () {
         if (indexPage == 1) {
@@ -78,6 +85,9 @@ $(function () {
         }
     };
 
+    rootPage = function (that) {
+        $('#toOne').click();
+    };
 
     var pageContent = new Vue({
         el: '#pageContent',
@@ -88,26 +98,97 @@ $(function () {
             toFirst: function () {
                 this.pageNumber = 1;
                 indexPage = 1;
-                getArticleList();
+                getArticleList(false);
             },
             toBottom: function () {
                 this.pageNumber = totalPageSize;
                 indexPage = totalPageSize;
-                getArticleList();
+                getArticleList(false);
             },
             toNext: function () {
                 indexPage += 1;
                 this.pageNumber = indexPage;
-                getArticleList();
+                getArticleList(false);
             },
             toUp: function () {
                 indexPage -= 1;
                 this.pageNumber = indexPage;
-                getArticleList();
+                getArticleList(false);
+            },
+            toOne: function () {
+                this.pageNumber = 1;
+                indexPage = 1;
             }
         }
     });
 
-    checkPageNum();
+
+    addArticleId = function (that) {
+        var aid = that.dataset.aid;
+        var index = aidArr.indexOf(aid);
+        if (index > -1) {
+            aidArr.splice(index, 1);
+        } else {
+            aidArr.push(aid);
+        }
+    };
+
+    allSelect = function () {
+        $.map($('.box_aid'), function (that, index) {
+            that.click();
+        });
+    };
+
+    //批量屏蔽文章
+    banArticles = function (status) {
+        $.ajax({
+            url: banArticlesUrl,
+            type: 'POST',
+            data: {
+                articleIds: JSON.stringify(aidArr),
+                token: sessionStorage.getItem('admin_user_token'),
+                status: status
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                var result = checkData(data);
+                if (result) {
+                    banArticles();
+                    return;
+                }
+                if (data.success) {
+                    aidArr.length = 0;
+                    getArticleList()
+                }
+            }
+        });
+    };
+
+    //批量删除文章
+    delArticles = function () {
+        $.ajax({
+            url: delArticlesUrl,
+            type: 'POST',
+            data: {
+                articleIds: JSON.stringify(aidArr),
+                token: sessionStorage.getItem('admin_user_token')
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                var result = checkData(data);
+                if (result) {
+                    delArticlesUrl();
+                    return;
+                }
+                if (data.success) {
+                    aidArr.length = 0;
+                    getArticleList()
+                } else {
+
+                }
+            }
+        });
+    };
+
 
 });

@@ -113,6 +113,18 @@
         FROM(select * from article
         <where>
             <if test="article.user != null and article.user.userId!=null">and user_id=#{article.user.userId}</if>
+            <if test="article.articleType!= null ">
+                <if test="article.articleType.articleTypeId != -1">
+                    and article_type_id = #{article.articleType.articleTypeId}
+                </if>
+            </if>
+            <if test="article.endTime != null and article.startTime!= null">
+                and article_create_time between #{article.startTime} And #{article.endTime}
+            </if>
+            <if test="article.articleContent!=null">
+                and article_content like '%${article.articleContent}%'
+            </if>
+            <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
         </where>
         limit #{rowIndex},#{pageSize}) as a
         LEFT JOIN user as u on a.user_id=u.user_id
@@ -133,22 +145,13 @@
         LEFT JOIN (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up
         group by up_article_id) as tu on a.article_id=tu.up_article_id
         <where>
-            <if test="article.articleType!= null ">
-                <if test="article.articleType.articleTypeId != -1">
-                    a.article_type_id = #{article.articleType.articleTypeId}
-                </if>
-            </if>
+
             <if test="article.articleCreateTime != null">
                 and year(article_create_time)=year(#{article.articleCreateTime})
                 and month(article_create_time)= month(#{article.articleCreateTime})
             </if>
-            <if test="article.endTime != null and article.startTime!= null">
-                and a.article_create_time between #{article.startTime} And #{article.endTime}
-            </if>
-            <if test="article.articleContent!=null">
-                and a.article_content like '%${article.articleContent}%'
-            </if>
-            <if test="article.articleStatus != null">and article_status=#{article.articleStatus}</if>
+
+
 
             and art.article_type_id is not null
         </where>
@@ -329,4 +332,16 @@
         where  year(user_report_create_time)=year(#{articleCreateTime})
                 and month(user_report_create_time)= month(#{articleCreateTime})
     </select>
+    <!--批量修改数据-->
+    <update id="updateArticles" >
+        <foreach collection="list" separator=" " item="item">
+            update  article set article_status=#{status} where article_id=#{item};
+        </foreach>
+    </update>
+    <!--批量删除文章记录-->
+    <delete id="deleteArticles" >
+        <foreach collection="list" separator=" " item="item">
+            delete from article where article_id=#{item};
+        </foreach>
+    </delete>
 </mapper>

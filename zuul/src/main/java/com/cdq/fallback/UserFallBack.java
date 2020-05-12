@@ -1,5 +1,8 @@
 package com.cdq.fallback;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cdq.util.ConstansUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author ：ヅてＤＱ
@@ -39,7 +44,7 @@ public class UserFallBack implements FallbackProvider {
 
     private ClientHttpResponse response(final HttpStatus status) {
         //这里返回一个ClientHttpResponse对象 并实现其中的方法，关于回退逻辑的详细，便在下面的方法中
-        return new ClientHttpResponse() {
+        ClientHttpResponse clientHttpResponse =  new ClientHttpResponse() {
             @Override
             public HttpStatus getStatusCode() throws IOException {
                 //返回一个HttpStatus对象 这个对象是个枚举对象， 里面包含了一个status code 和reasonPhrase信息
@@ -66,7 +71,11 @@ public class UserFallBack implements FallbackProvider {
             @Override
             public InputStream getBody() throws IOException {
                 //吧降级信息响应回前端
-                return new ByteArrayInputStream("系统错误".getBytes());
+                Map<String,Object> modelMap = new HashMap<>();
+                modelMap.put("success",false);
+                modelMap.put("errMsg","系统错误"+getRawStatusCode());
+                JSONObject jsonObject = new JSONObject(modelMap);
+                return new ByteArrayInputStream(jsonObject.toString().getBytes());
             }
 
             @Override
@@ -77,6 +86,6 @@ public class UserFallBack implements FallbackProvider {
                 return headers;
             }
         };
-
+        return clientHttpResponse;
     }
 }

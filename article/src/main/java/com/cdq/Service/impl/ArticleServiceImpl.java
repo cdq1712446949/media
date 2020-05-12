@@ -318,4 +318,37 @@ public class ArticleServiceImpl implements ArticleService {
             return new ArticleExecution(BaseStateEnum.INNER_ERROR);
         }
     }
+
+    @Override
+    public ArticleExecution changeSatatuses(List<Integer> list, byte status) {
+        //参数校验
+        if (list.size()<1){
+            return new ArticleExecution(BaseStateEnum.EMPTY_INFO);
+        }
+        if (status!=0&&status!=-1){
+            return new ArticleExecution(BaseStateEnum.ILLEGAL_PARAMETER);
+        }
+        //调用dao层
+        int result = articleDao.updateArticles(list,status);
+        if (result!=0){
+            return new ArticleExecution(BaseStateEnum.SUCCESS);
+        }else{
+            return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public ArticleExecution delArticles(List<Integer> list) {
+        //参数校验
+        if (list.size()<1){
+            return new ArticleExecution(BaseStateEnum.EMPTY_INFO);
+        }
+        //调用dao层
+        int result = articleDao.deleteArticles(list);
+        if (result!=0){
+            return new ArticleExecution(BaseStateEnum.SUCCESS);
+        }else{
+            return new ArticleExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
 }

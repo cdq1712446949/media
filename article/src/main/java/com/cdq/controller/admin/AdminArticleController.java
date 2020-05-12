@@ -6,6 +6,8 @@ import com.cdq.model.Article;
 import com.cdq.until.ConstansUtil;
 import com.cdq.until.HttpServletRequestUtil;
 import com.cdq.until.ObjectUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +55,59 @@ public class AdminArticleController {
         int indexPage = HttpServletRequestUtil.getInt(request, "indexPage");
         ArticleExecution result = articleService.getArticleList(article, indexPage, 10);
         resolveResult(result,modelMap);
+        return modelMap;
+    }
+
+    /**
+     * 批量屏蔽文章
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/abas" , method = RequestMethod.POST)
+    public Map banArticles(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<>();
+        String idArrStr = HttpServletRequestUtil.getString(request,ConstansUtil.ARTICLE_IDS);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Integer> idList =  (ArrayList<Integer>)objectMapper.readValue(idArrStr,ArrayList.class);
+            byte status = (byte) HttpServletRequestUtil.getInt(request,"status");
+            ArticleExecution result = articleService.changeSatatuses(idList,status);
+            if (result.getState()==0){
+                modelMap.put(ConstansUtil.SUCCESS,true);
+            }else{
+                modelMap.put(ConstansUtil.SUCCESS,false);
+                modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+            }
+        } catch (JsonProcessingException e) {
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,e.getMessage());
+        }
+        return modelMap;
+    }
+
+    /**
+     * 批量屏蔽文章
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/adas" , method = RequestMethod.POST)
+    public Map delArticles(HttpServletRequest request){
+        Map<String,Object> modelMap = new HashMap<>();
+        String idArrStr = HttpServletRequestUtil.getString(request,ConstansUtil.ARTICLE_IDS);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            List<Integer> idList =  (ArrayList<Integer>)objectMapper.readValue(idArrStr,ArrayList.class);
+            ArticleExecution result = articleService.delArticles(idList);
+            if (result.getState()==0){
+                modelMap.put(ConstansUtil.SUCCESS,true);
+            }else{
+                modelMap.put(ConstansUtil.SUCCESS,false);
+                modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+            }
+        } catch (JsonProcessingException e) {
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,e.getMessage());
+        }
         return modelMap;
     }
 

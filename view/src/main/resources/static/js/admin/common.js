@@ -71,4 +71,19 @@ checkData = function (data) {
     return reSend;
 };
 
-
+/**
+ *弹窗
+ */
+myConfirm = function (content, fun) {
+    $.confirm({
+        title: '成功',
+        content: content,
+        type: 'green',
+        buttons: {
+            close: {
+                text: '关闭',
+                action: fun
+            }
+        }
+    });
+};
