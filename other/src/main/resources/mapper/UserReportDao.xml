@@ -2,10 +2,95 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdq.dao.UserReportDao">
 
+    <resultMap id="reportMap" type="com.cdq.model.UserReport">
+        <id column="user_report_id" property="userReportId"></id>
+        <result column="user_report_content" property="userReportContent"></result>
+        <result column="user_report_status" property="userReportStatus"></result>
+        <result column="user_report_create_time" property="userReportCreateTime"></result>
+        <association property="reportUser" javaType="com.cdq.model.User">
+            <id column="u1_user_id" property="userId"></id>
+            <id column="u1_nick_name" property="nickName"></id>
+            <id column="u1_user_head_photo" property="userHeadPhoto"></id>
+            <id column="u1_user_status" property="userStatus"></id>
+        </association>
+        <association property="reprotedUser" javaType="com.cdq.model.User">
+            <id column="u2_user_id" property="userId"></id>
+            <id column="u2_nick_name" property="nickName"></id>
+            <id column="u2_user_head_photo" property="userHeadPhoto"></id>
+            <id column="u2_user_status" property="userStatus"></id>
+        </association>
+        <association property="article" javaType="com.cdq.model.Article">
+            <id column="a_article_id" property="articleId"></id>
+        </association>
+        <association property="userComment" javaType="com.cdq.model.UserComment">
+            <id column="uc_comment_id" property="userCommentId"></id>
+            <result column="user_comment_content" property="userCommentContent"></result>
+        </association>
+        <association property="reportReason" javaType="com.cdq.model.ReportReason">
+            <id column="rr_report_reason_id" property="reportReasonId"></id>
+            <result column="report_reason_name" property="reportReasonName"></result>
+        </association>
+        <collection property="photoList" ofType="java.lang.String">
+            <constructor>
+                <arg  column="photo_addr"></arg>
+            </constructor>
+        </collection>
+    </resultMap>
+
+    <select id="selectReport" parameterType="com.cdq.model.UserReport" resultMap="reportMap">
+        select
+        ur.*,
+        u1.user_id as u1_user_id,
+        u1.nick_name as u1_nick_name,
+        u1.user_head_photo as u1_user_head_photo,
+        u1.user_status as u1_user_status,
+        u2.user_id as u2_user_id,
+        u2.nick_name as u2_nick_name,
+        u2.user_head_photo as u2_user_head_photo,
+        u2.user_status as u2_user_status,
+        a.article_id as a_article_id,
+        uc.user_comment_id as uc_comment_id,
+        uc.user_comment_content,
+        rr.report_reason_id as rr_report_reason_id,
+        rr.report_reason_name,
+        p.photo_addr
+        from (select * from user_report
+        <where>
+            <if test="userReport.userReportId!=null ">and user_report_id = #{userReport.userReportId}</if>
+            <if test="userReport.reportUser!=null and userReport.reportUser.userId!=null">and report_user_id=#{userReport.reportUser.userId}</if>
+            <if test="userReport.reprotedUser!=null and userReport.reprotedUser.userId!=null">and reproted_user_id=#{userReport.reprotedUser.userId}</if>
+            <if test="userReport.userReportContent!=null">user_report_content like '%${userReport.userReportContent}%'</if>
+            <if test="userReport.userReportStatus!=null">user_report_status =#{userReport.userReportStatus}</if>
+        </where>
+        order by user_report_create_time desc
+        limit #{rowIndex},#{pageSize}) as ur left join user as u1 on ur.report_user_id=u1.user_id
+        left join user as u2 on ur.reproted_user_id=u2.user_id
+        left join article as a on a.article_id=ur.article_id
+        left join user_comment as uc on uc.user_comment_id=ur.user_comment_id
+        left join report_reason as rr on ur.report_reason_id=rr.report_reason_id
+        left join photo as p on ur.user_report_id=p.user_report_id
+
+    </select>
+
+    <select id="selectReportCount" parameterType="com.cdq.model.UserReport" resultType="java.lang.Integer">
+        select
+        count(ur.user_report_id)
+        from (select * from user_report
+        <where>
+            <if test="userReport.userReportId!=null ">and user_report_id = #{userReport.userReportId}</if>
+            <if test="userReport.reportUser!=null and userReport.reportUser.userId!=null">and report_user_id=#{userReport.reportUser.userId}</if>
+            <if test="userReport.reprotedUser!=null and userReport.reprotedUser.userId!=null">and reproted_user_id=#{userReport.reprotedUser.userId}</if>
+            <if test="userReport.userReportContent!=null">user_report_content like '%${userReport.userReportContent}%'</if>
+            <if test="userReport.userReportStatus!=null">user_report_status =#{userReport.userReportStatus}</if>
+        </where>
+        ) as ur
+
+        order by ur.user_report_create_time desc;
+    </select>
+
     <!--添加举报记录-->
     <insert id="insertUserReport" parameterType="com.cdq.model.UserReport" useGeneratedKeys="true"
-    keyProperty="userReportId">
-
+            keyProperty="userReportId">
         insert into user_report(
         report_user_id,reproted_user_id,report_reason_id,
         user_report_content,user_report_create_time
@@ -18,5 +103,19 @@
         <if test="userComment!=null and userComment.userCommentId!=null">,#{userComment.userCommentId}</if>
         )
     </insert>
+
+    <insert id="insertResult" parameterType="com.cdq.model.ReportResult">
+        insert into report_result(user_report_id,result_report_status,remark)
+        values(#{userReport.userReportId},#{resultReportStatus},#{remark})
+    </insert>
+
+    <update id="updateUserStatus" parameterType="com.cdq.model.User">
+        update user set user_status=#{userStatus} where user_id=#{userId}
+    </update>
+
+    <update id="updateReportStatus" parameterType="com.cdq.model.UserReport">
+        update user_report set user_report_status=#{userReportStatus}
+        where user_report_id=#{userReportId}
+    </update>
 
 </mapper>

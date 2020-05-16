@@ -44,10 +44,21 @@ public interface SecretMessageService {
     SecretMessageExecution changeMessageState(List<Integer> list,Byte state);
 
     /**
+     * 批量修改系统通知记录的状态
+     * @param list
+     * @param state
+     * @return
+     */
+    SecretMessageExecution changeSystemState(List<Integer> list,Byte state);
+
+
+    /**
      * 添加私信记录
      * @param secretMessage
      * @return
      */
     SecretMessageExecution addMessage(SecretMessage secretMessage);
+
+    SecretMessageExecution getAllMessageNum(String userId);
 
 }

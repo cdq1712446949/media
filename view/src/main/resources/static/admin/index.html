@@ -11,6 +11,8 @@
     <link href="http://media.com/media/css/common/bootstrap.min.css" rel="stylesheet">
     <link href="http://media.com/media/css/admin/materialdesignicons.min.css" rel="stylesheet">
     <link href="http://media.com/media/css/admin/style.min.css" rel="stylesheet">
+    <!--对话框插件-->
+    <link rel="stylesheet" href="http://media.com/media/css/admin/jquery-confirm.min.css">
 </head>
 
 <body>
@@ -44,9 +46,9 @@
                         <li class="nav-item nav-item-has-subnav" id="type-2">
                             <a href="javascript:void(0)"><i class="mdi mdi-database"></i> 数据中心</a>
                             <ul class="nav nav-subnav">
-                                <li id="2-1" class="li_click"><a >用户数据</a></li>
-                                <li id="2-2" class="li_click"><a >文章数据</a></li>
-                                <li id="2-3" class="li_click"><a >图库</a></li>
+                                <li style="display: none" id="2-1" class="li_click"><a >用户数据</a></li>
+                                <li style="display: none;" id="2-2" class="li_click"><a >文章数据</a></li>
+                                <li style="display: none;" id="2-3" class="li_click"><a >图库</a></li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav" id="type-3">
@@ -59,10 +61,10 @@
                         <li class="nav-item nav-item-has-subnav" id="type-4">
                             <a href="javascript:void(0)"><i class="mdi mdi-menu"></i> 其他管理</a>
                             <ul class="nav nav-subnav">
-                                <li id="4-1" class="li_click"><a >广告列表</a></li>
-                                <li id="4-2" class="li_click"><a >公告列表</a></li>
+                                <li style="display: none" id="4-1" class="li_click"><a >广告列表</a></li>
+                                <li style="display: none" id="4-2" class="li_click"><a >公告列表</a></li>
                                 <li id="4-3" class="li_click"><a >添加广告</a></li>
-                                <li id="4-4" class="li_click"><a >发布公告</a></li>
+                                <li id="4-4" class="li_click" style="display: none"><a >发布公告</a></li>
                             </ul>
                         </li>
                     </ul>

@@ -187,7 +187,8 @@ $(function () {
                 '                    <div class="facebook-avatar"><img\n' +
                 '                            src="http://media.com/image/images/' + uinfo.userHeadPhoto + '"\n' +
                 '                            width="34" height="34"></div>\n' +
-                '                    <div class="facebook-name">' + uinfo.nickName + '</div>\n' +
+                '                    <div class="facebook-name">' + uinfo.nickName +
+                '<a onclick="addAttention(this)" data-uid="'+uinfo.userId+'" class="lable pull-right">关注</a></div>\n' +
                 '                    <div class="facebook-date">' + item.articleCreateTime + '</div>\n' +
                 '                </div>';
             var t4 = '<div class="card-content"><div class="card-content-inner">\n' +

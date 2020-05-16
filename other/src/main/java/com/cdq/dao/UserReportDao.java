@@ -1,7 +1,12 @@
 package com.cdq.dao;
 
+import com.cdq.model.ReportResult;
+import com.cdq.model.User;
 import com.cdq.model.UserReport;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author ：ヅてＤＱ
@@ -14,5 +19,16 @@ import org.springframework.stereotype.Repository;
 public interface UserReportDao {
 
     int insertUserReport(UserReport userReport);
+
+    List<UserReport> selectReport(@Param("userReport") UserReport userReport,
+                                  @Param("rowIndex")int rowIndex,@Param("pageSize")int pageSize);
+
+    int selectReportCount(@Param("userReport") UserReport userReport);
+
+    int insertResult(ReportResult reportResult);
+
+    int updateUserStatus(User user);
+
+    int updateReportStatus(UserReport userReport);
 
 }

@@ -3,7 +3,10 @@ package com.cdq.service.impl;
 import com.cdq.dao.SecretMessageDao;
 import com.cdq.enums.SecretMessageEnum;
 import com.cdq.execution.SecretMessageExecution;
+import com.cdq.model.PersonInfo;
 import com.cdq.model.SecretMessage;
+import com.cdq.model.SystemMessage;
+import com.cdq.model.User;
 import com.cdq.service.SecretMessageService;
 import com.cdq.util.ConstansUtil;
 import com.cdq.util.MessageNumber;
@@ -41,8 +44,11 @@ public class SecretMessageServiceImpl implements SecretMessageService {
         }
         //调用service层
         List<MessageNumber> result = secretMessageDao.querySecretMessage(secretMessage);
+        List<SystemMessage> result2 = secretMessageDao.querySystemMessage(secretMessage.getToUser());
         if (result != null) {
-            return new SecretMessageExecution(SecretMessageEnum.SUCCESS, (ArrayList<MessageNumber>) result);
+            SecretMessageExecution secretMessageExecution = new SecretMessageExecution(SecretMessageEnum.SUCCESS, (ArrayList<MessageNumber>) result);
+            secretMessageExecution.setSystemMessageList(result2);
+            return secretMessageExecution;
         } else {
             return new SecretMessageExecution(SecretMessageEnum.INNER_ERROR);
         }
@@ -107,7 +113,24 @@ public class SecretMessageServiceImpl implements SecretMessageService {
     }
 
     /**
+     * 批量修改私信状态
+     *
+     * @param list
+     * @param state
+     * @return
+     */
+    @Override
+    public SecretMessageExecution changeSystemState(List<Integer> list, Byte state) {
+        if (list == null || list.size() == 0) {
+            return new SecretMessageExecution(SecretMessageEnum.SUCCESS);
+        }
+        secretMessageDao.updateSystemIsSee(list, state);
+        return new SecretMessageExecution(SecretMessageEnum.SUCCESS);
+    }
+
+    /**
      * 添加私信记录接口
+     *
      * @param secretMessage
      * @return
      */
@@ -123,12 +146,32 @@ public class SecretMessageServiceImpl implements SecretMessageService {
         if (!(secretMessage.getMessageContent() != null && !ConstansUtil.EMPTY.equals(secretMessage.getMessageContent()))) {
             return new SecretMessageExecution(SecretMessageEnum.EMPTY_CONTENT);
         }
+        PersonInfo personInfo = secretMessageDao.queryUserSMStatus(secretMessage.getToUser());
+        if (personInfo.getSecretStatus()==-1){
+            SecretMessageExecution secretMessageExecution = new SecretMessageExecution(SecretMessageEnum.TO_USER_REFUSE);
+            return secretMessageExecution;
+        }
         secretMessage.setMessageCreateTime(new Date());
         //调用dao层
         int result = secretMessageDao.insertSecretMessage(secretMessage);
-        if (result!=0){
+        if (result != 0) {
             return new SecretMessageExecution(SecretMessageEnum.SUCCESS);
-        }else{
+        } else {
+            return new SecretMessageExecution(SecretMessageEnum.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public SecretMessageExecution getAllMessageNum(String userId) {
+        if (userId == null || ConstansUtil.EMPTY.equals(userId)) {
+            return new SecretMessageExecution(SecretMessageEnum.EMPTY_USER);
+        }
+        try {
+            Integer result = secretMessageDao.queryAllMessageNum(userId);
+            SecretMessageExecution secretMessageExecution = new SecretMessageExecution(SecretMessageEnum.SUCCESS);
+            secretMessageExecution.setCount(result);
+            return secretMessageExecution;
+        } catch (Exception e) {
             return new SecretMessageExecution(SecretMessageEnum.INNER_ERROR);
         }
     }

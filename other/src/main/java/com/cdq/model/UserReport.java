@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +28,7 @@ public class UserReport {
     private Byte userReportStatus;
 
     private Date userReportCreateTime;
+
+    private List<String> photoList;
+
 }

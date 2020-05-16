@@ -1,6 +1,9 @@
 package com.cdq.dao;
 
+import com.cdq.model.PersonInfo;
 import com.cdq.model.SecretMessage;
+import com.cdq.model.SystemMessage;
+import com.cdq.model.User;
 import com.cdq.util.MessageNumber;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -51,4 +54,13 @@ public interface SecretMessageDao {
      * @return
      */
     int insertSecretMessage (SecretMessage secretMessage);
+
+    Integer queryAllMessageNum(@Param("userId") String userId);
+
+    PersonInfo queryUserSMStatus(User user);
+
+    List<SystemMessage> querySystemMessage(User user);
+
+    int updateSystemIsSee(@Param("list") List<Integer> list,@Param("isSee")Byte isSee);
+
 }

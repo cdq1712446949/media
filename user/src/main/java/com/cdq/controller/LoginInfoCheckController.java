@@ -66,7 +66,7 @@ public class LoginInfoCheckController {
                     //TODO 向用户发送系统通知
                     redisUtil.del(JwtUtil.TOKEN + id);
                     modelMap.put(ConstansUtil.RESULT, false);
-                    modelMap.put(ConstansUtil.REDIRECT, "/user/login");
+                    modelMap.put(ConstansUtil.REDIRECT, "http://media.com/media/login");
                     modelMap.put(ConstansUtil.STATE_CODE, JwtUtil.RELOGIN);
                 }
             } else {

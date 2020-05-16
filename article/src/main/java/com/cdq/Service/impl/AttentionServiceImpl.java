@@ -80,7 +80,7 @@ public class AttentionServiceImpl implements AttentionService {
                 return new AttentionExecution(BaseStateEnum.INNER_ERROR);
             }
         }else {
-            return new AttentionExecution(BaseStateEnum.ILLEGAL_REQUEST);
+            return new AttentionExecution(BaseStateEnum.REPEAT_ATTEN);
         }
     }
 

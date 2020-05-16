@@ -20,4 +20,10 @@ public interface ReportReasonDao {
 
     List<ReportReason> queryChildList(ReportReason reportReason);
 
+    List<ReportReason> queryAllReason();
+
+    int insertReason(ReportReason reportReason);
+
+    int deleteReason(ReportReason reportReason);
+
 }

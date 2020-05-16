@@ -3,6 +3,7 @@ package com.cdq.execution;
 
 import com.cdq.enums.SecretMessageEnum;
 import com.cdq.model.SecretMessage;
+import com.cdq.model.SystemMessage;
 import com.cdq.util.MessageNumber;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,9 @@ public class SecretMessageExecution {
     @Getter
     @Setter
     private List<SecretMessage> secretMessageList;
+    @Getter
+    @Setter
+    private List<SystemMessage> systemMessageList;
     @Getter
     @Setter
     private List<MessageNumber> messageNumberList;

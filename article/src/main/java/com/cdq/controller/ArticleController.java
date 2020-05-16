@@ -1,6 +1,7 @@
 package com.cdq.controller;
 
 import com.cdq.Service.ArticleService;
+import com.cdq.dao.UserCommentDao;
 import com.cdq.execution.ArticleExecution;
 import com.cdq.model.Article;
 import com.cdq.model.ArticleType;
@@ -40,6 +41,8 @@ public class ArticleController {
     private RestTemplate restTemplate;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private UserCommentDao userCommentDao;
 
     /**
      * 根据请求返回文章列表
@@ -110,7 +113,20 @@ public class ArticleController {
         if (productStr != null || !ConstansUtil.EMPTY_STR.equals(productStr)) {
             Article article = objectMapper.readValue(productStr, Article.class);
             //获取文章发布者信息
-            article.setUser(ObjectUtil.getUserId(request));
+            User user = ObjectUtil.getUserId(request);
+            try {
+                User user1 = userCommentDao.queryUserStatus(user);
+                if (user1.getUserStatus() == 1) {
+                    modelMap.put(ConstansUtil.SUCCESS, false);
+                    modelMap.put(ConstansUtil.ERRMSG, "您已经被禁止发布文章");
+                    return modelMap;
+                }
+            } catch (Exception e) {
+                modelMap.put(ConstansUtil.SUCCESS, false);
+                modelMap.put(ConstansUtil.ERRMSG, e.getMessage());
+                return modelMap;
+            }
+            article.setUser(user);
             MultipartHttpServletRequest multipartRequest = null;
             List<String> productImgs = new ArrayList<>();
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());

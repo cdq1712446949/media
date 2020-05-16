@@ -6,6 +6,7 @@ $(function () {
 
         //举报页面url
         var reportUrl = 'http://media.com/media/report?articleId=';
+        var reportCommUrl = 'http://media.com/media/report?commentId=';
         var articleUrl = 'http://media.com/article/ugabi';
         var commentListUrl = 'http://media.com/article/ugucl';
         var addCommentUrl = 'http://media.com/article/uauc';
@@ -163,7 +164,7 @@ $(function () {
                     $.each(childList, function (ind, ite) {
                         var fUser = ite.fromUser;
                         html += '                <li>\n' +
-                            '                    <div class="card comment" data-cid="' + ite.userCommentId + '" data-tid="' + fUser.userId + '">\n' +
+                            '                    <div class="card comment" data-cid="' + item.userCommentId + '" data-tid="' + fUser.userId + '">\n' +
                             '                        <div class="card-header no-border">\n' +
                             '                            <div class="facebook-avatar">\n' +
                             '                                <img class="yuan-head" src="http://media.com/image/images/' + fUser.userHeadPhoto + '"\n' +
@@ -258,7 +259,7 @@ $(function () {
                     bold: true,
                     color: 'danger',
                     onClick: function () {
-                        window.location.href = reportUrl + articleId + '&&userId=' + userId;
+                        window.location.href = reportCommUrl + commentId + '&&userId=' + toUserId;
                     }
                 }
             ];
@@ -349,6 +350,7 @@ $(function () {
                         return;
                     }
                     if (data.success) {
+                        // getCommListByAid();
                         $.toast('发表成功');
                         $('#btn_cancle').click();
                     } else {

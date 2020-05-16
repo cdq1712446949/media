@@ -44,6 +44,7 @@ public class UserCommentServiceImpl implements UserCommentService {
             List<UserComment> userComments = userCommentDao.queryUserCommentList(userComment, rowIndex, pageSize);
             return new UserCommentExecution(UserCommentStateEnum.SUCCESS, userComments);
         } catch (Exception e) {
+            e.printStackTrace();
             return new UserCommentExecution(UserCommentStateEnum.INNER_ERROR);
         }
     }

@@ -31,6 +31,28 @@ public class SecretMessageController {
     @Autowired
     private SecretMessageService secretMessageService;
 
+    /**
+     * 所有未读信息数量接口
+     *
+     * @return
+     */
+    @RequestMapping(value = "/ugamn", method = RequestMethod.POST)
+    public Map getAllMessageNumber(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        //获取token中的userId
+        User user = ObjectUtil.getUserId(request);
+        //调用service层
+        SecretMessageExecution result = secretMessageService.getAllMessageNum(user.getUserId());
+        if (result.getState()==0){
+            modelMap.put(ConstansUtil.SUCCESS,true);
+            modelMap.put("messageNum",result.getCount());
+        }else{
+            modelMap.put(ConstansUtil.SUCCESS,false);
+            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
+        }
+        return modelMap;
+    }
+
 
     /**
      * 未读消息数量接口
@@ -99,6 +121,23 @@ public class SecretMessageController {
     }
 
     /**
+     * 批量修改系统通知状态值
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ucss", method = RequestMethod.POST)
+    public Map<String, Object> changeSystemState(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        String listStr = HttpServletRequestUtil.getString(request, "listStr");
+        List<Integer> list = (List<Integer>) ObjectUtil.toPojo(listStr, List.class);
+        //调用service层
+        SecretMessageExecution result = secretMessageService.changeSystemState(list, (byte) 1);
+        //批量修改消息状态不用返回结果
+        return modelMap;
+    }
+
+    /**
      * 添加私信记录接口
      * @param request
      * @return
@@ -119,6 +158,7 @@ public class SecretMessageController {
             modelMap.put(ConstansUtil.SUCCESS, true);
         } else {
             modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG,result.getStateInfo());
         }
         return modelMap;
     }
@@ -137,6 +177,7 @@ public class SecretMessageController {
             modelMap.put(ConstansUtil.SUCCESS, true);
             if (code == 1) {
                 modelMap.put(ConstansUtil.MESSAGE_NUMBER_LIST, result.getMessageNumberList());
+                modelMap.put("systemMessageList",result.getSystemMessageList());
             }
             if (code == 2) {
                 modelMap.put(ConstansUtil.SECRET_MESSAGE_LIST, result.getSecretMessageList());

@@ -43,7 +43,13 @@ $(function () {
         var html = '';
         $.each(list, function (index, item) {
             var userInfo = item.user;
+            if (userInfo==null){
+                return;
+            }
             var article = item.article;
+            if (article==null){
+                return;
+            }
             html +='  <li id="coll'+item.collectionId+'"><div class="card facebook-card">\n' +
                 '                        <div class="card-header no-border">\n' +
                 '                            <div class="facebook-avatar">\n' +

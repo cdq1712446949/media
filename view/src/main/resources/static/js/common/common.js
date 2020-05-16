@@ -2,6 +2,7 @@
  *
  */
 var logoutUrl = 'http://media.com/user/logout';
+var addAttenUrl = 'http://media.com/article/atten/uaatten';
 
 Date.prototype.Format = function (fmt) {
     var o = {
@@ -98,4 +99,35 @@ checkData = function (data) {
     return reSend;
 };
 
-
+/**
+ * 添加关注
+ */
+addAttention = function (that) {
+    var token = sessionStorage.getItem('media_token');
+    if (token==null||token==''){
+        alert('请登录');
+        return;
+    }
+    var uid = that.dataset.uid;
+    $.ajax({
+        url:addAttenUrl,
+        type:'POST',
+        data:{
+            token:token,
+            attentionUserId:uid
+        },
+        dataType:'JSON',
+        success:function (data) {
+            var result = checkData(data);
+            if (result){
+                addAttention(that);
+                return;
+            }
+            if (data.success){
+                $.toast('关注成功');
+            }else{
+                $.toast('关注失败:'+data.errMsg);
+            }
+        }
+    });
+};

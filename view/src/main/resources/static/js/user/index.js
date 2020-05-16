@@ -1,6 +1,6 @@
 $(function () {
     var firstArticleTypeListUrl = '/article/firstarticletypelist';
-
+    var allMessageNumUrl = 'http://media.com/user/sm/ugamn';
     var mediaLoginInfo = 'media_login_info';
 
     function advert(config) {
@@ -78,5 +78,57 @@ $(function () {
         sessionStorage.setItem("isShow", true);
     }
 
+    getAllMessageNum = function () {
+        var token = sessionStorage.getItem('media_token');
+        if (token==null||token==''){
+            return;
+        }
+        $.ajax({
+            url: allMessageNumUrl,
+            type: 'POST',
+            data: {
+                token: sessionStorage.getItem('media_token')
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                var result = checkData(data);
+                if (result) {
+                    getAllMessageNum();
+                }
+                if (data.success) {
+                    var smNum = data.messageNum;
+                    if (smNum == 0 || smNum == null) {
+                        $('#smNum').hide();
+                    } else {
+                        $('#smNum').show();
+                        if (smNum >= 100) {
+                            $('#smNum').html('99+');
+                        } else {
+                            $('#smNum').html(smNum);
+                        }
+                    }
+                }
+            }
+        });
+    };
+
+    /**
+     * 处理token过期方法
+     */
+    checkData = function (data) {
+        var reSend = false;
+        var stateCode = data.stateCode;
+        var redirect = data.redirect;
+        if (redirect != null && redirect != '') {
+            window.location.href = redirect;
+        }
+        if (stateCode == 201) {
+            sessionStorage.setItem('media_token', data.token);
+            reSend = true;
+        }
+        return reSend;
+    };
+
+    setInterval('getAllMessageNum()', '1000');
 
 });

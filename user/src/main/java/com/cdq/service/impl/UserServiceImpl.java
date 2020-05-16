@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         if (result == null) {
             return new UserExecution(UserStateEnum.ACCOUNT_ERROR);
         } else {
-            if (result.getUserStatus() == 0) {
+            if (result.getUserStatus() != -1) {
                 return new UserExecution(UserStateEnum.SUCCESS, result);
             } else {
                 return new UserExecution(UserStateEnum.ACCOUNT_BAN);

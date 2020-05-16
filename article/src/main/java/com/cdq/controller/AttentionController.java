@@ -70,8 +70,8 @@ public class AttentionController {
         Attention attention = new Attention();
         User user = new User();
         user.setUserId(uid1);
-        attention.setAttentionUser(user);
-        attention.setAttentedUser(user1);
+        attention.setAttentionUser(user1);
+        attention.setAttentedUser(user);
         //调用service层
         AttentionExecution result = attentionService.addAttention(attention);
         if (result.getState() == 0) {

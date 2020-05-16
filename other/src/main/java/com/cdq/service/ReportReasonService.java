@@ -16,4 +16,10 @@ public interface ReportReasonService {
 
     ReportReasonExecution selectChildList(ReportReason reportReason);
 
+    ReportReasonExecution selectAllReason();
+
+    ReportReasonExecution addReason(ReportReason reportReason);
+
+    ReportReasonExecution delReason(ReportReason reportReason);
+
 }

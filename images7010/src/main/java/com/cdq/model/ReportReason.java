@@ -2,22 +2,22 @@ package com.cdq.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
+@Getter
+@Setter
+@ToString
 public class ReportReason {
-    @Getter
-    @Setter
     private Byte reportReasonId;
-    @Getter
-    @Setter
-    private String reportReasonName;
-    @Getter
-    @Setter
-    private Date reportReasonCreateTime;
-    @Getter
-    @Setter
-    private Date reportReasonLastEditTime;
 
+    private ReportReason parentReason;
+
+    private String reportReasonName;
+
+    private Date reportReasonCreateTime;
+
+    private Date reportReasonLastEditTime;
 
 }

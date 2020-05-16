@@ -1,6 +1,8 @@
 package com.cdq.service;
 
 import com.cdq.dto.UserReportExecution;
+import com.cdq.model.ReportResult;
+import com.cdq.model.User;
 import com.cdq.model.UserReport;
 
 /**
@@ -18,5 +20,11 @@ public interface UserReportService {
      * @return
      */
     UserReportExecution addUserReport(UserReport userReport);
+
+    UserReportExecution getUserReport(UserReport userReport,int indexPage,int pageSize);
+
+    UserReportExecution addResult(ReportResult reportResult);
+
+    UserReportExecution changeUserStatus(User user);
 
 }

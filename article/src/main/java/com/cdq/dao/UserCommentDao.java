@@ -55,4 +55,6 @@ public interface UserCommentDao {
      */
     UserComment queryIsCanDel(UserComment userComment);
 
+    User queryUserStatus(User user);
+
 }

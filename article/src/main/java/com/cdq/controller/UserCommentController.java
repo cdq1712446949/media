@@ -1,6 +1,7 @@
 package com.cdq.controller;
 
 import com.cdq.Service.UserCommentService;
+import com.cdq.dao.UserCommentDao;
 import com.cdq.execution.UserCommentExecution;
 import com.cdq.model.Article;
 import com.cdq.model.User;
@@ -29,6 +30,8 @@ public class UserCommentController {
 
     @Autowired
     private UserCommentService userCommentService;
+    @Autowired
+    private UserCommentDao userCommentDao;
 
     /**
      * 用户发表评论接口
@@ -44,6 +47,18 @@ public class UserCommentController {
                 HttpServletRequestUtil.getString(request, ConstansUtil.USER_COMMENT_STR), UserComment.class);
         //通过token获取用户id
         User user = ObjectUtil.getUserId(request);
+        try {
+            User user1 = userCommentDao.queryUserStatus(user);
+            if (user1.getUserStatus() == 1) {
+                modelMap.put(ConstansUtil.SUCCESS, false);
+                modelMap.put(ConstansUtil.ERRMSG, "您没有发送评论的权限");
+                return modelMap;
+            }
+        } catch (Exception e) {
+            modelMap.put(ConstansUtil.SUCCESS, false);
+            modelMap.put(ConstansUtil.ERRMSG, e.getMessage());
+            return modelMap;
+        }
         userComment.setFromUser(user);
         //调用service层
         UserCommentExecution result = userCommentService.addUserComment(userComment);
@@ -98,6 +113,7 @@ public class UserCommentController {
 
     /**
      * 评论删除接口
+     *
      * @param request
      * @return
      */

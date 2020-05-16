@@ -6,9 +6,12 @@ import com.cdq.dto.ReportReasonExecution;
 import com.cdq.enums.BaseStateEnum;
 import com.cdq.model.ReportReason;
 import com.cdq.service.ReportReasonService;
+import com.cdq.util.ConstansUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,6 +48,77 @@ public class ReportReasonServiceImpl implements ReportReasonService {
             return new ReportReasonExecution(BaseStateEnum.SUCCESS,list);
         }else{
             return new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+        }
+    }
+
+    @Override
+    public ReportReasonExecution selectAllReason() {
+        try {
+            List<ReportReason> list = reportReasonDao.queryAllReason();
+            if (list!=null){
+                return new ReportReasonExecution(BaseStateEnum.SUCCESS,list);
+            }else{
+                return new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+            }
+        }catch (Exception e){
+            ReportReasonExecution reportReasonExecution = new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+            reportReasonExecution.setStateInfo(e.getMessage());
+            System.out.println(e.getMessage());
+            return reportReasonExecution;
+        }
+    }
+
+    @Override
+    @Transactional
+    public ReportReasonExecution addReason(ReportReason reportReason) {
+        //参数校验
+        if (reportReason==null){
+            return new ReportReasonExecution(BaseStateEnum.EMPTY_INFO);
+        }
+        if (reportReason.getReportReasonName()==null||ConstansUtil.EMPTY.equals(reportReason.getReportReasonName())){
+            return new ReportReasonExecution(BaseStateEnum.EMPTY_INFO);
+        }
+        //添加创建时间
+        reportReason.setReportReasonCreateTime(new Date());
+        //调用dao层
+        try {
+            int result = reportReasonDao.insertReason(reportReason);
+            if (result!=0){
+                return new ReportReasonExecution(BaseStateEnum.SUCCESS);
+            }else{
+                return new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+            }
+        }catch (Exception e){
+            ReportReasonExecution reportReasonExecution = new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+            reportReasonExecution.setStateInfo(e.getMessage());
+            System.out.println(e.getMessage());
+            return reportReasonExecution;
+        }
+    }
+
+    @Override
+    @Transactional
+    public ReportReasonExecution delReason(ReportReason reportReason) {
+        //参数校验
+        if (reportReason==null){
+            return new ReportReasonExecution(BaseStateEnum.EMPTY_INFO);
+        }
+        if (reportReason.getReportReasonId()==null){
+            return new ReportReasonExecution(BaseStateEnum.EMPTY_INFO);
+        }
+        //调用dao层
+        try {
+            int result = reportReasonDao.deleteReason(reportReason);
+            if (result!=0){
+                return new ReportReasonExecution(BaseStateEnum.SUCCESS);
+            }else{
+                return new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+            }
+        }catch (Exception e){
+            ReportReasonExecution reportReasonExecution = new ReportReasonExecution(BaseStateEnum.INNER_ERROR);
+            reportReasonExecution.setStateInfo(e.getMessage());
+            System.out.println(e.getMessage());
+            return reportReasonExecution;
         }
     }
 }

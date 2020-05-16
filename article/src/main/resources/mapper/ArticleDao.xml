@@ -145,14 +145,10 @@
         LEFT JOIN (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up
         group by up_article_id) as tu on a.article_id=tu.up_article_id
         <where>
-
             <if test="article.articleCreateTime != null">
                 and year(article_create_time)=year(#{article.articleCreateTime})
                 and month(article_create_time)= month(#{article.articleCreateTime})
             </if>
-
-
-
             and art.article_type_id is not null
         </where>
         order by look_num desc
@@ -168,13 +164,12 @@
         u.user_head_photo,
         comm.comment_num,
         tu.good_num
-        from (select * from article limit  #{rowIndex},#{pageSize}) as a
+        from (select * from article where video_src is not null and article_status=0 limit  #{rowIndex},#{pageSize} ) as a
         left join User as u on a.user_id = u.user_id
         left join (select distinct(up_article_id),count(up_article_id) as good_num from thumbs_up group by up_article_id )
          as tu on tu.up_article_id=a.article_id
          left join  (select distinct(article_id),count(article_id) as comment_num from user_comment group by article_id)
          as comm on a.article_id=comm.article_id
-         where a.video_src is not null
         order by a.look_num desc
     </select>
     <!--获取视频文章列表总数-->

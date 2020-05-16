@@ -184,7 +184,7 @@ $(function () {
                     var scrollHeight = $('#scroll_content').prop("scrollHeight");
                     $('#scroll_content').animate({scrollTop:scrollHeight}, 400);
                 } else {
-                    $.toast('发送失败:'+data.errMsg);
+                    alert('发送失败:'+data.errMsg);
                 }
             }
         });

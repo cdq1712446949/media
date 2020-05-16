@@ -18,6 +18,7 @@
         <result column="uc_user_comment_create_time" property="userCommentCreateTime"></result>
         <result column="uc_user_comment_content" property="userCommentContent"></result>
         <association property="fromUser" javaType="com.cdq.model.User">
+            <id column="fu_user_id" property="userId"></id>
             <result property="nickName" column="fu_nick_name"></result>
             <result property="userHeadPhoto" column="fu_user_head_photo"></result>
         </association>
@@ -31,6 +32,7 @@
         uc.user_comment_id as uc_user_comment_id,
         uc.user_comment_create_time as uc_user_comment_create_time,
         uc.user_comment_content as uc_user_comment_content,
+        fu.user_id as fu_user_id,
         fu.nick_name as fu_nick_name,
         fu.user_head_photo as fu_user_head_photo,
         tu.nick_name as tu_nick_name,
@@ -57,7 +59,7 @@
         </if>
         and ucc.comment_id is null
         order by ucc.user_comment_create_time desc
-        limit #{rowIndex},#{pageSize};
+
     </select>
 
     <insert id="insertUserComment" parameterType="com.cdq.model.UserComment">
@@ -101,6 +103,10 @@
         from (select user_id from user where user_id=#{fromUser.userId}) as u
         left join article as ar on u.user_id = ar.user_id
         ) as a on a.article_id=uc.article_id
+    </select>
+
+    <select id="queryUserStatus" parameterType="com.cdq.model.User" resultType="com.cdq.model.User">
+        select user_status from user where user_id=#{userId}
     </select>
 
 </mapper>

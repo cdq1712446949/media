@@ -28,7 +28,7 @@ $(function () {
                         var parentType = item.parentArticleType;
                         var parentTypeName = '';
                         if (parentType!=null){
-                            var parentTypeName = parentType.articleTypeName;
+                            parentTypeName = parentType.articleTypeName;
                         }
                         tempHtml += '<tr>\n' +
                             '                                        <td>\n' +
