@@ -3,6 +3,7 @@
 * [1.用户体验系统](#1用户体验系统)
   * [1.1登录/注册](#11登录注册)
 * [功能实现截图](#功能实现)
+  * [首页](#首页)
 
 该系统采用微服务架构，使用到的技术有：[Spring Boot](https://spring.io/)，[Spring Cloud](https://spring.io/)，[Redis](https://redis.io/)，[Mybatis](https://blog.mybatis.org/)
 
