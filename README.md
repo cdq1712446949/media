@@ -53,4 +53,9 @@
 [![tiHFXD.th.png](https://s1.ax1x.com/2020/05/26/tiHFXD.th.png)](https://imgchr.com/i/tiHFXD) 
  [![tiHi6O.th.png](https://s1.ax1x.com/2020/05/26/tiHi6O.th.png)](https://imgchr.com/i/tiHi6O) 
  [![tiHP1K.th.png](https://s1.ax1x.com/2020/05/26/tiHP1K.th.png)](https://imgchr.com/i/tiHP1K) 
- [![tiHE0H.th.png](https://s1.ax1x.com/2020/05/26/tiHE0H.th.png)](https://imgchr.com/i/tiHE0H) 
+ 
+### 聊天室
+用户可以向关注的用户发送私信，消息盒子界面中，每秒钟会查询一次是否有未读消息，聊天室界面每秒钟查询一次和当前聊天对象是否有未读消息
+
+ [![tiHAne.th.png](https://s1.ax1x.com/2020/05/26/tiHAne.th.png)](https://imgchr.com/i/tiHAne) 
+ [![tiHV7d.th.png](https://s1.ax1x.com/2020/05/26/tiHV7d.th.png)](https://imgchr.com/i/tiHV7d)
