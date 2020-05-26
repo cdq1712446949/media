@@ -33,3 +33,9 @@
 
 [![ti6TK0.th.png](https://s1.ax1x.com/2020/05/26/ti6TK0.th.png)](https://imgchr.com/i/ti6TK0)
 [![ti7Xm4.th.png](https://s1.ax1x.com/2020/05/26/ti7Xm4.th.png)](https://imgchr.com/i/ti7Xm4) 
+
+### 文章详情页面
+当前页面根据window.location.href中的参数判断articleId的值，向后台发送请求并在页面中渲染数据。如果当前文章是当前登录用户的发表的文章，那么对评论的操作将会增加删除选项
+[![ti7j0J.th.png](https://s1.ax1x.com/2020/05/26/ti7j0J.th.png)](https://imgchr.com/i/ti7j0J) 
+[![ti7q6U.th.png](https://s1.ax1x.com/2020/05/26/ti7q6U.th.png)](https://imgchr.com/i/ti7q6U) 
+[![ti7blT.th.png](https://s1.ax1x.com/2020/05/26/ti7blT.th.png)](https://imgchr.com/i/ti7blT) 
