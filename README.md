@@ -40,3 +40,15 @@
 [![ti7j0J.th.png](https://s1.ax1x.com/2020/05/26/ti7j0J.th.png)](https://imgchr.com/i/ti7j0J) 
 [![ti7q6U.th.png](https://s1.ax1x.com/2020/05/26/ti7q6U.th.png)](https://imgchr.com/i/ti7q6U) 
 [![ti7blT.th.png](https://s1.ax1x.com/2020/05/26/ti7blT.th.png)](https://imgchr.com/i/ti7blT) 
+
+### 个人中心
+个人中心中提供了用户账号信息修改的接口，可以修改昵称、签名、性别，并且提供账号管理功能：我的文章管理、我的关注管理、我的收藏管理、账号设置管理。
+
+[![ti7LXF.th.png](https://s1.ax1x.com/2020/05/26/ti7LXF.th.png)](https://imgchr.com/i/ti7LXF) 
+[![ti7zkR.th.png](https://s1.ax1x.com/2020/05/26/ti7zkR.th.png)](https://imgchr.com/i/ti7zkR) 
+[![ti7v79.th.png](https://s1.ax1x.com/2020/05/26/ti7v79.th.png)](https://imgchr.com/i/ti7v79)
+[![tiHSt1.th.png](https://s1.ax1x.com/2020/05/26/tiHSt1.th.png)](https://imgchr.com/i/tiHSt1) 
+[![tiHpfx.th.png](https://s1.ax1x.com/2020/05/26/tiHpfx.th.png)](https://imgchr.com/i/tiHpfx) 
+[![tiHCp6.th.png](https://s1.ax1x.com/2020/05/26/tiHCp6.th.png)](https://imgchr.com/i/tiHCp6) 
+[![tiHFXD.th.png](https://s1.ax1x.com/2020/05/26/tiHFXD.th.png)](https://imgchr.com/i/tiHFXD) 
+
