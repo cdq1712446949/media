@@ -4,7 +4,7 @@ public class PathUtil {
 
     private static String seperator = System.getProperty("file.separator");
     public static String WINDOWS_SRC = "D:/projectdev/media_image/";
-    public static String LINUX_SRC = "/home/xiangze/image/";
+    public static String LINUX_SRC = "/home/media_image/";
 
     public static String getImageBasePath() {
         String basePath = "";

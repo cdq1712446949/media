@@ -52,7 +52,7 @@ public class ArticleController {
     @RequestMapping("/getArticle")
     public Map getArticle(HttpServletRequest request, String indexPage) {
         Map<String, Object> modelMap = new HashMap<>();
-        //        //参数转化
+        //参数转化
         Article article = (Article) ObjectUtil.toPojo(HttpServletRequestUtil.getString(request, "artiStr"), Article.class);
         article.setArticleStatus((byte) 0);
         //接收typeId参数

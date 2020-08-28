@@ -56,7 +56,8 @@ public class MybatisConfig {
     public DataSource dataSource()  {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setPassword("980814");
+//        dataSource.setPassword("980814");
+        dataSource.setPassword("LIUnian1314..");//服务器数据库密码
         dataSource.setUsername("root");
         dataSource.setUrl("jdbc:mysql://localhost:3306/media?serverTimezone=UTC&SSL=true&characterEncoding=utf8");
         return dataSource;

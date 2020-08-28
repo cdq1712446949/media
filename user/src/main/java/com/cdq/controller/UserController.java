@@ -76,7 +76,7 @@ public class UserController {
             }
         } else {
             modelMap.put("success", false);
-            modelMap.put("errMsg", "用户名或者密码错误");
+            modelMap.put("errMsg", result.getStateInfo());
         }
         return modelMap;
     }

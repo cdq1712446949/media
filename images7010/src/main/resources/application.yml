@@ -16,7 +16,8 @@ spring:
 eureka:
   client:
     serviceUrl:
-        defaultZone: http://eureka4002.com:4002/eureka, http://eureka4003.com:4003/eureka,http://eureka4004.com:4004/eureka  #eureka服务端提供的注册地址 参考服务端配置的这个路径
+        defaultZone: http://127.0.0.1:4002/eureka
+#        defaultZone: http://eureka4002.com:4002/eureka, http://eureka4003.com:4003/eureka,http://eureka4004.com:4004/eureka  #eureka服务端提供的注册地址 参考服务端配置的这个路径
   instance:
     instance-id: image-0 #此实例注册到eureka服务端的唯一的实例ID
     prefer-ip-address: true #是否显示IP地址
@@ -25,5 +26,6 @@ eureka:
 
 file:
   staticAccessPath: /images/**
-  uploadFolder: D:/projectdev/media_image/
+#  uploadFolder: D:/projectdev/media_image/
+  uploadFolder: /home/media_iamge/
 

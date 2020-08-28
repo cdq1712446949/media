@@ -1,26 +1,13 @@
 package com.cdq.controller;
 
 import com.cdq.dto.AdvertisementExecution;
-import com.cdq.model.Advertisement;
 import com.cdq.service.AdvertisementService;
 import com.cdq.util.ConstansUtil;
-import com.cdq.util.HttpServletRequestUtil;
-import com.cdq.util.MultipartUtil;
-import com.cdq.util.ObjectUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import sun.plugin2.util.PojoUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

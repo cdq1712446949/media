@@ -33,6 +33,12 @@ public class VideoUtil {
         System.out.print("（加个时间戳，尽量避免文件名称重复）保存的文件名为: " + fileName + "\n");
         //加个时间戳，尽量避免文件名称重复
         String basePath = "D:/projectDev/media_video/";
+        String os = System.getProperty("os.name");
+        if (os.toLowerCase().startsWith("win")) {
+            basePath =  "D:/projectDev/media_video/";
+        } else {
+            basePath =  "/home/media_video/";
+        }
         String path = pathName + "/" + fileName;
         System.out.print("保存文件绝对路径" + basePath + path + "\n");
         //创建文件路径
